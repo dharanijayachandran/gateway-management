@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-md-12">
+      <h1 i18n="Gateway Model PinPort Mapping Preview header|Gateway Model PinPort Mapping Preview@@gatewayModelPinPortMappingPreview" class="page-header" *ngIf="gatewayModelPinPortViewMode">
+         Gateway Model PinPort Mapping - Preview
+      </h1>
+    </div>
+    </div>
+    <div class="row margin_0px" >
+        <div class="col-md-12 padding_0px rowBox">
+          <div class="padding_Form">
+              <div *ngIf="gatewayModelPinPortViewMode" class="formReadMode">
+                  <div class="form-group-custom1">
+                     <legend  i18n="Communication Standard Pin Port Mapping Details header|Communication Standard Pin Port Mapping Details@@communicationStandardPinPortMappingDetails" class="m-b-15">Communication Standard Pin Port Mapping Details</legend>
+                     <div class="form-row">
+                        <div class="form-group col-sm-6 col-md-4">
+                            <label i18n="Gateway Model Name|Gateway Model Name@@gatewayModelName" class="">Gateway Model Name</label>
+                            <p>
+                                {{gatewayModelName}}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- <div class="path finalLine"></div> -->
+                    <div class="form-row">
+                        <div class="form-group col-sm-6 col-md-4">
+                          <div  *ngFor="let sourceData of source">
+                            <div>
+                                <label i18n="CommunicationStandard Name|CommunicationStandard Name@@communicationStandardName" class="">CommunicationStandard Name:</label>
+                                &nbsp; <span>{{sourceData.commStandardName}}</span>
+                            </div>
+                            <!-- <div *ngFor="let availableData of sourceData.available">
+                              <span>availableData.gatewayModelPinId</span>
+                            </div> -->
+                            <div *ngFor="let data of assignedData">
+                             <p *ngIf="data.gatewayModelCommStandardId===sourceData.gatewayModelCommStandardId"> 
+                                <label i18n='Name|Name@@protocolName' class="">Name :</label>
+                                &nbsp;
+                                <span>{{data.gatewayModelPinName}}</span>
+                                 <span>{{data.name}}</span> </p> 
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                    <div class="path finalLine"></div>
+                    <div class="row" style="    text-align: right;padding: 23px 0;">
+                        <div class="col-md-12">
+                          <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton()" i18n="Back button|Back@@back"> Back
+                          </button>
+                          &nbsp;
+                          <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit"
+                            (click)="saveGatewayModelCommStdMapping()">
+                            Save</button>
+                        </div>
+                      </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+  <!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationSuccess)="redirectTo()"></app-modal-notification>

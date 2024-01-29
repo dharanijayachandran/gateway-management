@@ -1,0 +1,134 @@
+<h1 class="page-header">Delete Gateway(s)</h1>
+     <div class="row margin_0px rowBox">
+      <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+   <form [formGroup]="deleteGatewayForm" (ngSubmit)="getGatewayDeletionList()">
+      <div class="form-group-custom1">
+      <div class="m-form__group row">
+       <div class="col-lg-4" >
+        <label>Gateway</label>
+             <div class="form-group">
+                <angular2-multiselect id="gatewayId" formControlName="gatewayId" [data]="gatewayName"
+                 [settings]="settings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" 
+                 (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll()">
+                </angular2-multiselect>
+            </div>
+       </div>
+       <div class="col-sm-1 textResponsiveness">
+        <div>OR</div>
+        </div>
+       <div class="col-lg-4">
+       <div>
+        <label class="">Gateway Identifier(s)</label>
+        <div class="form-group">
+          <textarea type="text" id="nodeIdentifier" formControlName="nodeIdentifier" (keyup)="onKey($event)"
+            class="form-control sm-input textAreaHeight"
+            placeholder="Enter Gateway Identifier with comma separator"></textarea>
+        </div>
+       </div>
+       </div>
+       </div>
+
+       <div class="path finalLine"></div>
+       <div class="row">
+        <div class="col-md-12">
+        <span matTooltip="No Data available to Reset" [matTooltipDisabled]="resetButtonEnable">
+          <button type="button" class="btn btn-secondary text-center resetActionButton" [disabled]="!resetButtonEnable"
+          (click)="resetForm()">
+           Reset
+         </button>
+         </span>
+         &nbsp;    
+       <span matTooltip="Select one gateway" [matTooltipDisabled]="viewActionButton">
+          <button type="submit" class="btn btn-primary text-center viewActionButton" [disabled]="!viewActionButton"
+          (click)="onClickViewTable()">
+           View
+         </button>
+       </span>
+       </div>
+      </div>
+
+     </div>
+    </form>
+     </div>
+     </div>
+    </div>
+
+    <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+    align="center">
+    <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+    </div>
+    <div *ngIf="showTableData">
+     <app-panel-user name="List of Gateway(s)" #panelHeader (scrollBarDirective)="onPaginateViewScrollToTop()">
+     <div class="rowBox" style="height:230px;">
+        <div class="col-md-12" style="padding:0px;">
+        <div class="table_class">
+        <mat-table #table [dataSource]="matTableElement"  matSort>
+            <ng-container matColumnDef="id" >
+              <mat-header-cell *matHeaderCellDef>S.No.</mat-header-cell>
+              <mat-cell *matCellDef="let field ; let i= index">{{i+1}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+              <mat-cell *matCellDef="let field;">{{field.itemName | hyphen}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="nodeIdentifier" >
+              <mat-header-cell *matHeaderCellDef>Gateway Identifier</mat-header-cell>
+              <mat-cell *matCellDef="let field;">{{field.nodeIdentifier | hyphen}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="authToken">
+                <mat-header-cell *matHeaderCellDef>Auth Token </mat-header-cell>
+                <mat-cell *matCellDef="let field;">{{field.authToken | hyphen}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="gatewayTypeName" >
+                <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+                <mat-cell *matCellDef="let field;">{{field.gatewayTypeName | hyphen}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="gatewayModelName" >
+                <mat-header-cell *matHeaderCellDef>Model</mat-header-cell>
+                <mat-cell *matCellDef="let field;">{{field.gatewayModelName}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="gatewayTemplateName" >
+                <mat-header-cell *matHeaderCellDef>Template</mat-header-cell>
+                <mat-cell *matCellDef="let field;">{{field.gatewayTemplateName | hyphen}}</mat-cell>
+              </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+        <!-- <div  appScrollbarDirective ></div> -->
+        
+
+            <h3 *ngIf="noRecordsFound" class="text-center noRecordsFound" style="padding-top:150px;">
+              No records found!
+            </h3>
+        </div>
+      </div>
+     </div>
+    
+        <div class="rowBox" style="text-align: right;padding: 3px 3px;">
+          <div class="col-md-12">
+           <span matTooltip="No Data available to Reset" [matTooltipDisabled]="resetButtonEnable">
+             <button type="button" class="btn btn-secondary text-center resetActionButton" [disabled]="!resetButtonEnable"
+             (click)="resetForm()">
+              Reset
+            </button>
+            </span>
+            &nbsp;     
+                  <span  matTooltip="Select one gateway" [matTooltipDisabled]="deleteButtonEnable">
+                    <button type="submit" class="btn btn-primary text-center" [disabled]="!deleteButtonEnable"
+                    (click)="clickDeleteBulkGateways()">
+                      Delete</button>
+                  </span>
+            </div>
+          </div>
+        </app-panel-user>
+      </div>
+      
+      <app-modal-notification (modelNotificationDanger)="confirmDeleteBulkGateways();"></app-modal-notification>

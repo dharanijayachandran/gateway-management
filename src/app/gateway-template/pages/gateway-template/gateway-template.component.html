@@ -1,0 +1,65 @@
+<!-- begin breadcrumb -->
+<!-- <ol class="breadcrumb pull-right">
+  <li i18n="@@Tenant" class="breadcrumb-item">Gateway Management</li>
+  <li i18n="@@ManageTenant" class="breadcrumb-item active">Gateway Template</li>
+</ol> -->
+<!-- end breadcrumb -->
+
+<script>
+  $(document).ready(function () {
+    $("#myTab li:eq(1) a").tab('show');
+  })
+</script>
+
+<!-- begin page-header -->
+<h1 i18n="Page header|Gateway Template Configuration@@gatewayTemplateConfiguration" class="page-header">Gateway Template Configuration</h1>
+<!-- end page-header -->
+<div class="header_Underline"></div>
+<!-- begin row -->
+<div class="row">
+  <!-- begin col-6 -->
+  <div class="col-lg-12">
+    <!-- begin nav-tabs -->
+    <ngb-tabset type="pills" (tabChange)="beforeChange($event)">
+      <ngb-tab id="gatewayList">
+        <ng-template ngbTabTitle class="hidden">
+          <span i18n="Tab|Gateway Template@@gatewayTemplate" class="d-sm-none">Gateway Template</span>
+          <span i18n="Tab|Gateway Template@@gatewayTemplate" class="d-sm-block d-none">Gateway Template</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div id="gatewayTemplateView" class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight">
+            <app-gateway-template-view (messageEvent)="receiveMessage($event)" (tabName)="tabNameMessage()">
+            </app-gateway-template-view>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab id="IOTag">
+        <ng-template ngbTabTitle>
+          <span i18n="Tab|IO Tag@@iOTag" class="d-sm-none">IO Tag</span>
+          <span i18n="Tab|IO Tag@@iOTag" class="d-sm-block d-none">IO Tag</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div id="IOTagList">
+            <app-gateway-template-io-tag-view (messageEvent)="receiveMessage($event)">
+            </app-gateway-template-io-tag-view>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab id="communication">
+        <ng-template ngbTabTitle>
+          <span i18n="Tab|Communication@@communication" class="d-sm-none">Communication</span>
+          <span i18n="Tab|Communication@@communication" class="d-sm-block d-none">Communication</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div id="communicationList" class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight">
+            <app-communication>
+            </app-communication>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+    <!-- end nav-tabs -->
+  </div>
+  <!-- end col-6 -->
+</div>
+<!-- end row -->

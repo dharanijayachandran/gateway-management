@@ -1,0 +1,90 @@
+<div class="form-row">
+    <a (click)="backButton()" class="edit_section">
+        <img src="/assets/img/action/edit.png" alt="Edit Gateway Tag Details"
+            i18n-matTooltip="Image matTooltip|Click to Edit Gateway Tag Details@@clickToEditGatewayTagDetails"
+            matTooltip="Click to Edit Gateway Tag Details">
+    </a>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Name|Name@@name" class="">Name</label>
+        <p>
+            {{gatewayIOTag.name}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Description|Description@@description" class="">Description</label>
+        <p>
+            {{gatewayIOTag.description | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Tag Key Name|Tag Key Name@@tagKeyName" class="">Tag Key Name</label>
+        <p>
+            {{gatewayIOTag.tagKeyName | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Tag Type|Tag Type@@tagType" class="">Tag Type </label> &nbsp;
+
+        <span *ngIf="gatewayIOTag.tagType === 'A' else tagTypeBlock">
+            <p>Analog</p>
+        </span>
+        <ng-template #tagTypeBlock>
+            <span>
+                <p>Discrete</p>
+            </span>
+        </ng-template>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Data Type|Data Type@@dataType" class="">Data Type</label>
+        <p *ngFor="let dataType of dataTypes">
+            <span *ngIf="dataType.id===gatewayIOTag.dataTypeId">
+                {{dataType.name}}
+            </span>
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Mapping with Standard I/O Tag|Mapping with Standard I/O Tag@@mappingwithStandardI/OTag"
+            class="">Mapping with Standard I/O Tag</label>
+        <p *ngIf='gatewayIOTag.dataProtocolStandardTagId===null else stdNoBlock'>
+            {{gatewayIOTag.dataProtocolStandardTagId | hyphen}}
+        </p>
+        <ng-template #stdNoBlock>
+            <p *ngFor="let stdIOTag of standardIOTags">
+                <span *ngIf="stdIOTag.id===parseInt(gatewayIOTag.dataProtocolStandardTagId)">
+                    {{stdIOTag.name}}
+                </span>
+            </p>
+        </ng-template>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Tag IO Mode|Tag IO Mode@@tagIOMode" class="">Tag IO Mode</label>
+
+        <span *ngIf="gatewayIOTag.tagIOMode === 'I' else tagModeBlock">
+            <p>Input</p>
+        </span>
+        <ng-template #tagModeBlock>
+            <span>
+                <p>Output</p>
+            </span>
+        </ng-template>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Engineering Unit|Engineering Unit@@engineeringUnit" class="">Engineering Unit</label>
+        <p *ngIf='gatewayIOTag.engUnitId===null else noBlock'>
+            {{gatewayIOTag.engUnitId | hyphen}}
+        </p>
+        <ng-template #noBlock>
+            <p *ngFor="let engUnit of engUnits">
+                <span *ngIf="engUnit.id===gatewayIOTag.engUnitId">
+                    {{engUnit.name}}
+                </span>
+            </p>
+        </ng-template>
+    </div>
+    <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Status|Status@@status" class="">Status</label>
+        <p>
+            {{gatewayIOTag.status}}
+        </p>
+    </div>
+</div>

@@ -1,0 +1,337 @@
+<div class="row" *ngIf="IODHTagForm">
+  <div class="col-md-12">
+    <h1 i18n="@@ManageI/ODataHandlerTags" class="page-header">
+      Manage Data Handler I/O Tags
+    </h1>
+  </div>
+</div>
+
+<div class="row margin_0px">
+  <div class="col-md-12 padding_0px rowBox">
+    <div class="padding_Form">
+      <!-- Gateway IO Dh Tag form view starts here  -->
+      <form [formGroup]="gatewayIODHTagForm" novalidate (ngSubmit)="previewFormData()" *ngIf="IODHTagForm">
+        <div class="form-group-custom1">
+          <div class="formBodyCustom1" id="">
+
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" id="templateName" formControlName="templateName"
+                    class="form-control m-input"
+                    i18n-placeholder="Template Name placeholder|Template Name@@templateName.placeholder"
+                    placeholder="Template Name">
+                </div>
+                <label i18n="Data Handler|Data Handler@@dataHandler" class="">Data Handler</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" id="name" formControlName="name" class="form-control m-input"
+                    i18n-placeholder="Data Handler Format placeholder|Data Handler Format@@dataHandler.placeholder"
+                    placeholder="Data Handler Format">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Communication|Communication@@communication">Communication</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" formControlName="communication" class="form-control m-input"
+                    i18n-placeholder="Communication placeholder|Communication@@communication.placeholder"
+                    placeholder="Communication">
+                </div>
+                <label i18n="Operation Mode|Operation Mode@@operationMode">Operation Mode</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" formControlName="operationMode" class="form-control m-input"
+                    i18n-placeholder="@@operationMode.placeholder" placeholder="Tag Seperator">
+                </div>
+              </div>
+              <div class="col-lg-6"></div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="I/O Tag(s) Display|Input/Output Tag(s) Display@@iOTagsDisplay">I/O Tag(s) Display</label>
+                <div class="form-group">
+                  <mat-radio-group aria-label="Select an option" formControlName="displayIOTag">
+                    <mat-radio-button i18n="Radio button|All@@all" value="All" style="margin-right: 20px;"
+                      (change)="getGatewayIODHByIODHId()">
+                      All gateway IO tag(s)
+                    </mat-radio-button>
+                    <mat-radio-button i18n="Radio button|Assigned@@assigned" value="Assigned"
+                      (change)="aasignedGatewayIODHTags()">
+                      Configured in data handler
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-md-12">
+                <app-panel-user class="panel-header"
+                  i18n-name="Panel header|Data Handler Response I/O Tag Configuration Details@@ManageDataHandlerIOResponseTags"
+                  name="Data Handler Response I/O Tag Configuration" #panelHeader>
+
+                </app-panel-user>
+                <div class="position-relative">
+                  <div class="table-responsive ps position-relative" appScrollbarDirective>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th i18n="Option|Select@@select" style="width: 10%;">Check Box</th>
+                          <th i18n="Option|I/O Tag@@iOTag" style="width: 15%;">Tag Name</th>
+                          <th
+                            i18n="Option|Data Handler Response I/O Tag Configuration Details@@iODHResponseTagConfiguration Details">
+                            Tag Configuration Details</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="nodeIoDhTags" *ngIf="gatewayIOTags && gatewayIOTags.length">
+                        <tr [formGroup]="ioTagForm"
+                          *ngFor="let ioTagForm of gatewayIODHTagForm.get('nodeIoDhTags')['controls']; let i = index">
+
+                          <td>
+                            <div class="col-md-6 col-lg-6 margin_top_30px">
+                              <div class="form-group">
+                                <mat-checkbox [checked]='isAssign' formControlName="isAssign"
+                                  (change)="tagSelected(gatewayIOTags[i].id,$event)"
+                                  i18n-matTooltip="Enable/Disable matTooltip|Click to enable/Disable@@clickToEnable/Disable"
+                                  matTooltip="Click to Enable/Disable">
+                                </mat-checkbox>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <input type="hidden" formControlName="nodeIoTagId" [ngModel]="gatewayIOTags[i].id" />
+                            <span>{{gatewayIOTags[i].name}}</span>
+                          </td>
+                          <td>
+
+                            <div class="formBodyCustom1" id="">
+                              <div class="m-form__group row">
+                                <div class="col-lg-6">
+                                  <label i18n="Parent I/O Tag|Parent I/O Tag@@parentIOTag">Parent I/O Tag</label>
+                                  <div class="form-group">
+                                    <select formControlName="parentNodeIoDhTagId" class=" form-control m-input">
+                                      <option i18n="Option|Select@@select" value="null">--Select--</option>
+                                      <ng-container *ngFor="let gatewayCommIOTagParent of patchGatewayIODHTags|orderByAlphabetical:'nodeIODHTagName'">
+                                        <option *ngIf="gatewayIOTags[i].id != gatewayCommIOTagParent.nodeIoTag.id"
+                                          [value]="gatewayCommIOTagParent.id">
+                                          {{gatewayCommIOTagParent.nodeIODHTagName}}
+                                        </option>
+                                      </ng-container>
+
+                                    </select>
+                                  </div>
+                                  <label i18n="Length|Length@@length">Length</label>
+                                  <div class="form-group">
+
+                                    <div
+                                      [ngClass]="{'has-error': ((ioTagForm.get('tagLength').dirty) && ioTagForm.get('tagLength').errors)}">
+                                      <input type="text" formControlName="tagLength" class="form-control m-input"
+                                        i18n-placeholder="Length placeholder|Enter Length@@length.placeholder"
+                                        placeholder="Enter Length">
+                                      <span class="help-block" *ngIf="((ioTagForm.get('tagLength').dirty) &&
+                    ioTagForm.get('tagLength').errors)">
+                                        <span i18n="Message|Please enter only Numbers@@length.message"
+                                          *ngIf="ioTagForm.get('tagLength').errors.pattern">
+                                          Please enter only Numbers
+                                        </span>
+                                      </span>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <label i18n="Index|Index@@index">Index</label>
+                                  <div class="form-group">
+                                    <div
+                                      [ngClass]="{'has-error': ((ioTagForm.get('tagIndex').dirty) && ioTagForm.get('tagIndex').errors)}">
+                                      <input type="text" formControlName="tagIndex" class="form-control m-input"
+                                        i18n-placeholder="Index placeholder|Index@@index.placeholder"
+                                        placeholder="Index">
+                                      <span class="help-block" *ngIf="((ioTagForm.get('tagIndex').dirty) &&
+                                      ioTagForm.get('tagIndex').errors)">
+                                        <span i18n="Message|Please enter only Numbers@@index.message"
+                                          *ngIf="ioTagForm.get('tagIndex').errors.pattern">
+                                          Please enter only Numbers
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <label i18n="Length Unit|Length Unit@@lengthUnit">Length Unit</label>
+                                  <div class="form-group">
+                                    <select formControlName="tagLenthUnit" class=" form-control m-input">
+                                      <option i18n="Option|Select@@select" value="null">--Select--</option>
+                                      <option *ngFor="let tagLengthUnit of tagLengthUnits| orderByAlphabetical:'value'" [value]="tagLengthUnit.id">
+                                        {{tagLengthUnit.value}}</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="m-form__group row">
+                                <div class="col-lg-6">
+                                  <label i18n="Tag Key Name|Tag Key Name@@tagKeyName">Tag Key Name</label>
+                                  <div class="form-group">
+                                    <input type="text" formControlName="tagKeyName" class="form-control m-input"
+                                      i18n-placeholder="Tag Key Name placeholder|Enter Tag Key Name@@tagKeyName.placeholder"
+                                      placeholder="Enter Tag Key Name">
+                                  </div>
+                                  <label i18n="Tag Seperator|Tag Seperator@@tagSeperator">Tag Seperator</label>
+                                  <div class="form-group">
+                                    <input type="text" formControlName="tagSeparator" class="form-control m-input"
+                                      i18n-placeholder="Tag Seperator placeholder|Tag Seperator@@tagSeperator.placeholder"
+                                      placeholder="Tag Seperator">
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <label i18n="Data Format|Data Format@@dataFormat">Data Format</label>
+                                  <div class="form-group">
+                                    <select formControlName="dataFormatId" class=" form-control m-input">
+                                      <option i18n="Option|Select@@select" value="null">--Select--</option>
+                                      <option *ngFor="let dataFormat of dataFormats|orderByAlphabetical:'name'" [value]="dataFormat.id">
+                                        {{dataFormat.name}}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <label i18n="Participate In|Participate In@@participateIn">Participate In</label>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <mat-checkbox [checked]='false' formControlName="isParticipantInLength"
+                                          matTooltip="Click to enable/Disable" i18n="Length|Length@@length">Length
+                                        </mat-checkbox>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <mat-checkbox [checked]='false' formControlName="isParticipantInErrorCheck"
+                                          matTooltip="Click to enable/Disable"
+                                          i18n="Error Check|Error Check@@errorCheck">Error Check
+                                        </mat-checkbox>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="m-form__group row">
+                                <div class="col-lg-6">
+                                  <label i18n="Date Time Format|Date Time Format@@dateTimeFormat">Date Time
+                                    Format</label>
+                                  <a (click)="helpMessage()">
+                                    <i class="fas fa-md fa-fw m-r-10 fa-question-circle" alt="view"
+                                      style="color:primary" matTooltip="Help"></i>
+                                  </a>
+                                  <div class="form-group">
+                                    <input type="text" formControlName="dateTimeFormat" class="form-control m-input"
+                                      i18n-placeholder="Date Time Format placeholder|Enter Date Time Format@@dateTimeFormat.placeholder"
+                                      placeholder="Enter Date Time Format">
+                                  </div>
+
+                                </div>
+                                <div class="col-lg-6">
+                                  <label i18n="Default Value|Default Value@@defaultValue">Default Value</label>
+                                  <div class="form-group">
+                                    <input type="text" formControlName="defaultValue" class="form-control m-input"
+                                      i18n-placeholder="Default Value placeholder|Enter Default Value@@defaultValue.placeholder"
+                                      placeholder="Enter Default Value">
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+                    <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound"
+                      *ngIf="!gatewayIOTags || !gatewayIOTags.length">
+                      No records found!
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="path"></div>
+        <span class="help-block pull-right" *ngIf="IODHTagError"
+          i18n="Tooltip validation|Please select atleast one IO Tag@@pleaseSelectAtleastOneIOTag">Please select
+          atleast one IO Tag</span>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" (click)="cancelIODHTag()" class="btn btn-default text-center cancelActionButton"
+              i18n="Cancel button|Cancel@@cancel">
+              Cancel
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-secondary text-center resetActionButton"
+              (click)="resetDHIOTagForm($event)" i18n="Reset button|Reset@@reset">
+              Reset </button>
+            &nbsp;
+            <span>
+              <button i18n="Review&Save button|Review&Save@@review&Save" [disabled]="IODHTagError"
+                class="btn btn-primary text-center reviewAndSaveActionButton" type="submit">
+                Review & Save</button>
+            </span>
+          </div>
+        </div>
+      </form>
+      <div class="formReadMode" *ngIf="previewIODHTagForm">
+        <div class="form-group-custom1">
+          <legend
+            i18n="Page header|Preview Data Handler Response IO Tags Details@@previewDataHandlerResponseIOTagsDetails"
+            class="m-b-15">Preview Data Handler IO Tags Details</legend>
+          <fieldset class="mb-4 fieldset_class">
+            <legend class="m-b-15 w-auto">Tag Configuration Details</legend>
+            <app-dh-tag *ngFor="let gatewayIODhTag of updatedTags" [IOTagItem]="gatewayIODhTag"></app-dh-tag>
+          </fieldset>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton()"
+              i18n="Back button|Back@@back"> Back
+            </button>
+            &nbsp;
+            <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit"
+              (click)="onClickSaveGatewayIODH()">
+              Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Model Popup for Save Success -->
+
+<!-- <button type="button" style="display: none" id="popUpWindow" class="btn btn-primary" data-toggle="modal"
+    data-target=".bd-example-modal-sm" data-keyboard="false" data-backdrop="static" i18n="@@Popup">
+    Pop up
+  </button>
+  <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="alert alert-success text-center">
+            <strong>{{serviceMessage}}</strong>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="closeSavePopup()" data-dismiss="modal"
+            i18n="@@Close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+<!-- Model Popup for Save Success Ends -->
+<!-- End Of Pre-View -->
+
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+  align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+
+<!-- Global modal notification component selector for final save form-->
+<app-modal-notification (modelNotificationWarning)="formResetConfirm()" (modelNotificationSuccess)="redirectTo()">
+</app-modal-notification>

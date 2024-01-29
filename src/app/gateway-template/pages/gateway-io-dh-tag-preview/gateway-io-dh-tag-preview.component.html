@@ -1,0 +1,114 @@
+<div class="formReadMode">
+  <div class="form-group-custom1">
+    <legend i18n="Page Header|Data Handler IO Tags Details@@dataHandlerIOTagsDetails" class="m-b-15">Data Handler IO Tags Details</legend>
+    <div class="form-row">
+      <a (click)="backButton()" class="edit_section">
+        <img src="/assets/img/action/edit.png" alt="edit communication i/o tag detail"
+        i18n-matTooltip="@@ClicktoeditCommunicationIOTagDetail"  matTooltip="Click to edit Communication I/O Tag Detail">
+      </a>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+        <p>
+          {{saveGatewayIODH.templateName | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Communication|Communication@@communication" class="">Communication</label>
+        <p>
+          {{saveGatewayIODH.communication | hyphen}}
+        </p>
+      </div>
+
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Data Handler|Data Handler@@dataHandler" class="">Data Handler</label>
+        <p>
+          {{saveGatewayIODH.name | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Operation Mode|Operation Mode@@operationMode" class="">Operation Mode</label>
+        <p>
+          {{saveGatewayIODH.operationMode | hyphen}}
+        </p>
+      </div>
+
+    </div>
+    <div class="form-row" *ngFor="let gatewayIODhTag of saveGatewayIODHTags">
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Parent I/O Tag|Parent I/O Tag@@parentIOTag" class="">Parent IO Tag</label>
+        <p>
+          {{gatewayIODhTag.parentNodeIoDHTag | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Index|Index@@index" class="">Index</label>
+        <p>
+          {{gatewayIODhTag.tagIndex | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Length|Length@@length" class="">Length</label>
+        <p>
+          {{gatewayIODhTag.tagLength | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Length Unit|Length Unit@@lengthUnit" class="">Length Unit</label>
+        <p>
+          {{gatewayIODhTag.tagLenthUnitName | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Length Tag Key Name|Length Tag Key Name@@lengthTagKeyName" class="">Length Tag Key Name</label>
+        <p>
+          {{gatewayIODhTag.tagKeyName | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Data Format|Data Format@@dataFormat" class="">Data Format</label>
+        <p>
+          {{gatewayIODhTag.dataFormateName | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Seperator|Seperator@@seperator" class="">Seperator</label>
+        <p>
+          {{gatewayIODhTag.tagSeparator | hyphen}}
+        </p>
+      </div>
+      <div class="form-group col-sm-6 col-md-6">
+        <label i18n="Participate In|Participate In@@participateIn">Participate In</label><br>
+        <div class="row">
+          <div class="col-md-6">
+            <label i18n="Length|Length@@length" class="">Length</label>
+            <p>
+              {{gatewayIODhTag.isParticipantInLength | hyphen}}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <label i18n="Error Check|Error Check@@errorCheck" class="">Error Check</label>
+            <p>
+              {{gatewayIODhTag.isParticipantInErrorCheck | hyphen}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="path finalLine"></div>
+  <div class="row" style="    text-align: right;padding: 23px 0;float:right;">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-default text-center backActionButton"
+        (click)="backButton()" i18n="Back button|Back@@back"> Back
+      </button>
+      &nbsp;
+      <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit" (click)="onClickSaveGatewayIODH()">
+        Save</button>
+    </div>
+  </div>
+</div>
+ <!-- Model Popup for Save Success -->
+
+ 
+<!-- Global modal notification component selector  for deletion and after deletetion success, success with failed-->
+<app-modal-notification  (modelNotificationSuccess)="redirectTo()"></app-modal-notification>

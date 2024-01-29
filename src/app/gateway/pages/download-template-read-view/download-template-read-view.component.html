@@ -1,0 +1,31 @@
+<div class="form-row">
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway Type|Gateway Type@@gatewayType">Gateway Type</label>
+    <p>
+      {{downloadTemplate.gatewayTypeName}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway Model|Gateway Model@@gatewayModel">Gateway Model</label>
+    <p *ngIf="downloadTemplate.gatewayModelName==='--Select--' else noBlock">
+      -
+    </p>
+    <ng-template #noBlock>
+      <p>
+        {{downloadTemplate.gatewayModelName | hyphen}}
+      </p>
+    </ng-template>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway Template|Gateway Template@@gatewayTemplate" class="">Gateway Template</label>
+    <p>
+      {{downloadTemplate.gatewayTemplateName}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Asset Template|Asset Template@@assetTemplate" class="">Asset Template</label>
+    <p>
+      {{downloadTemplate.assetTemplateName}}
+    </p>
+  </div>
+</div>

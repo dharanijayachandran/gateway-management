@@ -1,0 +1,13 @@
+.protocolCheckBox {
+    position: absolute;
+    margin-top: 1px;
+}
+
+.labelProtocol {
+    margin-left: 15px;
+}
+
+.w-150px {
+    min-width: 150px;
+    max-width: 150px;
+}

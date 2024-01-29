@@ -1,0 +1,40 @@
+<!-- Click to view preview starts here -->
+
+<div class="row">
+    <div class="col-md-12">
+      <h1 i18n="Page header| Preview DownloadTemplate@@previewDownLoadTemplate" class="page-header">
+        Preview Download Template
+      </h1>
+    </div>
+  </div>
+    <div class="row margin_0px rowBox">
+      <div class="col-md-12 padding_0px">
+        <div class="padding_Form">
+          <div class="formReadMode">
+            <div class="form-group-custom1">
+              
+              <!-- Injecting read view -->
+             <app-download-template-read-view (navigateTemplate)="backButton($event)"></app-download-template-read-view>
+            </div>
+            <div class="path finalLine"></div>
+            <div class="row" style="    text-align: right;padding: 23px 0;">
+              <div class="col-md-12">
+                <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton($event)" i18n="Back button|Back@@back"> Back
+                </button>
+                &nbsp;
+                <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" (click)="saveDownloadTemplate()" type="submit">
+                  Download
+                </button>
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Click to preview Gateway ends here -->
+  
+        <!-- Global modal notification component selector for cancel and final save form-->
+  <app-modal-notification (modelNotificationSuccess)="redirectTo()"></app-modal-notification>
+  

@@ -1,0 +1,367 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Add Gateway Model Port header|Add Gateway Model Port@@addGatewayModelPort" class="page-header"
+      *ngIf="gatewayModelPortFormDiv">
+      Add Gateway Model Port
+    </h1>
+    <h1 i18n="Add Gateway Model Port Preview header|Add Gateway Model Port Preview@@addGatewayModelPortPreview"
+      class="page-header" *ngIf="gatewayModelPortReadModeView">
+      Add Gateway Model Port - Preview
+    </h1>
+    <h1 i18n="Gateway Model Port View header|Gateway Model Port View@@gatewayModelPortView" class="page-header"
+      *ngIf="gatewayModelPortViewMode">
+      Gateway Model Port -View
+    </h1>
+  </div>
+</div>
+
+<div class="row margin_0px">
+  <div class="col-md-12 padding_0px rowBox">
+    <div class="padding_Form">
+      <form [formGroup]="gatewayModelPortForm" novalidate (ngSubmit)="createGatewayModelPort()"
+        *ngIf="gatewayModelPortFormDiv">
+        <div class="form-group-custom1">
+          <legend
+            i18n="Gateway Model Port Information header|Gateway Model Port Information@@gatewayModelPortInformation"
+            class="m-b-15">Gateway Model Port Information</legend>
+          <div class="formBodyCustom1">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n='Gateway Model Name|Gateway Model Name@@gatewayModelName' class="">Gateway Model Name
+                </label>
+                <div class="form-group">
+                  <input type="text" style="font-weight: bold" [readonly]="true" class="form-control m-input"
+                    value={{gatewayModelName}}>
+                </div>
+              </div>
+              <div class="col-lg-6"></div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n='Port Type|Port Type@@portType*' class="">Port Type <span class="text-danger">
+                    *</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayModelPortForm.get('portTypeId').touched ||
+                                  gatewayModelPortForm.get('portTypeId').dirty) &&
+                                  gatewayModelPortForm.get('portTypeId').errors)}">
+                    <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='portTypeId'
+                      name="portTypeId" formControlName="portTypeId" [dataSource]='portTypes'
+                      [placeholder]='portTypeWaterMark' [fields]='portTypeFields' [popupHeight]='height'
+                      [sortOrder]="sortDropDown" (filtering)='onFilteringPortType($event)'
+                      [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                      (change)='portTypeOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                    <!-- <select id="portTypeId" formControlName="portTypeId" class="form-control m-input">
+                      <option i18n='Option|Select@@select' value="">--Select--</option>
+                      <option *ngFor="let portType of portTypes" value={{portType.id}}>
+                        {{portType.name}}
+                      </option>
+                    </select> -->
+                    <span class="help-block" *ngIf="((gatewayModelPortForm.get('portTypeId').touched ||
+                                    gatewayModelPortForm.get('portTypeId').dirty) &&
+                                    gatewayModelPortForm.get('portTypeId').errors)">
+                      <span i18n="Message|Please select Port Type@@portType.message"
+                        *ngIf="gatewayModelPortForm.get('portTypeId').errors.required">
+                        Please select Port Type
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Name|Name@@name*" class="">Name <span class="text-danger"> *</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayModelPortForm.get('name').touched ||
+                                   gatewayModelPortForm.get('name').dirty) &&
+                                    gatewayModelPortForm.get('name').errors)}">
+                    <div>
+                      <input (keyup)="onKey($event)" type="text" id="protocolParamName" formControlName="name"
+                        class="form-control m-input"
+                        i18n-placeholder="Port Name placeholderEnter Port Name@@portName.placeholder"
+                        placeholder="Enter Port Name">
+                      <span class="help-block" *ngIf="((gatewayModelPortForm.get('name').touched ||
+                                gatewayModelPortForm.get('name').dirty) &&
+                                gatewayModelPortForm.get('name').errors)">
+                        <span i18n="Message|Please enter Port Name@@portName.message"
+                          *ngIf="gatewayModelPortForm.get('name').errors.required">
+                          Please enter Port Name
+                        </span>
+                        <span i18n="Message|Please enter valid Characters@@portName.message1"
+                          *ngIf="gatewayModelPortForm.get('name').errors.pattern">
+                          Please enter valid Characters
+                        </span>
+                      </span>
+                      <span id="nameValMsg"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Internal Map|Internal Map@@internalMap*" class="">Internal Map <span class="text-danger">
+                    *</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayModelPortForm.get('internalMap').touched ||
+                                    gatewayModelPortForm.get('internalMap').dirty) &&
+                                    gatewayModelPortForm.get('internalMap').errors)}">
+                    <input type="text" id="internalMap" formControlName="internalMap" class="form-control m-input"
+                      i18n-placeholder="Internal Map placeholder|Enter Internal Map@@internalMap.placeholder"
+                      placeholder="Enter Internal Map">
+                    <span class="help-block" *ngIf="((gatewayModelPortForm.get('internalMap').touched ||
+                                     gatewayModelPortForm.get('internalMap').dirty) &&
+                                     gatewayModelPortForm.get('internalMap').errors)">
+                      <span i18n="Message|Please enter Internal Map@@internalMap.message"
+                        *ngIf="gatewayModelPortForm.get('internalMap').errors.required">
+                        Please enter Internal Map
+                      </span>
+                    </span>
+                    <span id="internalMapValMsg"></span>
+                  </div>
+                </div>
+                <label i18n="Mapped Over Pin(s)|Mapped Over Pin(s)@@mappedOverPins" class="">Mapped Over Pin(s)</label>
+                <div class="form-group">
+                  <mat-checkbox id="isMappedOverPin" formControlName="isMappedOverPin" (change)="displayListBox()"
+                    class="m-input">
+                  </mat-checkbox>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Description|Description@@description" class="">Description</label>
+                <div class="form-group">
+                  <textarea rows="3" type="text" id="portDesc" formControlName="description"
+                    class="form-control m-input textAreaHeight"
+                    i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                    placeholder="Enter Port description"></textarea>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="isMapped">
+              <div class="panel panel-inverse" style="position: relative">
+                <app-panel-user i18n-name="Panel header|Pin(s) Configuration for Port@@pinsConfigurationforPort"
+                  name="Pin(s) Configuration for Port" (refreshTableList)="refreshTableListFunction()">
+
+                  <div class="row margin_0px rowBox">
+                    <!-- <div class="col-lg-12" style="border: 1px solid rgb(197, 195, 195); height: 30px;">
+                      <span><b i18n="@@PinsConfigurationforPort">Pin(s) Configuration for Port</b></span>
+                      <span class="spacer">&nbsp;</span>
+                    </div> -->
+                    <div *ngIf="isMapped" class="col-lg-12 padding_0px">
+                      <div class="padding_Form">
+                        <div class="form-group-custom1">
+                          <div class="form-group">
+                            <dual-list class="dualBoxList" [sort]="keepSorted" [source]="source" [key]="key"
+                              [display]="display" [filter]="filter" [(destination)]="confirmed" height="265px"
+                              [format]="format"></dual-list>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </app-panel-user>
+              </div>
+            </div>
+          </div>
+          <div class="path finalLine"></div>
+          <div class="row" style="    text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+              <a>
+                <button type="button" id="cancelProtool" class="btn btn-default text-center cancelActionButton"
+                  i18n="Cancel button|Cancel@@cancel" (click)="cancelGatewayModelPortView()"> Cancel
+                </button>
+              </a>
+              &nbsp;
+              <button type="button" class="btn btn-secondary text-center resetActionButton"
+                [disabled]="!gatewayModelPortForm.dirty && gatewayModelPortForm.pristine || !gatewayModelPortForm.dirty && !gatewayModelPortForm.pristine || source && !(confirmed.length > 0) ? false : true || !source && !(confirmed.length > 0) ? false : true "
+                (click)="resetGatewayModelPortForm()" i18n="Reset button|Reset@@reset"> Reset </button>
+              &nbsp;
+              <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                matTooltip="Please fill the mandatory fields" [matTooltipDisabled]="gatewayModelPortForm.valid">
+                <button i18n="Review&Save button|Review&Save@@review&Save"
+                  class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                  [disabled]="!gatewayModelPortForm.valid">
+                  Review & Save</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!--  Gateway Model Port form ends here -->
+
+      <!--  Gateway Model Port form read mode starts here -->
+
+      <div *ngIf="gatewayModelPortReadModeView" class="formReadMode">
+        <div class="form-group-custom1">
+          <legend
+            i18n="Gateway Model Port Information header|Gateway Model Port Information@@gatewayModelPortInformation"
+            class="m-b-15">Gateway Model Port Information</legend>
+          <div class="form-row">
+            <a (click)="backButton('gatewayModelPortDetail')" class="edit_section">
+              <img src="/assets/img/action/edit.png" alt="edit gateway Model Port detail"
+                i18n-matTooltip="Image Tooltip|Edit gateway Model Port detail@@editgatewayModelPortdetail"
+                matTooltip="edit gateway Model Port detail">
+            </a>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Gateway Model Name|Gateway Model Name@@gatewayModelName" class="">Gateway Model Name </label>
+              <p>
+                {{gatewayModelName}}
+              </p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Port Type|Port Type@@portType" class="">Port Type </label>
+              <p *ngFor="let portType of portTypes">
+                <span *ngIf="portType.id===parseInt(gatewayModelPort.portTypeId)">
+                  {{portType.name}}
+                </span>
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Name|Name@@name" class="">Name </label>
+              <p>
+                {{gatewayModelPort.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Internal Map|Internal Map@@internalMap" class="">Internal Map </label>
+              <p>
+                {{gatewayModelPort.internalMap}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Description|Description@@description" class="">Description</label>
+              <p>
+                {{gatewayModelPort.description | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Mapped Over Pin(s)|Mapped Over Pin(s)@@mappedOverPins" class="">Mapped Over Pin(s)</label>
+              <p>
+                {{gatewayModelPort.isMappedOverPin ? "Yes":"No"}}
+              </p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Mapped Pin(s)|Mapped Pin(s)@@mappedPins" class="">Mapped Pin(s)</label>
+              <p *ngIf="gatewayModelPort.isMappedOverPin else noBlock">
+                <span *ngIf="confirmedList.length===0">-</span>
+                <span *ngFor="let assigned of confirmedList">
+                  {{assigned.name | hyphen}}
+                </span>
+              </p>
+              <ng-template #noBlock>
+                <p>
+                  -
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton($event)"
+              i18n="Back button|Back@@back"> Back
+            </button>
+            &nbsp;
+            <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit"
+              (click)="createOrUpdateGatewayModelPort()">
+              Save</button>
+          </div>
+        </div>
+      </div>
+      <!--  Gateway Model Port form read mode Ends here -->
+
+      <!--  Gateway Model Port View mode starts here -->
+
+      <div *ngIf="gatewayModelPortViewMode">
+        <div class="formReadMode">
+          <div class="form-group-custom1">
+            <legend i18n="Gateway Model Name|Gateway Model Name@@gatewayModelName" class="m-b-15">Gateway Model Port
+              Information</legend>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Gateway Model Name|Gateway Model Name@@gatewayModelName" class="">Gateway Model Name
+                </label>
+                <p>
+                  {{gatewayModelName}}
+                </p>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Port Type|Port Type@@portType" class="">Port Type </label>
+                <p *ngFor="let portType of portTypes">
+                  <span *ngIf="portType.id===parseInt(gatewayModelPort.portTypeId)">
+                    {{portType.name}}
+                  </span>
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Name|Name@@name" class="">Name </label>
+                <p>
+                  {{gatewayModelPort.name}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Internal Map|Internal Map@@internalMap" class="">Internal Map </label>
+                <p>
+                  {{gatewayModelPort.internalMap}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Description|Description@@description" class="">Description</label>
+                <p>
+                  {{gatewayModelPort.description | hyphen}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Mapped Over Pin(s)|Mapped Over Pin(s)@@mappedOverPins" class="">Mapped Over Pin(s)</label>
+                <p>
+                  {{MappedOverPin ? "Yes":"No"}}
+                </p>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Mapped Pin(s)|Mapped Pin(s)@@mappedPins" class="">Mapped Pin(s)</label>
+                <p *ngIf='this.gatewayModelPort.pins===null else noBlock'>
+                  <span *ngFor="let assigned of this.gatewayModelPort.pins">
+                    {{assigned | hyphen}}
+                  </span>
+                </p>
+                <ng-template #noBlock>
+                  <p *ngFor="let assigned of this.gatewayModelPort.pins">
+                    <!-- <span *ngIf="assigned.id===parseInt(GatewayModelPort." ></span> -->
+                    {{assigned.name}}
+                  </p>
+                </ng-template>
+
+              </div>
+            </div>
+          </div>
+          <div class="path finalLine"></div>
+          <div class="row" style="text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-default text-center backActionButton"
+                (click)="cancelGatewayModelPortView()" i18n="Back button|Back@@back">
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+  align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="formResetConfirm()" (modelNotificationSuccess)="redirectTo()">
+</app-modal-notification>

@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 i18n="Header|Upload Template@@uploadTemplate" class="page-header">
+            Upload Gateways
+        </h1>
+    </div>
+</div>
+
+<div class="row margin_0px rowBox">
+    <div class="col-md-12 padding_0px">
+        <div class="padding_Form ">
+            <div *ngIf="uploadedExcel == 'inputExcelFileUpload'">
+                <form [formGroup]="uploadTemplate" class="mb-4 uploadFile">
+                    <div class="form-group-custom1">
+                        <div class="m-form__group row">
+                            <div class="col-lg-6">
+                                <label i18n="Label|Choose  file@@chooseFile*">Choose file<span
+                                        class="text-danger">*</span></label>
+                                <div class="custom-file">
+
+                                    <input type="file" class="custom-file-input form-control" formControlName="myfile"
+                                        id="customFile" (change)="onSelectFile($event)" #UploadFileInput>
+                                    <label class="custom-file-label" for="customFile">{{fileInputLabel || 'Choose
+                                        File'}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="path finalLine"></div>
+                <div class="row" style="text-align: right;padding: 23px 0;">
+                    <div class="col-md-12">
+                        <a (click)=" cancelUploadForm()">
+                            <button type="button" class="btn btn-default text-center cancelActionButton"
+                                i18n="Cancel button|Cancel@@cancel"> Cancel
+                            </button>
+                        </a>
+                        &nbsp;
+                        <button type="button" class="btn btn-secondary text-center resetActionButton"
+                            [disabled]="!uploadTemplate.dirty && uploadTemplate.pristine" (click)="resetuploadForm()"
+                            i18n="Reset button|Reset@@reset">
+                            Reset
+                        </button>
+                        &nbsp;
+                        <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                            matTooltip="Fill the mandatory fields" [matTooltipDisabled]="uploadTemplate.valid">
+
+                            <button (click)="onFormSubmit()" i18n="Upload button|Upload@@upload"
+                                class="btn btn-primary text-center" type="submit" [disabled]="!(uploadTemplate.valid)">
+                                Upload</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="path finalLine"></div>
+            </div>
+            <ng-container *ngIf="uploadedExcel == 'errorMessage'">
+                <div>
+                    <p class="text-danger font-weight-bold">{{message}}</p>
+                </div>
+                <div class="row" style="text-align: right;padding: 23px 0;">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-default text-center backActionButton"
+                            (click)="backButton()" i18n="Back button|Back@@back"> Back
+                        </button>
+
+                    </div>
+                </div>
+            </ng-container>
+            <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+         align="center">
+           <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="35%" alt="Loading........">
+      </div>
+        </div>
+    </div>
+</div>
+<app-modal-notification (modelNotificationWarning)="alertRedirection()" (modelNotificationSuccess)="redirectTo()"
+   >
+</app-modal-notification>

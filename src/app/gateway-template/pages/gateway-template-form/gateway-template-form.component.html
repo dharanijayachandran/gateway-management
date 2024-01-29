@@ -1,0 +1,381 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Page header|Add Gateway Template@@addGatewayTemplate" class="page-header" *ngIf="gatewayTemplateFormView">
+      {{addEditText}} Gateway Template
+    </h1>
+    <h1 i18n="Page header|Add Gateway Template Preview@@addGatewayTemplatePreview" class="page-header" *ngIf="templateReadModeView">
+      {{addEditText}} Gateway Template - Preview
+    </h1>
+    <h1 i18n="Page header|View Gateway Template@@viewGatewayTemplate" class="page-header" *ngIf="protocolView">
+      View Gateway Template
+    </h1>
+  </div>
+</div>
+
+<div class="row margin_0px">
+  <div class="col-md-12 padding_0px rowBox">
+    <div class="padding_Form">
+      <!-- Gateway Template form view starts here  -->
+      <form [formGroup]="gatewayTemplateForm" novalidate (ngSubmit)="previewGatewayTemplate()"
+        *ngIf="gatewayTemplateFormView">
+        <div class="form-group-custom1">
+          <legend i18n="Header|Gateway Template Information@@gatewayTemplateInformation" class="m-b-15">Gateway Template Information</legend>
+          <div class="formBodyCustom1" id="templateDetail">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Name|Name@@name*" class="">Name<span class="text-danger"> *</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayTemplateForm.get('name').touched ||
+            gatewayTemplateForm.get('name').dirty) &&
+            gatewayTemplateForm.get('name').errors)}">
+                    <input (keyup)="onKey($event)" type="text" id="name" formControlName="name"
+                      class="form-control m-input" i18n-placeholder="Gateway Template Name placeholder|Enter Gateway Template Name@@gatewayTemplateName.placeholder"
+                      placeholder="Enter Gateway Template Name">
+                    <span class="help-block" *ngIf="((gatewayTemplateForm.get('name').touched ||
+                gatewayTemplateForm.get('name').dirty) &&
+                gatewayTemplateForm.get('name').errors)">
+                      <span i18n="Message|Please enter Gateway Template Name@@gatewayTemplateName.message" *ngIf="gatewayTemplateForm.get('name').errors.required"
+                        class="text-danger">
+                        Please enter Gateway Template Name
+                      </span>
+                      <span i18n="Message|Please enter valid Characters@@gatewayTemplateName.message2"
+                        *ngIf="gatewayTemplateForm.get('name').errors.pattern">
+                        Please enter valid Characters
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Gateway Type|Gateway Type@@gatewayType*" class="">Gateway Type<span class="text-danger"> *</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayTemplateForm.get('gatewayTypeId').touched ||
+            gatewayTemplateForm.get('gatewayTypeId').dirty) &&
+            gatewayTemplateForm.get('gatewayTypeId').errors)}">
+            <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='gatewayTypeId'
+            name="gatewayTypeId" formControlName="gatewayTypeId" [dataSource]='gatewayTypes'
+            [placeholder]='gatewayTypeWaterMark' [fields]='gatewayTypeFields' [popupHeight]='height'
+            [sortOrder]="sortDropDown" (filtering)='onFilteringGatewayType($event)'
+            [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+            (change)='gatewayTypeOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                    <!-- <select (change)="onChange($event)" id="gatewayTypeId" formControlName="gatewayTypeId"
+                      class="form-control m-input">
+                      <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                      <option *ngFor="let gatewayType of gatewayTypes" [value]="gatewayType.id">
+                        {{gatewayType.name}}
+                      </option>
+                    </select> -->
+                    <span class="help-block" *ngIf="((gatewayTemplateForm.get('gatewayTypeId').touched ||
+                gatewayTemplateForm.get('gatewayTypeId').dirty) &&
+                gatewayTemplateForm.get('gatewayTypeId').errors)">
+                      <span i18n="Message|Please select Gateway Type@@gatewayType.message"
+                        *ngIf="gatewayTemplateForm.get('gatewayTypeId').errors.required" class="text-danger">
+                        Please select Gateway Type
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Gateway Model|Gateway Model@@gatewayModel" class="">Gateway Model</label>
+                <div class="form-group">
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='gatewayModelId'
+            name="gatewayModelId" formControlName="gatewayModelId" [dataSource]='gatewayModels'
+            [placeholder]='gatewayModelWaterMark' [fields]='gatewayModelFields' [popupHeight]='height'
+            [sortOrder]="sortDropDown" (filtering)='onFilteringGatewayModel($event)'
+            [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+            (change)='gatewayModelOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                  <!-- <select id="gatewayModel" formControlName="gatewayModelId" class="form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let gatewayModel of gatewayModels" [ngValue]="gatewayModel.id">
+                      {{gatewayModel.name}}
+                  </select> -->
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Time Zone|Time Zone@@timeZone" class="">Time Zone</label>
+                <div class="form-group">
+                  <div>
+                    <!-- <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='timeZoneId'
+            name="timeZoneId" formControlName="timeZoneId" [dataSource]='timeZoneList'
+            [placeholder]='timeZoneWaterMark' [fields]='timeZoneFields' [popupHeight]='height'
+            [sortOrder]="sortDropDown" (filtering)='onFilteringTimeZone($event)'
+            [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+            (change)='timeZoneOnChange($event)' [locale]='locale'></ejs-dropdownlist> -->
+                    <ejs-dropdownlist class="form-control p-0" formControlName="timeZoneId" id='country' [dataSource]='data' [fields]='fields'
+                      (filtering)='onFiltering($event)' [filterBarPlaceholder]="filterPlaceholder"
+                      [popupHeight]='height' [allowFiltering]='true' [placeholder]='watermark' [locale]='locale'></ejs-dropdownlist>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Communication Protocol (Select atleast one)|Communication Protocol (Select atleast one)@@communicationProtocolSelect" class="">Communication Protocol (Select atleast one)<span
+                    class="text-danger">*
+                  </span></label>
+                <div class="form-group" *ngIf="commProtocols">
+                  <span formArrayName="commProtocols">
+                    <span class="w-150px d-inline-block mb-2"
+                      *ngFor="let commProtocol of gatewayTemplateForm.get('commProtocols')['controls'];let i=index"
+                      [formGroupName]="i">
+                      <input type="hidden" formControlName="commProtocolId" [value]="commProtocols[i].id">
+                      <mat-checkbox class="example-margin commProtocolsClass" [value]="true" (change)="isSelected(commProtocols[i],$event)"
+                        formControlName="value">
+                        {{commProtocols[i].name}}
+                      </mat-checkbox>
+                    </span>
+                    <div class="clearfix"></div>
+
+                    <span i18n="Message|Please Select atleast one Communication Protocol@@communicationSelect.message" *ngIf='errorMessage' class="help-block">
+                      <span>
+                        Please Select atleast one Communication Protocol
+                      </span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Data Protocol|Data Protocol@@dataProtocol" class="">Data Protocol</label>
+                <div class="form-group">
+                  <select id="dataProtocolId" formControlName="dataProtocolId" class="form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let dataProtocol of dataProtocols" [ngValue]="dataProtocol.id">
+                      {{dataProtocol.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Status|Status@@status">Status</label>
+                <div class="form-group">
+                  <mat-radio-group formControlName="status">
+                    <mat-radio-button value="A" i18n="Radio button|Active@@active" style="margin-right: 20px;" id="templateStatusA">
+                      Active
+                    </mat-radio-button>
+                    <mat-radio-button id="templateStatusI" value="I" i18n="Radio button|InActive@@inActive">In-Active
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="col-lg-6">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <a>
+              <button type="button" id="cancelTemplate" class="btn btn-default text-center cancelActionButton"
+                (click)="cancelGatewayTemplateForm($event)" i18n="Cancel button|Cancel@@cancel"> Cancel
+              </button>
+            </a>
+            &nbsp;
+            <button type="button" id="resetTemplate" class="btn btn-secondary text-center resetActionButton"
+              [disabled]="!gatewayTemplateForm.dirty && gatewayTemplateForm.pristine"
+              (click)="resetGatewayTemplateForm()" i18n="Reset button|Reset@@reset"> Reset
+            </button>
+            &nbsp;
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields" matTooltip="Please fill the mandatory fields"
+              [matTooltipDisabled]='gatewayTemplateForm.valid && enableSave'>
+              <button i18n="Review&Save button|Review&Save@@review&Save" class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                [disabled]="!(gatewayTemplateForm.valid  && enableSave)">
+                Review & Save</button>
+            </span>
+          </div>
+        </div>
+      </form>
+      <!-- Gateway Template form view ends here  -->
+
+      <!-- Gateway Template form read mode view starts here  -->
+      <div *ngIf="templateReadModeView" class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="Header|Gateway Template Information@@gatewayTemplateInformation" class="m-b-15">Gateway Template Information</legend>
+          <div class="form-row">
+            <a (click)="backButton('templateDetail')" class="edit_section">
+              <img src="/assets/img/action/edit.png" alt="edit template detail"
+                i18n-matTooltip="@@ClicktoeditTemplateDetail" matTooltip="Click to edit Template Detail">
+            </a>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+              <p>
+                {{gatewayTemplate.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Gateway Type|Gateway Type@@gatewayType" class="">Gateway Type</label>
+              <p *ngFor='let gatewayType of gatewayTypes'>
+                <span *ngIf='gatewayType.id===parseInt(gatewayTemplate.gatewayTypeId)'>
+                  {{gatewayType.name}}
+                </span>
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Gateway Model|Gateway Model@@gatewayModel" class="">Gateway Model</label>
+              <p *ngIf='gatewayTemplate.gatewayModelId===null else gatewayModelNoBlock'>
+                {{gatewayTemplate.gatewayModelId | hyphen}}
+              </p>
+              <ng-template #gatewayModelNoBlock>
+                <p *ngFor='let gatewayModel of gatewayModels'>
+                  <span *ngIf='gatewayModel.id===parseInt(gatewayTemplate.gatewayModelId)'>
+                    {{gatewayModel.name}}
+                  </span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Time Zone|Time Zone@@timeZone" class="">Time Zone</label>
+              <p>
+                {{gatewayTemplate.timeZoneId | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Communication Protocol|Communication Protocol@@communicationProtocol" class="">Communication Protocol</label>
+              <p *ngFor='let commProtocol of selectedCommProtocols'>
+                {{commProtocol.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Data Protocol|Data Protocol@@dataProtocol" class="">Data Protocol</label>
+              <p *ngIf='gatewayTemplate.dataProtocolId===null else noBlock'>
+                {{gatewayTemplate.dataProtocolId | hyphen}}
+              </p>
+              <ng-template #noBlock>
+                <p *ngFor='let dataProtocol of dataProtocols'>
+                  <span *ngIf='dataProtocol.id===parseInt(gatewayTemplate.dataProtocolId)'>
+                    {{dataProtocol.name}}
+                  </span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Status|Status@@status" class="">Status</label>
+              <p *ngIf="gatewayTemplate.status == 'I'; else activeBlock">
+                In-Active
+              </p>
+              <ng-template #activeBlock>
+                <p>
+                  Active
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton($event)" i18n="Back button|Back@@back"> Back
+            </button>
+            &nbsp;
+            <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit"
+              (click)="createOrUpdateGatewayTemplate()">
+              Save</button>
+          </div>
+        </div>
+      </div>
+      <!-- Gateway Template form read mode view ends here  -->
+
+      <!-- Gateway Template view starts here  -->
+      <div *ngIf="gatewayTemplateViewMode">
+        <div class="formReadMode">
+          <div class="form-group-custom1">
+            <legend i18n="Header|Gateway Template Information@@gatewayTemplateInformation" class="m-b-15">Gateway Template Information</legend>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+                <p>
+                  {{gatewayTemplate?.name}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Gateway Type|Gateway Type@@gatewayType" class="">Gateway Type</label>
+                <p>
+                  {{gatewayTemplate.gatewayType?.name | hyphen}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Gateway Model|Gateway Model@@gatewayModel" class="">Gateway Model</label>
+                <p>
+                  {{gatewayTemplate.gatewayModel?.name | hyphen}}
+                </p>
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Time Zone|Time Zone@@timeZone" class="">Time Zone</label>
+                <p>
+                  {{gatewayTemplate.timeZoneId | hyphen}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Communication Protocol|Communication Protocol@@communicationProtocol" class="">Communication Protocol</label>
+                <p *ngFor='let gatewayCommProtocol of gatewayTemplate.gatewayCommProtocols'>
+                  {{gatewayCommProtocol.commProtocol?.name}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Data Protocol|Data Protocol@@dataProtocol" class="">Data Protocol</label>
+                <p>
+                  {{gatewayTemplate.dataProtocol?.name | hyphen}}
+                </p>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label i18n="Status|Status@@status" class="">Status</label>
+                <p *ngIf="gatewayTemplate.status == 'I'">
+                  In-Active
+                </p>
+                <p *ngIf="gatewayTemplate.status == 'A'">
+                  Active
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="path finalLine"></div>
+          <div class="row" style="    text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-default text-center backActionButton" (click)="cancelGatewayTemplateView()"
+                i18n="Back button|Back@@back"> Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Gateway Template view ends here  -->
+    </div>
+  </div>
+</div>
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+  align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="formResetConfirm()" (modelNotificationSuccess)="redirectTo()">
+</app-modal-notification>
+
+<!-- Model pop up window  -->
+<!-- <button type="button" style="display: none" id="popUpWindow" class="btn btn-primary" data-toggle="modal"
+  data-target=".bd-example-modal-sm" data-keyboard="false" data-backdrop="static">
+  Pop up
+</button>
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="alert alert-success text-center">
+          <strong>{{serviceMessage}}</strong>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="gotoTenantList()" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> -->

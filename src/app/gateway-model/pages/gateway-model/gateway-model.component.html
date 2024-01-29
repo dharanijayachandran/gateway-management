@@ -1,0 +1,69 @@
+<script>
+  $(document).ready(function () {
+    $("#myTab li:eq(1) a").tab('show');
+  })
+</script>
+
+<h1 i18n="Gateway Model Configuration header|Gateway Model Configuration@@gatewayModelConfiguration" class="page-header">Gateway Model Configuration</h1>
+<!-- end page-header -->
+<div class="header_Underline"></div>
+<ngb-tabset type="pills" (tabChange)="beforeChange($event)">
+  <ngb-tab id="gatewayModelList">
+    <ng-template ngbTabTitle class="hidden">
+      <span i18n="Tab|Gateway Model@@gatewayModel" class="d-sm-none">Gateway Model</span>
+      <span i18n="Tab|Gateway Model@@gatewayModel" class="d-sm-block d-none">Gateway Model</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div id="gatewayModelView" class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight">
+        <app-gateway-model-view (messageEvent)="receiveMessage($event)" (tabName)="tabNameMessage()">
+        </app-gateway-model-view>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="manageCommStd">
+    <ng-template ngbTabTitle>
+      <span i18n="Tab|Communication Standard@@communicationStandard" class="d-sm-none">Communication Standard</span>
+      <span i18n="Tab|Communication Standard@@communicationStandard" class="d-sm-block d-none">Communication Standard</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div id="gatewayModelCommStd" class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight">
+        <app-gateway-model-comm-standard (messageEvent)="receiveMessage($event)"> </app-gateway-model-comm-standard>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="managePin">
+    <ng-template ngbTabTitle>
+      <span i18n="Tab|Pin@@pin" class="d-sm-none">Pin</span>
+      <span i18n="Tab|Pin@@pin" class="d-sm-block d-none">Pin</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div id="gatewayModelPins">
+        <app-gateway-model-pin (messageEvent)="receiveMessage($event)"> </app-gateway-model-pin>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="managePort">
+    <ng-template ngbTabTitle>
+      <span i18n="Tab|Port@@port" class="d-sm-none">Port</span>
+      <span i18n="Tab|Port@@port" class="d-sm-block d-none">Port</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div id="gatewayModelPortView" class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight">
+        <app-gateway-model-port (messageEvent)="receiveMessage($event)" (tabName)="tabNameMessage()">
+        </app-gateway-model-port>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="manageCommStdPinPort">
+    <ng-template ngbTabTitle>
+      <span i18n="Tab|Communication Std Pin Port Mapping@@communicationStdPinPortMapping" class="d-sm-none">Communication Std Pin Port Mapping</span>
+      <span i18n="Tab|Communication Std Pin Port Mapping@@communicationStdPinPortMapping" class="d-sm-block d-none">Communication Std Pin Port Mapping</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <div id="gatewayModelCommStdMapping" class="rowBox p-10 custom-rounded-bottom rowBoxFirstLevelHeight">
+        <app-gateway-model-comm-standard-mapping (messageEvent)="receiveMessage($event)" (tabName)="tabNameMessage()">
+        </app-gateway-model-comm-standard-mapping>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>

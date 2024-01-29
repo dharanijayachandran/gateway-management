@@ -1,0 +1,248 @@
+<!--  Gateway form view starts here -->
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="@@Gateway" class="page-header">
+      {{addEditText}} Gateway
+    </h1>
+  </div>
+</div>
+<div class="row margin_0px rowBox">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <form [formGroup]="gatewayForm" novalidate (ngSubmit)="previewGateway()">
+        <div class="form-group-custom1">
+          <legend i18n="Gateway Details header|Gateway Details@@gatewayDetails" class="m-b-15"> Gateway Details</legend>
+          <div class="m-form__group row">
+            <div class="col-lg-6" style="padding-left: 10px; padding-right: 15px;">
+              <label i18n="Gateway From|Gateway From@@gatewayFrom">Gateway From</label>
+              <div class="form-group">
+                <mat-radio-group formControlName="fromTemplate">
+                  <mat-radio-button value='T' i18n="radio button|Template@@template" style="margin-right: 20px;"
+                    name="template">Template
+                  </mat-radio-button>
+                  <mat-radio-button value='NT' disabled matTooltip="Under Progress"
+                    i18n="radio button|No Template@@noTemplate" name="template">
+                    No-Template</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <label i18n="Gateway Type|Gateway Type@@gatewayType*">Gateway Type<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((gatewayForm.get('gatewayTypeId').touched ||
+                    gatewayForm.get('gatewayTypeId').dirty) &&
+                      gatewayForm.get('gatewayTypeId').errors)}">
+                      <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='gatewayTypeId'
+                      name="gatewayTypeId" formControlName="gatewayTypeId" [dataSource]='gatewayTypeList'
+                      [placeholder]='gatewayTypeWaterMark' [fields]='gatewayTypeFields' [popupHeight]='height'
+                      [sortOrder]="sortDropDown" (filtering)='onFilteringGatewayType($event)'
+                      [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                      (change)='gatewayTypeChange($event)' [locale]='locale'></ejs-dropdownlist>    
+                  <!-- <select (change)="gatewayTypeChange($event)" formControlName="gatewayTypeId"
+                    class="form-control m-input" required>
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let gatewayTypeObj of gatewayTypeList" [value]="gatewayTypeObj.id">
+                      {{gatewayTypeObj.name}}</option>
+                  </select> -->
+                  <span class="help-block" *ngIf="((gatewayForm.get('gatewayTypeId').touched ||
+                                    gatewayForm.get('gatewayTypeId').dirty) &&
+                                    gatewayForm.get('gatewayTypeId').errors)">
+                    <span i18n="Message|Please select Gateway Type@@gatewayType.message"
+                      *ngIf="gatewayForm.get('gatewayTypeId').errors.required">
+                      Please select Gateway Type
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="m-form__group row">
+            <div class="col-lg-6">
+              <label i18n="Gateway Model|Gateway Model@@gatewayModel">Gateway Model</label>
+              <div class="form-group">
+                <div>
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='gatewayModelId'
+            name="gatewayModelId" formControlName="gatewayModelId" [dataSource]='gatewayModelList'
+            [placeholder]='gatewayModelWaterMark' [fields]='gatewayModelFields' [popupHeight]='height'
+            [sortOrder]="sortDropDown" (filtering)='onFilteringGatewayModel($event)'
+            [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+            (change)='gatewayModelChange($event)' [locale]='locale'></ejs-dropdownlist>
+                  <!-- <select (change)="gatewayModelChange($event)" formControlName="gatewayModelId"
+                    class="form-control m-input">
+                    <option i18n="Option|Select@@select" [value]="null">--Select--</option>
+                    <option *ngFor="let gatewayModelObj of gatewayModelList" [value]="gatewayModelObj.id">
+                      {{gatewayModelObj.name}}</option>
+                  </select> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <label i18n="Gateway Template|Gateway Template@@gatewayTemplate*">Gateway Template<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((gatewayForm.get('nodeTemplateId').touched ||
+                      gatewayForm.get('nodeTemplateId').dirty) &&
+                        gatewayForm.get('nodeTemplateId').errors)}">
+                        <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='nodeTemplateId'
+                          name="nodeTemplateId" formControlName="nodeTemplateId" [dataSource]='gatewayTemplate'
+                          [placeholder]='gatewayTemplateWaterMark' [fields]='gatewayTemplateFields' [popupHeight]='height'
+                          [sortOrder]="sortDropDown" (filtering)='onFilteringGatewayTemplates($event)'
+                          [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                          (change)='nodeTemplateChange($event)' [locale]='locale'>
+                        </ejs-dropdownlist> 
+                  <!-- <select (change)="nodeTemplateChange($event)" formControlName="nodeTemplateId"
+                    class="form-control m-input" required>
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let nodeTemplateObj of gatewayTemplates" [ngValue]="nodeTemplateObj.id">
+                      {{nodeTemplateObj.name}}</option>
+                  </select> -->
+                  <span class="help-block" *ngIf="((gatewayForm.get('nodeTemplateId').touched ||
+                                      gatewayForm.get('nodeTemplateId').dirty) &&
+                                      gatewayForm.get('nodeTemplateId').errors)">
+                    <span i18n="Message|Please select Gateway Template@@gatewayTemplate.message"
+                      *ngIf="gatewayForm.get('nodeTemplateId').errors.required">
+                      Please select Gateway Template
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="m-form__group row">
+            <div class="col-lg-6">
+              <label i18n="Name|Name@@name*" class="">Name<span class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((gatewayForm.get('name').touched ||
+                gatewayForm.get('name').dirty) &&
+                  gatewayForm.get('name').errors)}">
+                  <input (keyup)="onKey($event)" type="text" formControlName="name" class="form-control m-input"
+                    i18n-placeholder="Gateway Name placeholderEnter Gateway Name@@gatewayName.placeholder"
+                    placeholder="Enter Gateway Name">
+                  <span class="help-block" *ngIf="((gatewayForm.get('name').touched ||
+                                      gatewayForm.get('name').dirty) &&
+                                      gatewayForm.get('name').errors)">
+                    <span i18n="Message|Please enter Gateway Name@@gatewayName.message"
+                      *ngIf="gatewayForm.get('name').errors.required">
+                      Please enter Gateway Name
+                    </span>
+                    <span i18n="Message|Please enter valid Characters@@gatewayName.message3"
+                      *ngIf="gatewayForm.get('name').errors.pattern">
+                      Please enter valid Characters
+                    </span>
+                    <span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+
+              <label i18n="Identifier|Identifier@@identifier" class="">Gateway Identifier</label>
+              <div class="form-group mb-2">
+                <mat-radio-group formControlName="gatewayIdentifierFlag">
+                  <mat-radio-button value='AG' i18n="radio button|Auto@@Auto" style="margin-right: 20px;" name="Auto"
+                    (change)="handleChange($event)">Auto
+                  </mat-radio-button>
+                  <mat-radio-button value='UP' i18n="radio button|Provided@@provided" name="Provided"
+                    (change)="handleChange($event)">
+                    Provided</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <span *ngIf="!nodeIdentifierDisabled">
+                <div class="form-group">
+                  <div class="d-flex">
+                    <div class="f-1" [ngClass]="{'has-error': ((gatewayForm.get('nodeIdentifier').touched ||
+                    gatewayForm.get('nodeIdentifier').dirty) &&
+                      gatewayForm.get('nodeIdentifier').errors)}">
+                      <input type="text" [readonly]="!editable" formControlName="nodeIdentifier"
+                        (keyup)="checkGatewayIdentifierValidation()" class="form-control m-input"
+                        i18n-placeholder="Identifier placeholder|Enter Identifier@@identifier.placeholder"
+                        placeholder="Enter Identifier">
+                      <span class="help-block" *ngIf="((gatewayForm.get('nodeIdentifier').touched ||
+                        gatewayForm.get('nodeIdentifier').dirty) &&
+                        gatewayForm.get('nodeIdentifier').errors)">
+                        <span i18n="Message|Please enter gatewayIdentifier@@gatewayIdentifier.message"
+                          *ngIf="gatewayForm.get('nodeIdentifier').errors.required">
+                          Please enter Gateway Identifier
+                        </span>
+                        <span i18n="Message|Please enter valid Characters@@gatewayIdentifier.message1"
+                          *ngIf="gatewayForm.get('nodeIdentifier').errors.pattern">
+                          Please enter valid Characters
+                        </span>
+                      </span>
+                      <span class="help-block"
+                        i18n="Message|Gateway identifier already exist.Please enter unique gateway identifier@@gatewayIdentifier.message2"
+                        *ngIf="checkNodeIdentifier">
+                        Gateway identifier already exist.Please enter unique gateway identifier
+                      </span>
+                    </div>
+                    <span *ngIf="editable">
+                      <div>
+                        <span i18n-matTooltip="@@ValidateNodeIdentifier" matTooltip="{{checkAvailability}}">
+                          <button style="height: 30px;" type="button" class="btn btn-primary text-center btn-sm"
+                            (click)="validateIdentifier()" [disabled]="validateNodeIdentifier">
+                            <i class="fa fa-check"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </span>
+            </div>
+            <div class="col-lg-6">
+              <label i18n="Description|Description@@description" class="">Description</label>
+              <div class="form-group">
+                <textarea type="text" formControlName="description" class="form-control m-input textAreaHeight"
+                  i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                  placeholder="Enter Description"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <ng-container *ngIf="addEditText=='Edit'">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Auth Token|Auth Token@@authToken" class="">Auth Token</label>
+                <div class="form-group">
+                  <input type="text" [readonly]="true" formControlName="authToken" class="form-control m-input">
+                </div>
+              </div>
+              <div class="col-lg-6">
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <a (click)="cancelGatewayForm()">
+              <button type="button" class="btn btn-default text-center cancelActionButton"
+                i18n="Cancel button|Cancel@@cancel"> Cancel
+              </button>
+            </a>
+            &nbsp;
+            <button type="button" class="btn btn-secondary text-center resetActionButton"
+              [disabled]="!gatewayForm.dirty && gatewayForm.pristine" (click)="resetgatewayForm()"
+              i18n="Reset button|Reset@@reset">
+              Reset
+            </button>
+            &nbsp;
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+              matTooltip="Fill the mandatory fields" [matTooltipDisabled]="gatewayForm.valid">
+
+              <button i18n="Review&Save button|Review&Save@@review&Save" class="btn btn-primary text-center"
+                type="submit" [disabled]="!(gatewayForm.valid && disableReviewAndSave)">
+                Review & Save</button>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--  Gateway  form view ends here -->
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()"></app-modal-notification>

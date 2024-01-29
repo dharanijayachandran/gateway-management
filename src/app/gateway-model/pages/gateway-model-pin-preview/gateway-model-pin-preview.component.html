@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Gateway Model Pin(s) Preview header|Gateway Model Pin(s) Preview@@gatewayModelPinsPreview" class="page-header" *ngIf="PinsReadMode">
+      Gateway Model Pin(s) - Preview
+    </h1>
+  </div>
+</div>
+<div class="row margin_0px" *ngIf="PinsReadMode">
+  <div class="col-lg-12 padding_0px rowBox">
+    <div class="padding_Form">
+      <div class="form-group-custom1">
+        <legend i18n="Gateway Model Pin(s) Information header|Gateway Model Pin(s) Information@@gatewayModelPinsInformation" class="m-b-15">Gateway Model Pin(s) Information</legend>
+
+        <a (click)="backButton()" class="edit_section">
+          <img src="/assets/img/action/edit.png" alt="edit gatewayModel Pin(s) detail"
+            i18n-matTooltip="Image matTooltip|Click to edit gatewayModel Pin(s) Detail@@clickToEditgatewayModelPinDetail" matTooltip="Click to edit gatewayModel Pin(s) Detail">
+        </a>
+        <div class="m-form__group row">
+          <div class="col-lg-6">
+            <label i18n="Gateway Model Name|Gateway Model Name@@gatewayModelName" class="">Gateway Model Name </label>
+            <p>
+              {{gatewayModelName}}
+            </p>
+          </div>
+
+        </div>
+        <div class="path finalLine"></div>
+        <div class="m-form__group row">
+          <div class="col-lg-4" style="text-align: left;">
+            <label i18n="Number of Pin(s)|Number of Pin(s)@@numberOfPins" class="">Number of Pin(s) </label>
+            <p>
+              {{numberOfPins}}
+            </p>
+          </div>
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-sm-6 col-md-4">
+            <label i18n="Pin Name|Pin Name@@pinName" class="">PinName </label>
+            <p *ngFor=" let pinData of viewPinsDetails">
+              {{pinData.name}}
+            </p>
+          </div>
+          <div class="form-group col-sm-6 col-md-4">
+            <label i18n="Internal Map|Internal Map@@internalMap" class="">InternalMap </label>
+            <p *ngFor=" let pinData of viewPinsDetails">
+              {{pinData.internalMap}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="path finalLine"></div>
+      <div class="row" style="    text-align: right;padding: 23px 0;">
+        <div class="col-md-12">
+          <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton()" i18n="Back button|Back@@back"> Back
+          </button>
+          &nbsp;
+          <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit" (click)="savePins()">
+            Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationSuccess)="redirectTo()"></app-modal-notification>

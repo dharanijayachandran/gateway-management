@@ -1,0 +1,20 @@
+.mtb-20px {
+  margin: 20px 0px;
+}
+.uploadFile .custom-file-label::after, .uploadFile .custom-file-label {
+  height: auto;
+}
+.panel {
+  margin-bottom: 5px;
+  background-color: #fff;
+  border: none;
+  box-shadow: none;
+  border-radius: 3px;
+}
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(194, 193, 193); 
+  border-radius: 10px;
+}

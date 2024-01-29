@@ -1,0 +1,89 @@
+.mat-row{
+    min-height: 34px;
+  }
+  .mat-header-row{
+    min-height: 34px;
+  }
+  .mat-row:nth-child(even){
+    background-color:#F2F3F4 ;
+  }
+  .mat-header-cell{
+    font-weight: 600;
+    color: #506D85;
+    border: var(--table-table-bordered-thead-first-child-tr-first-child-th-border)!important;
+    padding:4px !important;
+  }
+  .mat-row:hover {
+    background: #add8e6 !important;
+  }
+  .table_response{
+    overflow: auto;
+    height: 240px;
+  }
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+::-webkit-scrollbar-thumb {
+    background: rgb(194, 193, 193); 
+    border-radius: 10px;
+  }
+  .mat-column-serialnumber{
+    flex: 0 0 5% !important;
+    width: 5% !important;
+    padding-left: 6px;
+}
+  .mat-column-serviceRequest{
+    flex: 0 0 20% !important;
+    width: 20% !important;
+    padding-left: 5px;
+}
+.mat-column-url{
+  flex: 0 0 48% !important;
+  width: 48% !important;
+  padding-left: 5px;
+  padding-right: 8px;
+
+}
+.mat-column-httpMethod{
+  flex: 0 0 10% !important;
+  width: 10% !important;
+  padding-left: 5px;
+}
+.mat-column-status{
+  flex: 0 0 10% !important;
+  width: 10% !important;
+  padding-left: 5px;
+}
+.mat-column-action{
+  flex: 0 0 7% !important;
+  width: 7% !important;
+  padding-left: 5px;
+}
+.errorRecordTable_style{
+    overflow: auto;
+    height: 205px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+}
+.mat-column-sno{
+  flex: 0 0 10% !important;
+  width: 10% !important;
+  padding-left: 5px;
+}
+.mat-column-name{
+  flex: 0 0 25% !important;
+  width: 25% !important;
+  padding-left: 5px;
+}.mat-column-identifier{
+  flex: 0 0 25% !important;
+  width: 25% !important;
+  padding-left: 5px;
+}.mat-column-errorMessage{
+  flex: 0 0 40% !important;
+  width: 40% !important;
+  padding-left: 5px;
+}
+td{
+  padding: 20px;
+  margin: 20px;
+}

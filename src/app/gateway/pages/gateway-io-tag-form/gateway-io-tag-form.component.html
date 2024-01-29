@@ -1,0 +1,238 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 i18n="Page header|Gateway IO Tag@@GatewayIOTag" class="page-header">
+            {{addEditText}} Gateway IO Tag
+        </h1>
+    </div>
+</div>
+
+<div class="row margin_0px">
+    <div class="col-md-12 padding_0px rowBox">
+        <div class="padding_Form">
+            <form [formGroup]="gatewayIOTagForm" novalidate (ngSubmit)="previewIOTag()">
+                <div class="form-group-custom1">
+                    <legend i18n="Header|Gateway IO Tag@@gatewayIOTag" class="m-b-15">Gateway IO Tag</legend>
+                    <div class="formBodyCustom1" id="gatewayIOTagDetails">
+                        <div class=" m-form__group row">
+                            <div class="col-lg-6">
+                                <label i18n='Name|Name@@name*' class="">Name<span class="text-danger"> *</span></label>
+                                <div class="form-group">
+                                    <div [ngClass]="{'has-error': ((gatewayIOTagForm.get('name').touched ||
+                                      gatewayIOTagForm.get('name').dirty) &&
+                                      gatewayIOTagForm.get('name').errors)}">
+                                        <input (keyup)="onKey($event)" type="text" id="gatewayTemplateIOTagName"
+                                            formControlName="name" class="form-control m-input"
+                                            i18n-placeholder='IO Tag Name placeholder|Enter IO Tag Name@@gatewayTemplateIOTagName.placeholder'
+                                            placeholder="Enter IO Tag Name">
+                                        <span class="help-block" *ngIf="((gatewayIOTagForm.get('name').touched ||
+                                        gatewayIOTagForm.get('name').dirty) &&
+                                         gatewayIOTagForm.get('name').errors)">
+                                            <span i18n="Message|Please Enter I/O Tag Name@@gatewayIOTagName.message"
+                                                *ngIf="gatewayIOTagForm.get('name').errors.required">
+                                                Please Enter I/O Tag Name
+                                            </span>
+                                            <span
+                                                i18n="Message|Please enter valid Characters@@gatewayIOTagName.message2"
+                                                *ngIf="gatewayIOTagForm.get('name').errors.pattern">
+                                                Please enter valid Characters
+                                            </span>
+                                        </span>
+                                        <span id="gatewayIOTagNameValMsg"></span>
+                                    </div>
+                                </div>
+                                <label i18n='Tag Key Name|Tag Key Name@@tagKeyName' class="">Tag Key Name</label>
+                                <div class="form-group">
+                                    <input type="text"  formControlName="tagKeyName"
+                                        class="form-control m-input"
+                                        i18n-placeholder='Tag Key Name placeholder|Enter Tag Key Name@@tagKeyName.placeholder'
+                                        placeholder="Enter Tag Key Name">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label i18n="Description|Description@@description" class="">Description</label>
+                                <div class="form-group">
+                                    <textarea rows="3" id="gatewayTemplateIOTagDecsription"
+                                        formControlName="description" class="form-control m-input textAreaHeight"
+                                        i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                                        placeholder="Enter Description"></textarea>
+                                    <span id="gatewayTemplateIOTagDecsriptionValMsg"></span>
+                                    <span id="gatewayTypeIdValMsg" class="errorMsg"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" m-form__group row">
+                            <div class="col-lg-6">
+                                <label i18n='Tag Type|Tag Type@@tagType*' class="">Tag Type<span class="text-danger">
+                                        *</span></label>
+                                <div class="form-group">
+                                    <div [ngClass]="{'has-error': ((gatewayIOTagForm.get('tagType').touched ||
+                                      gatewayIOTagForm.get('tagType').dirty) &&
+                                      gatewayIOTagForm.get('tagType').errors)}">
+                                        <select id="tagType" formControlName="tagType" class="form-control m-input">
+                                            <option *ngFor="let tagType of tagTypes | orderByAlphabetical:'value'" value={{tagType.id}}>
+                                                {{tagType.value}}
+                                            </option>
+                                        </select>
+                                        <span class="help-block" *ngIf="((gatewayIOTagForm.get('tagType').touched ||
+                                          gatewayIOTagForm.get('tagType').dirty) &&
+                                          gatewayIOTagForm.get('tagType').errors)">
+                                            <span i18n="Message|Please Select Tag Type@@tagType.message"
+                                                *ngIf="gatewayIOTagForm.get('tagType').errors.required">
+                                                Please Select Tag Type
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label i18n='Data Type|Data Type@@dataType*' class="">Data Type<span
+                                        class="text-danger"> *</span></label>
+                                <div class="form-group">
+                                    <div [ngClass]="{'has-error': ((gatewayIOTagForm.get('dataTypeId').touched ||
+                                      gatewayIOTagForm.get('dataTypeId').dirty) &&
+                                      gatewayIOTagForm.get('dataTypeId').errors)}">
+                                      <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='dataTypeId'
+                                    name="dataTypeId" formControlName="dataTypeId" [dataSource]='dataTypes'
+                                    [placeholder]='dataTypeWaterMark' [fields]='dataTypeFields' [popupHeight]='height'
+                                    [sortOrder]="sortDropDown" (filtering)='onFilteringDataType($event)'
+                                    [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                                    (change)='dataTypeOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                                        <!-- <select id="dataTypeId" formControlName="dataTypeId"
+                                            class="form-control m-input">
+                                            <option *ngFor="let dataType of dataTypes" value={{dataType.id}}>
+                                                {{dataType.name}}
+                                            </option>
+                                        </select> -->
+                                        <span class="help-block" *ngIf="((gatewayIOTagForm.get('dataTypeId').touched ||
+                                         gatewayIOTagForm.get('dataTypeId').dirty) &&
+                                          gatewayIOTagForm.get('dataTypeId').errors)">
+                                            <span i18n="Message|Please Select Data Type@@dataType.message"
+                                                *ngIf="gatewayIOTagForm.get('dataTypeId').errors.required">
+                                                Please Select Data Type
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" m-form__group row">
+                            <div class="col-lg-6">
+                                <label
+                                    i18n="Mapping with Standard I/O Tag|Mapping with Standard I/O Tag@@mappingwithStandardI/OTag"
+                                    class="">Mapping with Standard I/O Tag</label>
+                                <div class="form-group">
+                                    <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='dataProtocolStandardTagId'
+                      name="dataProtocolStandardTagId" formControlName="dataProtocolStandardTagId" [dataSource]='standardIOTags'
+                      [placeholder]='standardIOTagWaterMark' [fields]='standardIOTagFields' [popupHeight]='height'
+                      [sortOrder]="sortDropDown" (filtering)='onFilteringStandardIOTag($event)'
+                      [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                      (change)='standardIOTagOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                                    <!-- <select id="dataProtocolStandardTagId" formControlName="dataProtocolStandardTagId"
+                                        class="form-control m-input">
+                                        <option i18n='Option|Select@@select' [ngValue]=null>--Select--</option>
+                                        <option *ngFor="let standardIOTag of standardIOTags" value={{standardIOTag.id}}>
+                                            {{standardIOTag.name}}
+                                        </option>
+                                    </select> -->
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label i18n='Tag IO Mode|Tag IO Mode@@tagIOMode*' class="">Tag IO Mode<span
+                                        class="text-danger"> *</span></label>
+                                <div class="form-group">
+                                    <div [ngClass]="{'has-error': ((gatewayIOTagForm.get('tagIOMode').touched ||
+                                      gatewayIOTagForm.get('tagIOMode').dirty) &&
+                                      gatewayIOTagForm.get('tagIOMode').errors)}">
+                                        <select id="tagIOMode" formControlName="tagIOMode" class="form-control m-input">
+                                            <option *ngFor="let tagIOMode of tagIOModes| orderByAlphabetical:'value'" value={{tagIOMode.id}}>
+                                                {{tagIOMode.value}}
+                                            </option>
+                                        </select>
+                                        <span class="help-block" *ngIf="((gatewayIOTagForm.get('tagIOMode').touched ||
+                                          gatewayIOTagForm.get('tagIOMode').dirty) &&
+                                          gatewayIOTagForm.get('tagIOMode').errors)">
+                                            <span i18n="Message|Please Select Tag IO Mode@@tagIOMode.message"
+                                                *ngIf="gatewayIOTagForm.get('tagIOMode').errors.required">
+                                                Please Select Tag IO Mode
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-form__group row">
+                            <div class="col-lg-6 col-md-6">
+                                <label i18n="Engineering Unit|Engineering Unit@@engineeringUnit" class="">Engineering
+                                    Unit</label>
+                                <div class="form-group">
+                                    <div>
+                                        <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='engUnitId'
+                                        name="engUnitId" formControlName="engUnitId" [dataSource]='engUnits'
+                                        [placeholder]='engUnitWaterMark' [fields]='engUnitFields' [popupHeight]='height'
+                                        [sortOrder]="sortDropDown" (filtering)='onFilteringEngUnit($event)'
+                                        [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                                        (change)='engUnitOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                                        <!-- <select formControlName="engUnitId" class="form-control m-input">
+                                            <option i18n="Option|Select@@select" [ngValue]=null>--Select--</option>
+                                            <option [ngValue]="unit.id" *ngFor="let unit of engUnits">{{unit.name}}
+                                            </option>
+                                        </select> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                            </div>
+                        </div>
+                        <div class=" m-form__group row">
+                            <div class="col-lg-6">
+                                <label i18n="Status|Status@@status">Status</label>
+                                <div class="form-group">
+                                    <mat-radio-group formControlName="status">
+                                        <mat-radio-button value="Active" i18n="Radio button|Active@@active"
+                                            style="margin-right: 20px;" id="gatewatTemplateIOTagStatusA">
+                                            Active
+                                        </mat-radio-button>
+                                        <mat-radio-button id="gatewatTemplateIOTagStatusI" value="In_Active"
+                                            i18n="Radio button|InActive@@inActive">In-Active
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="path finalLine"></div>
+                <div class="row" style="text-align: right;padding: 23px 0;">
+                    <div class="col-md-12">
+                        <a>
+                            <button type="button" id="cancelProtocol" class="btn btn-default text-center cancelActionButton"
+                                i18n="Cancel button|Cancel@@cancel"
+                                (click)="cancelGatewayIOTagForm($event)">Cancel</button>
+                        </a>&nbsp;
+                        <button type="button" i18n="Reset button|Reset@@reset" class="btn btn-secondary text-center resetActionButton"
+                            [disabled]="!gatewayIOTagForm.dirty && gatewayIOTagForm.pristine || !gatewayIOTagForm.dirty && !gatewayIOTagForm.pristine"
+                            (click)="resetIOTagForm()">Reset</button>&nbsp;
+
+                        <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                            matTooltip="Fill the mandatory fields" [matTooltipDisabled]="gatewayIOTagForm.valid">
+                            <button i18n="Review&Save button|Review&Save@@review&Save"
+                                class="btn btn-primary text-center reviewAndSaveActionButton" type="submit" [disabled]="!gatewayIOTagForm.valid">
+                                Review & Save</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+    align="center">
+    <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()">
+</app-modal-notification>

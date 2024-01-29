@@ -1,0 +1,86 @@
+<div class="form-row">
+    <legend class="m-b-15 ml-1"> {{IOTagItem.tagName | hyphen}}
+    </legend>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Parent I/O Tag|Parent I/O Tag@@parentIOTag" class="">Parent IO Tag</label>
+        <p>
+            {{IOTagItem.parentTagName | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Index|Index@@index" class="">Index</label>
+        <p>
+            {{IOTagItem.tagIndex | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Length|Length@@length" class="">Length</label>
+        <p>
+            {{IOTagItem.tagLength | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Length Unit|Length Unit@@lengthUnit" class="">Length Unit</label>
+        <p>
+            {{IOTagItem.tagLengthUnitName | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Length Tag Key Name|Length Tag Key Name@@lengthTagKeyName" class="">Length Tag Key
+            Name</label>
+        <p>
+            {{IOTagItem.tagKeyName | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Data Format|Data Format@@dataFormat" class="">Data Format</label>
+        <p>
+            {{IOTagItem.dataFormateName | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Seperator|Seperator@@seperator" class="">Seperator</label>
+        <p>
+            {{IOTagItem.tagSeparator | hyphen}}
+        </p>
+    </div>
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Participate In|Participate In@@participateIn">Participate In</label><br>
+        <div class="row">
+            <div class="col-md-6">
+                <label i18n="Length|Length@@length" class="">Length</label>
+                <p>
+                    {{IOTagItem.isParticipantInLength ? "Yes":"No"}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <label i18n="Error Check|Error Check@@errorCheck" class="">Error Check</label>
+                <p>
+                    {{IOTagItem.isParticipantInErrorCheck ? "Yes":"No" }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-sm-6 col-md-4" *ngIf="gatewayIODHTag">
+        <label i18n="Date Time Format|Date Time Format@@dateTimeFormat" class="">Date Time Format</label>
+        <p >
+            {{IOTagItem.dateTimeFormat | hyphen}}
+        </p>
+    </div>
+
+    <div class="form-group col-sm-6 col-md-4">
+        <label i18n="Default Value|Default Value@@defaultValue" class="">Default Value</label>
+        <p>
+          {{IOTagItem.defaultValue | hyphen}}
+        </p>
+      </div>
+
+     <div class="path" *ngIf="IOTagItem.childTags.length == 0"></div>
+  
+    <ng-container *ngIf="IOTagItem.childTags && IOTagItem.childTags.length > 0">
+        <fieldset class="mb-2 fieldset_class">
+            <app-dh-tag [IOTagItem]="IOTagItem" *ngFor="let IOTagItem of IOTagItem.childTags">
+            </app-dh-tag>
+        </fieldset>
+    </ng-container>
+</div>

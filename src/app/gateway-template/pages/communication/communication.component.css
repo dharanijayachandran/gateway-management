@@ -1,0 +1,42 @@
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+
+.cdk-column-action.mat-column-action {
+  white-space: nowrap;
+}
+
+.mat-paginator {
+  position: relative;
+}
+
+.container.mat-elevation-z8 {
+  margin-bottom: 0px;
+}
+
+.dynamic_label{
+  display: table-cell;
+  vertical-align: bottom;
+  height: 40px;
+}
+
+.table-responsive {
+  min-height: 27vh;
+  max-height: 27vh;
+}
+
+.dh-table-responsive {
+  min-height: 51vh;
+  max-height: 51vh;
+}

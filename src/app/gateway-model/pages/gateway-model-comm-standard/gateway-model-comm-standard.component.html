@@ -1,0 +1,66 @@
+<div class="panel panel-inverse mb-0" style="position: relative">
+  <app-panel-user i18n-name="Panel header|Communication Standard Mapping Details@@communicationStandardMappingDetails" name="Communication Standard Mapping Details"
+    (refreshTableList)="refreshTableListFunction()">
+
+    <!-- Search button -->
+    <!-- <a searchButton href="javascript:;" matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default">
+      <i class="fa fa-search"></i>
+    </a> -->
+    <div class="row margin_0px rowBox">
+      <div class="col-lg-12 padding_0px">
+        <div class="padding_Form">
+          <div class="form-group-custom1">
+            <!-- <legend i18n="@@CommunicationStandardMappingDetails" class="m-b-15">Communication Standard Mapping Details</legend> -->
+            <div class="row form-group">
+              <div class="col-md-12">
+                <div id="gatewayModelCommStd">
+                  <div class="m-form__group row">
+                    <div class="col-lg-6">
+                      <label i18n='Gateway Model Name|Gateway Model Name@@gatewayModelName' class="">Gateway Model Name</label>
+                      <div class="form-group">
+                        <input type="text" style="font-weight: bold" [readonly]="true" class="form-control m-input"
+                          value={{gatewayModelName}}>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <p></p>
+                    <dual-list class="dualBoxList" [sort]="keepSorted" [source]="source" [key]="key" [display]="display"
+                      [filter]="filter" [(destination)]="confirmed" height="175px" [format]="format"
+                      [disabled]="disabled">
+                    </dual-list>
+                    <div class="tab-content">
+                    </div>
+                  </div>
+                </div>                
+              </div>
+            </div>           
+          </div>
+          <div class="path finalLine"></div>
+          <div class="row">
+            <div class="col-md-12">
+              <button type="button" id="backToGatewayModel" class="btn btn-default text-center cancelActionButton"
+                (click)="backToGatewayModel()" i18n="Cancel button|Cancel@@cancel"> Cancel
+              </button>
+              &nbsp;
+              <button type="button" id="resetGatewayModelCommStd" class="btn btn-secondary text-center resetActionButton"
+                (click)="resetGatewayModelCommStd()" i18n="Reset button|Reset@@reset"
+                [disabled]='source && (confirmed.length > 0) ? false : true'> Reset
+              </button>
+              &nbsp;
+              <span i18n-matTooltip="Tooltip validation|Please select atleast one field@@pleaseSelectAtleastOneField" matTooltip="Please select atleast one field"
+                [matTooltipDisabled]="source && !(confirmed.length > 0) ? false : true">
+                <button i18n="Review&Save button|Review&Save@@review&Save" type="button" id="saveGatewayModelCommStandard"
+                  class="btn btn-primary text-center reviewAndSaveActionButton" type="submit" 
+                  (click)="saveGatewayModelCommStandard()"
+                  [disabled]='source && (confirmed.length > 0) ? false : true'>
+                  Review & Save</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-panel-user>
+
+  <app-modal-notification (modelNotificationWarning)="alertRedirection()"></app-modal-notification>

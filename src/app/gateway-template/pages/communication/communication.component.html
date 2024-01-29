@@ -1,0 +1,942 @@
+<form [formGroup]="communicationForm">
+  <div class="p-10 mt-n2">
+    <label *ngIf="template" i18n="Tab|Gateway Template Name@@gatewayTemplateName" class="">Gateway Template Name</label>
+    <label *ngIf="!template" i18n="Tab|Gateway Name@@gatewayName" class="">Gateway Name</label>
+    <div class="col-md-4 p-0">
+      <input type="text" formControlName="gatewayTemplateName" class="form-control m-input" readonly>
+    </div>
+  </div>
+</form>
+<!-- <div class="header_Underline"></div> -->
+
+<!-- begin row -->
+<div class="row">
+  <!-- begin col-6 -->
+  <div class="col-lg-12">
+    <!-- begin nav-tabs -->
+    <ngb-tabset type="pills">
+      <ngb-tab *ngFor="let gatewayCommProtocol of gatewayCommProtocols; let i = index;">
+        <ng-template ngbTabTitle class="hidden">
+          <span class="d-sm-block"
+            (click)="onChange(gatewayCommProtocol)">{{gatewayCommProtocol.commProtocol.name}}</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="rowBox">
+            <div class="row margin_0px" *ngIf="communicationWriteModeView">
+              <div class="col-md-12 padding_0px">
+                <div class="padding_Form">
+                  <!-- Dynamic Form Starts Here  -->
+                  <form [formGroup]="gatewayCommProtocolForm" (ngSubmit)="previewGatewayCommProtocolForm()">
+                    <input type="hidden" formControllerName="commProtocolId"
+                      [value]="gatewayCommProtocol.commProtocol.id" />
+                    <div class="form-group-custom1">
+                      <legend
+                        i18n="Communication Parameter Details header|Communication Parameter Details@@communicationParameterDetails"
+                        class="m-b-15">Communication Parameter Details
+                      </legend>
+                      <div class="position-relative">
+                        <div class="m-form__group row overflow-auto ps position-relative" appScrollbarDirective
+                          style="max-height: 300px;">
+                          <div formArrayName="gatewayCommProtocolParamValues"
+                            *ngFor="let commProtocolParamValue of gatewayCommProtocolForm.get('gatewayCommProtocolParamValues')['controls']; let i = index"
+                            class="col-lg-6">
+                            <div class="dynamic_label">
+                              <div class="font-weight-bold">{{commProtocolParams[i].commProtocolParamGroupName}}
+                                <!-- <ng-template>{{commProtocolParams[i].commProtocolParamGroupName}}</ng-template> -->
+                                <!-- <p class="font-weight-bold"></p> -->
+                              </div>
+                              <label class="">{{commProtocolParams[i].name}}<span *ngIf="!commProtocolParams[i].isNull"
+                                  class="text-danger">*</span></label>
+                            </div>
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '1'">
+                              <div [formGroupName]="i">
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  ng-init="param.commProtocolParamId=commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                            commProtocolParamValue.get('value').dirty) &&
+                            commProtocolParamValue.get('value').errors)}">
+                                  <input
+                                    i18n-placeholder="Param Value placeholder|Enter Enter Param Value@@paramValue.placeholder"
+                                    placeholder="Enter Param Value" formControlName="value"
+                                    class="form-control m-input" />
+                                  <span class="help-block" *ngIf="((commProtocolParamValue.get('value').touched ||
+                            commProtocolParamValue.get('value').dirty) &&
+                            commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please enter Param Value@@paramValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please enter Param Value
+                                    </span>
+                                    <span i18n="Message|Please enter only Alphabate value@@paramValue.message"
+                                      *ngIf="commProtocolParamValue.get('value').errors.pattern && commProtocolParams[i].dataTypeName == 'String'">
+                                      Please enter only Alphabate value
+                                    </span>
+                                    <span i18n="Message|Please enter only Numeric value@@paramValue.message"
+                                      *ngIf="commProtocolParamValue.get('value').errors.pattern && (commProtocolParams[i].dataTypeName == 'Integer' || commProtocolParams[i].dataTypeName == 'Long')">
+                                      Please enter only Numeric value
+                                    </span>
+                                    <span i18n="Message|Please enter only Decimal value@@paramValue.message"
+                                      *ngIf="commProtocolParamValue.get('value').errors.pattern && (commProtocolParams[i].dataTypeName == 'Double' || commProtocolParams[i].dataTypeName == 'Float')">
+                                      Please enter only Decimal value
+                                    </span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '2'">
+                              <div [formGroupName]="i">
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)}">
+                                  <select formControlName="value" class="form-control m-input">
+                                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                                    <option
+                                      *ngFor="let commProtocolParamVal of commProtocolParams[i].commProtocolParamValues"
+                                      [value]="commProtocolParamVal.value">
+                                      {{commProtocolParamVal.value}}</option>
+                                  </select>
+                                  <span class="help-block" *ngIf="(!commProtocolParams[i].isNull) && ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please select Param Value@@selectParamValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please select Param Value
+                                    </span>
+                                  </span>
+                                </div>
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                              </div>
+                            </div>
+
+
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '3'">
+                              <div [formGroupName]="i">
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                                  commProtocolParamValue.get('value').dirty) &&
+                                  commProtocolParamValue.get('value').errors)}">
+                                  <select formControlName="value" class="form-control m-input">
+                                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                                    <option
+                                      *ngFor="let commProtocolParamVal of commProtocolParams[i].commProtocolParamValues"
+                                      [value]="commProtocolParamVal.value">
+                                      {{commProtocolParamVal.value}}</option>
+                                  </select>
+                                  <span class="help-block" *ngIf="(!commProtocolParams[i].isNull) && ((commProtocolParamValue.get('value').touched ||
+                                  commProtocolParamValue.get('value').dirty) &&
+                                  commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please select Param Value@@selectParamValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please select Param Value
+                                    </span>
+                                  </span>
+                                </div>
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                              </div>
+                            </div>
+
+
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '4'">
+                              <div [formGroupName]="i">
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)}">
+                                  <!-- <mat-radio-group class="example-section" formControlName="value">
+                                    <mat-radio-button class="form-control m-input" [value]="commProtocolParamVal.value"
+                                      i18n="@@Active" style="margin-right: 20px;" id=""
+                                      *ngFor="let commProtocolParamVal of commProtocolParams[i].commProtocolParamValues">
+                                      {{commProtocolParamVal.value}}
+                                    </mat-radio-button>
+                                  </mat-radio-group> -->
+
+                                  <label
+                                    *ngFor="let commProtocolParamVal of commProtocolParams[i].commProtocolParamValues;">
+                                    <input formControlName="value" type="radio" name="value"
+                                      [value]="commProtocolParamVal.value" />
+                                    {{commProtocolParamVal.value}}&nbsp;&nbsp;&nbsp;&nbsp;
+                                  </label>
+                                  <span class="help-block" *ngIf="(!commProtocolParams[i].isNull) && ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please select Param Value@@selectParamValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please select Param Value
+                                    </span>
+                                  </span>
+                                </div>
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                              </div>
+                            </div>
+
+
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '5'">
+                              <div [formGroupName]="i">
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)}">
+                                  <input type="checkbox"
+                                    i18n="Param Value placeholder|Enter Param Value@@paramValue.placeholders"
+                                    placeholder="Enter Param Value" formControlName="value" />
+                                  <span class="help-block" *ngIf="(!commProtocolParams[i].isNull) && ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please select Param Value@@selectParamValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please select Param Value
+                                    </span>
+                                  </span>
+                                </div>
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                              </div>
+                            </div>
+
+
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '6'">
+                              <div [formGroupName]="i">
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)}">
+                                  <input type="date"
+                                    i18n-placeholder="Param Value placeholder|Enter Param Value@@paramValue.message"
+                                    placeholder="Enter Param Value" formControlName="value"
+                                    class="form-control m-input" />
+                                  <span class="help-block" *ngIf="(!commProtocolParams[i].isNull) && ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please enter Date Param Value@@dateParamValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please enter Date Param Value
+                                    </span>
+                                  </span>
+                                </div>
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                              </div>
+                            </div>
+
+
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '7'">
+                              <div [formGroupName]="i">
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)}">
+                                  <input type="time"
+                                    i18n-placeholder="Param Value placeholder|Enter Param Value@@paramValue.placeholder"
+                                    placeholder="Enter Param Value" formControlName="value"
+                                    class="form-control m-input" />
+                                  <span class="help-block" *ngIf="(!commProtocolParams[i].isNull) && ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please enter Time Param Value@@timeParamValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please enter Time Param Value
+                                    </span>
+                                  </span>
+                                </div>
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                              </div>
+                            </div>
+
+
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '8'">
+                              <div [formGroupName]="i">
+                                <div [ngClass]="{'has-error': ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)}">
+                                  <input type="datetime-local"
+                                    i18n-placeholder="Param Value placeholder|Enter Param Value@@paramValue.placeholder"
+                                    placeholder="Enter Param Value" formControlName="value"
+                                    class="form-control m-input" />
+                                  <span class="help-block" *ngIf="(!commProtocolParams[i].isNull) && ((commProtocolParamValue.get('value').touched ||
+                              commProtocolParamValue.get('value').dirty) &&
+                              commProtocolParamValue.get('value').errors)">
+                                    <span i18n="Message|Please enter Date-Time Param Value@@dateTimeParamValue.message"
+                                      *ngIf="(!commProtocolParams[i].isNull) && commProtocolParamValue.get('value').errors.required">
+                                      Please enter Date-Time Param Value
+                                    </span>
+                                  </span>
+                                </div>
+                                <input type="hidden" formControllerName="commProtocolParamId"
+                                  [attr.data-commParamId-id]="commProtocolParams[i].id"
+                                  [value]=commProtocolParams[i].id />
+                              </div>
+                            </div>
+
+                            <div class="form-group" *ngIf="commProtocolParams[i].uiComponentTypeId == '9'">
+                              <div [formGroupName]="i">
+
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="path" style="border-bottom: solid 1px;"></div>
+
+                    <div class="form-group-custom1">
+                      <div class="form-group m-form__group row">
+                        <div class="col-lg-6">
+                          <label i18n="Error Check Type|Error Check Type@@errorCheckType" class="">Error Check
+                            Type</label>
+                          <div class="form-group">
+                            <div [ngClass]="{'has-error': ((gatewayCommProtocolForm.get('errorCheckTypeId').touched ||
+                          gatewayCommProtocolForm.get('errorCheckTypeId').dirty) &&
+                          gatewayCommProtocolForm.get('errorCheckTypeId').errors)}">
+                          <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='errorCheckTypeId'
+                          name="errorCheckTypeId" formControlName="errorCheckTypeId" [dataSource]='errorCheckTypes'
+                          [placeholder]='errorCheckTypeWaterMark' [fields]='errorCheckTypeFields' [popupHeight]='height'
+                          [sortOrder]="sortDropDown" (filtering)='onFilteringErrorCheckType($event)'
+                          [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                          (change)='errorCheckTypeOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                            <!-- <select (change)="getErrorCheckAlgorithm($event)" formControlName="errorCheckTypeId"
+                              class="form-control m-input">
+                              <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                              <option *ngFor="let errorCheckType of errorCheckTypes" value={{errorCheckType.id}}>
+                                {{errorCheckType.name}}</option>
+                            </select> -->
+                            <span class="help-block" *ngIf="((gatewayCommProtocolForm.get('errorCheckTypeId').touched ||
+                            gatewayCommProtocolForm.get('errorCheckTypeId').dirty) &&
+                            gatewayCommProtocolForm.get('errorCheckTypeId').errors)">
+                              <span i18n="Message|Please select Data Format@@dataFormat.message"
+                                *ngIf="gatewayCommProtocolForm.get('errorCheckTypeId').errors.required">
+                                Please select Error Check Type
+                              </span>
+                            </span>
+                          </div>
+
+                          </div>
+
+                          <label i18n="Data Handler Format|Data Handler Format@@dataHandlerFormat*" class="">Data
+                            Handler Format<span class="text-danger">*</span></label>
+                          <div class="form-group">
+                            <div [ngClass]="{'has-error': ((gatewayCommProtocolForm.get('dataFormatId').touched ||
+                          gatewayCommProtocolForm.get('dataFormatId').dirty) &&
+                          gatewayCommProtocolForm.get('dataFormatId').errors)}">
+                          <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='dataFormatId'
+                          name="dataFormatId" formControlName="dataFormatId" [dataSource]='dataHandlerFormats'
+                          [placeholder]='dataHandlerFormatWaterMark' [fields]='dataHandlerFormatFields' [popupHeight]='height'
+                          [sortOrder]="sortDropDown" (filtering)='onFilteringDataHandlerFormat($event)'
+                          [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                          (change)='dataHandlerFormatOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                              <!-- <select formControlName="dataFormatId" class="form-control m-input">
+
+                                <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                                <option *ngFor="let dataHandlerFormat of dataHandlerFormats"
+                                  [ngValue]=dataHandlerFormat.id>
+                                  {{dataHandlerFormat.name}}</option>
+                              </select> -->
+                              <span class="help-block" *ngIf="((gatewayCommProtocolForm.get('dataFormatId').touched ||
+                              gatewayCommProtocolForm.get('dataFormatId').dirty) &&
+                              gatewayCommProtocolForm.get('dataFormatId').errors)">
+                                <span i18n="Message|Please select Data Format@@dataFormat.message"
+                                  *ngIf="gatewayCommProtocolForm.get('dataFormatId').errors.required">
+                                  Please select Data Format
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                          <label i18n="Error Check Algorithm|Error Check Algorithm@@errorCheckAlgorithm" class="">Error
+                            Check Algorithm</label>
+                          <div class="form-group">
+                            <div [ngClass]="{'has-error': ((gatewayCommProtocolForm.get('errorCheckAlgorithmId').touched ||
+                            gatewayCommProtocolForm.get('errorCheckAlgorithmId').dirty) &&
+                            gatewayCommProtocolForm.get('errorCheckAlgorithmId').errors)}">
+                            <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='errorCheckAlgorithmId'
+                              name="errorCheckAlgorithmId" formControlName="errorCheckAlgorithmId" [dataSource]='errorCheckAlgorithms'
+                              [placeholder]='errorCheckAlgorithmWaterMark' [fields]='errorCheckAlgorithmFields' [popupHeight]='height'
+                              [sortOrder]="sortDropDown" (filtering)='onFilteringErrorCheckAlgorithm($event)'
+                              [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                              (change)='errorCheckAlgorithmOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                              <!-- <select id="errorCheckAlgorithmId" formControlName="errorCheckAlgorithmId"
+                                class="form-control m-input">
+                                <option i18n="Option|Select@@select" [ngValue]='null'>--Select--</option>
+                                <option *ngFor="let errorCheckAlgorithm of errorCheckAlgorithms"
+                                  [ngValue]="errorCheckAlgorithm.id">{{errorCheckAlgorithm.name}}
+                                  // <span *ngIf="errorCheckAlgorithmId == dataSubProtocolModel.errorCheckAlgorithmId">
+                               // {{errorCheckAlgorithm.name}}</span> 
+                                </option>
+                              </select> -->
+                              <span class="help-block" *ngIf="((gatewayCommProtocolForm.get('errorCheckAlgorithmId').touched ||
+                              gatewayCommProtocolForm.get('errorCheckAlgorithmId').dirty) &&
+                              gatewayCommProtocolForm.get('errorCheckAlgorithmId').errors)">
+                                <span i18n=""
+                                  *ngIf="gatewayCommProtocolForm.get('errorCheckAlgorithmId').errors.required">
+                                  Please select Error Check Algorithm
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+
+                          <label i18n="Tag Seperator|Tag Seperator@@tagSeperator" class="">Tag Seperator</label>
+                          <div class="form-group">
+                            <input type="text" id="tagSeparator" formControlName="tagSeparator"
+                              class="form-control m-input"
+                              i18n-placeholder="Tag Seperator placeholderEnter Tag Seperator@@tagSeperator.placeholder"
+                              placeholder="Tag Seperator" />
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                          <label i18n="Start Validator|Start Validator@@startValidator" class="">Start Validator</label>
+                          <div class="form-group">
+                            <div [ngClass]="{'has-error': ((gatewayCommProtocolForm.get('startValidator').touched ||
+                            gatewayCommProtocolForm.get('startValidator').dirty) &&
+                            gatewayCommProtocolForm.get('startValidator').errors)}">
+                              <input type="text" id="startValidator" formControlName="startValidator"
+                                class="form-control m-input"
+                                i18n-placeholder="Start Validator|Enter Start Validator@@startValidator.placeholder"
+                                placeholder="Start Validator" (focusout)="validateStartValidatorText($event.target.value)"/>
+                              <span class="help-block" *ngIf="((gatewayCommProtocolForm.get('startValidator').touched ||
+                              gatewayCommProtocolForm.get('startValidator').dirty) &&
+                              gatewayCommProtocolForm.get('startValidator').errors)">
+                                <span i18n=""
+                                  *ngIf="gatewayCommProtocolForm.get('startValidator').errors.required">
+                                  Please Enter Start Validator
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                          <label i18n="End Validator|End Validator@@endValidator" class="">End Validator</label>
+                          <div class="form-group">
+                            <div [ngClass]="{'has-error': ((gatewayCommProtocolForm.get('endValidator').touched ||
+                            gatewayCommProtocolForm.get('endValidator').dirty) &&
+                            gatewayCommProtocolForm.get('endValidator').errors)}">
+                            <input type="text" id="endValidator" formControlName="endValidator"
+                              class="form-control m-input"
+                              i18n-placeholder="End Validator|Enter End Validator@@endValidator.placeholder"
+                              placeholder="End Validator" (focusout)="validateEndValidatorText($event.target.value)"/>
+                              <span class="help-block" *ngIf="((gatewayCommProtocolForm.get('endValidator').touched ||
+                              gatewayCommProtocolForm.get('endValidator').dirty) &&
+                              gatewayCommProtocolForm.get('endValidator').errors)">
+                                <span i18n=""
+                                  *ngIf="gatewayCommProtocolForm.get('endValidator').errors.required">
+                                  Please Enter End Validator
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                          <div class="row">
+                            <div class="form-group">
+                              <mat-checkbox formControlName="isStartValidatorCheckEnabled"
+                                class="example-margin commProtocolsClass" [value]="true"
+                                (change)="validateStartValidator($event)">
+                                Enable Start Validator Check
+                              </mat-checkbox>
+                            </div>
+                            <div class="form-group">
+                              <mat-checkbox formControlName="isEndValidatorCheckEnabled"
+                                class="example-margin commProtocolsClass" [value]="true"
+                                (change)="validateEndValidator($event)">
+                                Enable End Validator Check
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                          <div class="row">
+                            <div class="form-group">
+                              <mat-checkbox formControlName="isErrorCheckEnabled"
+                                class="example-margin commProtocolsClass" [value]="true"
+                                (change)="validateErrorCheck($event)">
+                                Enable Error Check
+                              </mat-checkbox>
+                            </div>
+                            <div class="form-group">
+                              <mat-checkbox formControlName="isLengthCheckEnabled"
+                                class="example-margin commProtocolsClass" [value]="true">
+                                Enable Length Check
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="path finalLine"></div>
+
+                    <div class="row" style="    text-align: right;padding: 23px 0;">
+                      <div class="col-md-12">
+
+                        <button type="button" (click)="cancelCommunicationTab()"
+                          class="btn btn-default text-center cancelActionButton" i18n="Cancel button|Cancel@@cancel">
+                          Cancel
+                        </button>
+
+                        &nbsp;
+                        <button type="button" id="cancelTenant" class="btn btn-secondary text-center resetActionButton"
+                          (click)="resetgatewayCommProtocolForm(gatewayCommProtocol)" i18n="Reset button|Reset@@reset">
+                          Reset </button>
+                        &nbsp;
+                        <span>
+                          <button i18n="Review&Save button|Review&Save@@review&Save"
+                            class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                            [disabled]="!gatewayCommProtocolForm.valid">
+                            Review & Save</button>
+                        </span>
+                      </div>
+                    </div>
+                  </form>
+                  <!-- Dynamic Form Ends Here  -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview Page For Dynamic Form Starts Here  -->
+            <div *ngIf="communicationReadModeView" class="formReadMode">
+              <div class="row margin_0px">
+                <div class="col-md-12 padding_0px">
+                  <div class="padding_Form">
+                    <div class="formReadMode">
+                      <div class="form-group-custom1">
+                        <legend i18n="Communication Detail header|Communication Detail@@communicationDetail"
+                          class="m-b-15">Communication Parameter Details</legend>
+                        <div class="form-row">
+                          <a (click)="backButton()" class="edit_section">
+                            <img src="/assets/img/action/edit.png" alt="edit communication detail"
+                              i18n-matTooltip="Image tooltip|Click to edit Communication Detail@@clickToEditCommunicationDetail"
+                              matTooltip="Click to edit Communication Detail">
+                          </a>
+                          <div class="form-group col-sm-6 col-md-6"
+                            *ngFor="let gatewayParamValue of commProtocol.gatewayCommProtocolParamValues; let i= index">
+                            <div class="dynamic_label">
+                              <div class="font-weight-bold">
+                                {{commProtocolParams[i].commProtocolParamGroupName}}
+                               </div>
+                               <label class="">{{commProtocolParams[i].name}}</label>
+                              </div>
+                               <p>
+                                 {{gatewayParamValue.value | hyphen}}
+                               </p>
+                            
+                            
+                          </div>
+                          <div class="path"></div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Error Check Type|Error Check Type@@errorCheckType" class="">Error Check
+                              Type</label>
+                            <p *ngIf='commProtocol.errorCheckTypeId===null else noBlock1'>
+                              {{commProtocol.errorCheckTypeId | hyphen}}
+                            </p>
+                            <ng-template #noBlock1>
+                              <p *ngFor='let errorCheckType of errorCheckTypes'>
+                                <span
+                                  *ngIf='errorCheckType.id===parseInt(commProtocol.errorCheckTypeId)'>{{errorCheckType.name}}</span>
+                              </p>
+                            </ng-template>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Error Check Algorithm|Error Check Algorithm@@errorCheckAlgorithm"
+                              class="">Error Check Algorithm</label>
+                            <p *ngIf='commProtocol.errorCheckAlgorithmId===null else noBlock'>
+                              {{commProtocol.errorCheckAlgorithmId | hyphen}}
+                            </p>
+                            <ng-template #noBlock>
+                              <p *ngFor='let errorCheckAlgorithm of errorCheckAlgorithms'>
+                                <span *ngIf='errorCheckAlgorithm.id===parseInt(commProtocol.errorCheckAlgorithmId)'>
+                                  {{errorCheckAlgorithm.name}}
+                                </span>
+                              </p>
+                            </ng-template>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Data Handler Format|Data Handler Format@@dataHandlerFormat" class="">Data
+                              Handler Format</label>
+                            <p *ngFor='let format of dataHandlerFormats'>
+                              <span *ngIf='format.id===parseInt(commProtocol.dataFormatId)'>{{format.name}}</span>
+                            </p>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Tag Seperator|Tag Seperator@@tagSeperator" class="">Tag Seperator</label>
+                            <p>
+                              {{commProtocol.tagSeparator | hyphen}}
+                            </p>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Start Validator|Start Validator@@startValidator" class="">Start
+                              Validator</label>
+                            <p>
+                              {{commProtocol.startValidator | hyphen}}
+                            </p>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="End Validator|End Validator@@endValidator" class="">End Validator</label>
+                            <p>
+                              {{commProtocol.endValidator | hyphen}}
+                            </p>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Enable Start Validator Check|Enable Start Validator Check@@startValidatorCheck"
+                              class="">Enable Start Validator Check</label>
+                            <span *ngIf="commProtocol.isStartValidatorCheckEnabled else startValidator">
+                              <p>
+                                Yes
+                              </p>
+                            </span>
+                            <ng-template #startValidator>
+                              <p>No</p>
+                            </ng-template>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Enable End Validator Check|Enable End Validator Check@@endValidatorCheck"
+                              class="">Enable End Validator Check</label>
+                            <span *ngIf="commProtocol.isEndValidatorCheckEnabled else endValidator">
+                              <p>
+                                Yes
+                              </p>
+                            </span>
+                            <ng-template #endValidator>
+                              <p>No</p>
+                            </ng-template>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Enable Error Check|Enable Error Check@@errorCheck" class="">Enable Error
+                              Check</label>
+                            <span *ngIf="commProtocol.isErrorCheckEnabled else errorCheck">
+                              <p>
+                                Yes
+                              </p>
+                            </span>
+                            <ng-template #errorCheck>
+                              <p>No</p>
+                            </ng-template>
+                          </div>
+                          <div class="form-group col-sm-6 col-md-6">
+                            <label i18n="Enable Length Check|Enable Length Check@@lengthCheck" class="">Enable Length
+                              Check</label>
+                            <span *ngIf="commProtocol.isLengthCheckEnabled else lengthCheck">
+                              <p>
+                                Yes
+                              </p>
+                            </span>
+                            <ng-template #lengthCheck>
+                              <p>No</p>
+                            </ng-template>
+                          </div>
+                        </div>
+                        <!--  <div class="path"></div> -->
+                      </div>
+                      <div class="path finalLine"></div>
+                      <div class="row" style="    text-align: right;padding: 23px 0;">
+                        <div class="col-md-12">
+                          <button type="button" class="btn btn-default text-center backActionButton"
+                            (click)="backButton()" i18n="Back button|Back@@back">
+                            Back
+                          </button>
+                          &nbsp;
+                          <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton"
+                            type="submit" (click)="createGatewayComProtocol(gatewayCommProtocol)">
+                            Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Preview Page For Dynamic Form Ends Here....  -->
+
+            <div class="path" *ngIf='gatewayCommIOTagsListView'></div>
+
+            <!-- List of Communication Protocol IO Tags Start Here..... -->
+            <div id="gatewayCommIOTagsList" *ngIf='gatewayCommIOTagsListView' class="px-2 pb-4">
+              <div class="container mat-elevation-z8 panel panel-inverse mb-0" style="position: relative">
+
+                <app-panel-user i18n-name="Panel header|List of Communication I/O Tags@@listofCommunicationIOTags"
+                  name="List of Communication I/O Tags" #panelHeader
+                  (refreshTableList)="refreshTableListFunction();panelHeader.setTableDasourceAsDefault(this.gatewayCommIOTagDataSource)"
+                  (scrollBarDirective)="onPaginateViewScrollToTop()">
+
+                  <!-- Input field for search -->
+                  <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+                    (keyup)="panelHeader.applyFilter($event.target.value, gatewayCommIOTagDataSource)"
+                    i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+                  <!-- Search button -->
+                  <a searchButton href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+                    matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+                    (click)="panelHeader.searchButton(this.gatewayCommIOTagDataSource)">
+                    <i class="fa fa-search"></i>
+                  </a>
+                  <!-- Add New button -->
+                  <a addNewButton routerLink="{{this.addGatewayCommIoTagRoutingPath}}"
+                    i18n-matTooltip="AddNew button tooltip|Click to Add New@@addNew" matTooltip="Click to Add New"
+                    class="btn btn-xs btn-icon btn-circle btn-warning"
+                    (click)="setGatewayCommProtocolData(gatewayCommProtocol,null,null)">
+                    <i class="fa fa-plus"></i>
+                  </a>
+
+                  <div class="position-relative">
+                    <div class="ps position-relative" appScrollbarDirective
+                      *ngIf="gatewayCommIOTagDataSource && gatewayCommIOTagDataSource.data.length">
+                      <ng-container *ngTemplateOutlet="matTableCommIOTag"></ng-container>
+                    </div>
+
+                    <div class="table-responsive"
+                      *ngIf="!gatewayCommIOTagDataSource || !gatewayCommIOTagDataSource.data.length">
+                      <ng-container *ngTemplateOutlet="matTableCommIOTag"></ng-container>
+                    </div>
+                    <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound"
+                      *ngIf="(NoRecordsFoundIOTag && !showLoaderImage) || (gatewayCommIOTagDataSource && !gatewayCommIOTagDataSource.filteredData.length && !showLoaderImage)">
+                      No records found!
+                    </h3>
+                    <ng-container>
+                      <app-mat-table-paginator [dataSource]="this.gatewayCommIOTagDataSource" #myGatewayCommPaginator
+                       (paginator)="matTablePaginator($event)" (scrollBarDirective)="onPaginateViewScrollToTop()">
+                      </app-mat-table-paginator>
+                     
+                    </ng-container>
+                  </div>
+
+                  <ng-template #matTableCommIOTag>
+                    <table mat-table [dataSource]="gatewayCommIOTagDataSource"
+                      class="table table-striped table-bordered" matSort>
+                      <ng-container matColumnDef="id">
+                        <th i18n="Table id|Sno@@sNo" mat-header-cell *matHeaderCellDef>S.No.</th>
+                        <td mat-cell *matCellDef="let element; let i = index;">
+                          {{ (i+1) }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="ioTag">
+                        <th i18n="Table|I/O Tag@@iOTag" mat-header-cell *matHeaderCellDef mat-sort-header>I/O Tag</th>
+                        <td mat-cell *matCellDef="let element"> {{element.gatewayIOTag.name}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="index">
+                        <th i18n="Table|Index@@index" mat-header-cell *matHeaderCellDef mat-sort-header>Index</th>
+                        <td mat-cell *matCellDef="let element"> {{element.tagIndex}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="length">
+                        <th i18n="Table|Length@@length" mat-header-cell *matHeaderCellDef mat-sort-header>Length</th>
+                        <td mat-cell *matCellDef="let element"> {{element.tagLength}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="lengthUnit">
+                        <th i18n="Table|Length Unit@@lengthUnit" mat-header-cell *matHeaderCellDef mat-sort-header>
+                          Length Unit</th>
+                        <td mat-cell *matCellDef="let element"> {{element.tagLengthUnit}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="tagKeyName">
+                        <th i18n="Table|Tag key Name@@tagkeyName" mat-header-cell *matHeaderCellDef mat-sort-header>Tag
+                          key Name</th>
+                        <td mat-cell *matCellDef="let element"> {{element.tagKeyName}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="dataFormat">
+                        <th i18n="Table|Data Format@@dataFormat" mat-header-cell *matHeaderCellDef mat-sort-header>Data
+                          Format</th>
+                        <td mat-cell *matCellDef="let element"> {{element.dataFormatName}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="parentTag">
+                        <th i18n="Table|Parent Tag@@parentTag" mat-header-cell *matHeaderCellDef mat-sort-header>Parent
+                          Tag</th>
+                        <td mat-cell *matCellDef="let element"> {{element.parentTagName}}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="action" style="width: 300px;">
+                        <th i18n="Table|Action@@action" mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">
+                          <a class="" routerLink="{{this.addGatewayCommIoTagRoutingPath}}"
+                            (click)="addChildIOTagData(gatewayCommProtocol,element.id,'view')">
+                            <i class="fas fa-md fa-fw m-r-10 fa-eye" alt="view"
+                              i18n-matTooltip="View button|Click to View tooltip@@clickToView"
+                              matTooltip="Click to View"></i>
+                          </a>
+                          <a class="" routerLink="{{this.addGatewayCommIoTagRoutingPath}}"
+                            (click)="addChildIOTagData(gatewayCommProtocol,element.id,'edit')">
+                            <i class="fas fa-md fa-fw m-r-10 fa-edit" alt="edit"
+                              i18n-matTooltip="Edit button|Click to Edit tooltip@@clickToEdit"
+                              matTooltip="Click to Edit"></i>
+                          </a>
+                          <a class="" routerLink="{{this.addGatewayCommIoTagRoutingPath}}"
+                            (click)="addChildIOTagData(gatewayCommProtocol,element.id,'addChildIOTag')">
+                            <i class="fas fa-md fa-fw m-r-10 fa-share-square" alt="Add Child IO Tags"
+                              i18n-matTooltip="Child Tag button|Click to Add Child Tag@@clickToManageChildTag"
+                              matTooltip="Click to Add Child IO Tag"></i>
+                          </a>
+                          <a class="" (click)="deleteCommIOTag(element);">
+                            <i class="fas fa-md fa-fw m-r-10 fa-trash-alt" alt="delete"
+                              i18n-matTooltip="Delete button|Click to Delete tooltip@@clickToDelete"
+                              matTooltip="Click to Delete"></i>
+                          </a>
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="gatewayCommIOTagDisplayedColumns;sticky: true"></tr>
+                      <tr mat-row *matRowDef="let row; columns: gatewayCommIOTagDisplayedColumns;"></tr>
+                    </table>
+                  </ng-template>
+                </app-panel-user>
+
+
+
+              </div>
+            </div>
+
+            <!-- List of Communication Protocol IO Tags Ends Here..... -->
+
+            <div class="path" *ngIf='IODataHandlersListView'></div>
+
+            <!-- List of IO Data Handlers starts here... -->
+            <div id="IODataHandlersList" *ngIf='IODataHandlersListView' class="px-2 pb-2">
+              <div class="container mat-elevation-z8" style="position: relative">
+                <app-panel-user i18n-name="Panel header|List of I/O Data Handlers@@listOfIODataHandlers"
+                  name="List of I/O Data Handlers" #panelHeader
+                  (refreshTableList)="refreshTableListFunction();panelHeader.setTableDasourceAsDefault(this.IODataHandlerDataSource)"
+                  (scrollBarDirective)="onPaginateViewScrollToTop()">
+
+                  <!-- Input field for search -->
+                  <input searchfield style="display: none;" id="IODataHandlerDataSource" class="form-control m-input ml-2"
+                    (keyup)="panelHeader.applyFilter($event.target.value, IODataHandlerDataSource)"
+                    i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+                  <!-- Search button -->
+                  <a searchButton href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+                    matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+                    (click)="searchButton()">
+                    <i class="fa fa-search"></i> 
+                  </a> 
+                  <!-- Add New button -->
+                  <a addNewButton routerLink="{{this.IODataHandlerFormRoutingPath}}"
+                    i18n-matTooltip="AddNew button tooltip|Click to Add New@@addNew" matTooltip="Click to Add New"
+                    class="btn btn-xs btn-icon btn-circle btn-warning"
+                    (click)="setGatewayCommProtocolData(gatewayCommProtocol,null,null)">
+                    <i class="fa fa-plus"></i>
+                  </a>
+
+                  <div class="postion-relative">
+                    <!-- List View of IO Data Handlers starts here... -->
+                    <div class="ps position-relative" appScrollbarDirective
+                      *ngIf="IODataHandlerDataSource && IODataHandlerDataSource.data.length">
+                      <ng-container *ngTemplateOutlet="matTableForDataHandler"></ng-container>
+                    </div>
+
+                    <div class="dh-table-responsive"
+                      *ngIf="!IODataHandlerDataSource || !IODataHandlerDataSource.data.length">
+                      <ng-container *ngTemplateOutlet="matTableForDataHandler"></ng-container>
+                    </div>
+
+                    <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound"
+                      *ngIf="(NoRecordsFoundIODH && !showLoaderImage) || (IODataHandlerDataSource && !IODataHandlerDataSource.filteredData.length && !showLoaderImage)">
+                      No records found!
+                    </h3>
+                    <ng-container>
+                      <app-mat-table-paginator [dataSource]="this.IODataHandlerDataSource" #myIODataHandlerPaginator
+                      (paginator)="matTablePaginator($event)" (scrollBarDirective)="onPaginateViewScrollToTop()">
+                    </app-mat-table-paginator>
+                      
+                    </ng-container>
+                    <!-- List View of IO Data Handlers ends here... -->
+                  </div>
+                  <ng-template #matTableForDataHandler>
+                    <table mat-table [dataSource]="IODataHandlerDataSource" class="table table-striped table-bordered"
+                      matSort>
+                      <ng-container matColumnDef="id">
+                        <th i18n="Table id|Sno@@sNo" mat-header-cell *matHeaderCellDef>S.No.</th>
+                        <td mat-cell *matCellDef="let element; let i = index;">
+                          {{ (i+1) }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="name">
+                        <th i18n="Table|Name@@name" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="dhIdentifier">
+                        <th i18n="Table|DH Code@@dHCode" mat-header-cell *matHeaderCellDef mat-sort-header>DH Code </th>
+                        <td mat-cell *matCellDef="let element"> {{element.dhCode}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="operationMode">
+                        <th i18n="Table|Operation Mode@@operationMode" mat-header-cell *matHeaderCellDef
+                          mat-sort-header> Operation Mode
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.operationMode}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="responseRequired">
+                        <th i18n="Table|Response Required@@responseRequired" mat-header-cell *matHeaderCellDef
+                          mat-sort-header>Response
+                          Required
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.sendResponse}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="status">
+                        <th i18n="Table|Status@@status" mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="action" style="width: 300px;">
+                        <th i18n="Table|Action@@action" mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">
+                          <a class="" routerLink="{{this.IODataHandlerFormRoutingPath}}"
+                            (click)="setGatewayCommProtocolData(gatewayCommProtocol,element.id,'view')">
+                            <i class="fas fa-md fa-fw m-r-10 fa-eye" alt="view"
+                              i18n-matTooltip="View button|Click to View tooltip@@clickToView"
+                              matTooltip="Click to View"></i>
+                          </a>
+                          <a class="" routerLink="{{this.IODataHandlerFormRoutingPath}}"
+                            (click)="setGatewayCommProtocolData(gatewayCommProtocol,element.id,'edit')">
+                            <i class="fas fa-md fa-fw m-r-10 fa-edit" alt="edit"
+                              i18n-matTooltip="Edit button|Click to Edit tooltip@@clickToEdit"
+                              matTooltip="Click to Edit"></i>
+                          </a>
+                          <a class="" routerLink="{{this.gatewayIoDhTagRoutingPath}}"
+                            (click)="setGatewayCommProtocolData(gatewayCommProtocol,element.id,'dhIOTag')">
+                            <i class="fas fa-md fa-fw m-r-10 fa-share-square" alt="Add DH IO Tags"
+                              i18n-matTooltip="Manage DH Tags button|Click to Manage DH IO Tags@@clicktoManageDHIOTags"
+                              matTooltip="Click to Manage DH IO Tags"></i>
+                          </a>
+                          <a class="" routerLink="{{this.gatewayIoDhResponseTagRoutingPath}}"
+                            (click)="setGatewayCommProtocolData(gatewayCommProtocol,element.id,'dhResponseIOTag')">
+                            <i class="fas fa-md fa-fw m-r-10 fa-share-square" alt="Add DH Response IO Tags"
+                              i18n-matTooltip="Manage DH Response IO Tags button|Click to Manage DH Response IO Tags@@clickToManageDHResponseIOTags"
+                              matTooltip="Click to Manage DH Response IO Tags"></i>
+                          </a>
+                          <a class="" (click)="deleteGatewayIODataHandler(gatewayCommProtocol.gateway.id,element.id)">
+                            <i class="fas fa-md fa-fw m-r-10 fa-trash-alt" alt="delete"
+                              i18n-matTooltip="Delete button|Click to Delete tooltip@@clickToDelete"
+                              matTooltip="Click to Delete"></i>
+                          </a>
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="IODHdisplayedColumns;sticky: true"></tr>
+                      <tr mat-row *matRowDef="let row; columns: IODHdisplayedColumns;"></tr>
+                    </table>
+                  </ng-template>
+                </app-panel-user>
+              </div>
+            </div>
+            <!-- List of IO Data Handlers ends here... -->
+          </div>
+
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+    <!-- end nav-tabs -->
+  </div>
+  <!-- end col-6 -->
+</div>
+<!-- end row -->
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+  align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+
+<!-- Global modal notification component selector  for deletion and after deletetion success, success with failed-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()" (modelNotificationDanger)="confirmDelete();"
+  (modelNotificationSuccess)="successCreateDeleteHandling()"></app-modal-notification>

@@ -1,0 +1,11 @@
+.table {
+    border: 1px solid #e2e7eb;
+}
+
+.table>tbody>tr>td {
+    border: dotted 1px #dde5ed!important;
+}
+
+.table-responsive {
+    max-height: 600px;
+}

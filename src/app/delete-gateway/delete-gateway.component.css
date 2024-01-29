@@ -1,0 +1,75 @@
+.table_class{
+    max-height: 230px;
+    overflow: auto;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(170, 170, 170);
+    border-radius: 0px;
+}
+.mat-header-row{
+    min-height: 28px;
+}
+.mat-header-cell{
+    padding-left:5px;
+    border: var(--table-table-bordered-thead-first-child-tr-first-child-th-border)!important;
+    font-weight: 600;
+    color: #506D85;
+}
+
+.mat-row .mat-cell {
+    cursor: pointer;
+    padding-left:5px;
+    border: var(--table-table-bordered-thead-first-child-tr-first-child-th-border)!important;
+  }
+.mat-column-id{
+    flex: 0 0 6% !important;
+    width: 2% !important;
+}
+.mat-column-authToken{
+    flex: 0 0 28% !important;
+}
+
+.mat-column-gatewayModelName{
+    flex: 0 0 10% !important;
+}
+.mat-column-gatewayTypeName{
+    flex: 0 0 10% !important;
+}
+.row.margin_0px.rowBox.margin_top_5px {
+    height: 460px;
+} 
+.textResponsiveness{
+    text-align: center;
+    padding-left:20px;
+    padding-top: 20px;
+    padding-right:20px;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 900px){
+ .textResponsiveness{
+    padding-left:0px;
+    text-align: center;
+ }
+ .mat-column-nodeIdentifier{
+    flex: 0 0 40% !important;
+}
+.mat-column-authToken{
+    flex: 0 0 80% !important;
+}
+.mat-column-gatewayTemplateName{
+    flex: 0 0 50% !important;
+}
+ .mat-header-cell{
+    min-width: 5rem;
+}
+ .mat-cell {
+    padding-left:5px;
+    min-width: 5rem;
+}
+
+}

@@ -1,0 +1,303 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Header|Service Request@@Service Request" class="page-header">
+      Service Request
+    </h1>
+  </div>
+</div>
+
+<div class="row margin_0px rowBox margin_top_5px m-b-75" style="padding-top: 15px;">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+    <div *ngIf="uploadedExcel == 'serviceRequestForm'">
+      <form [formGroup]="dateForm" autocomplete="off">
+        <div class="form-group-custom1">
+          <div class="m-form__group row">
+            <div class="col-md-4">
+              <label i18n="servicerequestnumber|servicerequestnumber@@servicerequestnumber">Service Request
+                Number(s)</label>
+              <div class="form-group">
+                <textarea type="text" id="serviceRequest" formControlName="serviceRequest" (keyup)="onKey($event)"
+                  class="form-control sm-input textAreaHeight"
+                  placeholder="Enter Service Request Numbers With Comma Separator"></textarea>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label i18n="From Date|From Date@@FromDate*">From Date/Time</label>
+              <div class="form-group">
+                <div [ngClass]="">
+                  <div class="input-group">
+                    <input (click)="d2.toggle()" class="form-control" placeholder="MM/DD/YYYY"
+                      formControlName="fromDate" placement="bottom-right" ngbDatepicker #d2="ngbDatepicker"
+                      [maxDate]="endDate" (dateSelect)="addMinDateValue()" (keyup)="validateFromDate()"
+                      (ngModelChange)="changeStartDate($event)">
+                    <div>
+                      <input type="time" id="fromTime" formControlName="fromTime" value="00:00" name="fromTime"
+                        placeholder="00:00" (click)="validateStartAndEndTime($event.target.id)"
+                        (keyup)="validateStartAndEndTime($event.target.id)"
+                        (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                    </div>
+                  </div>
+                  <span class="help-block" *ngIf="validateFromDateField">
+                    <span style="text-align: right;" i18n="Message|Please Select From Date@@startDate.message1">Please
+                      Select From Date</span>
+                  </span>
+                  <span class="help-block" *ngIf="validateTime">
+                    <span style="text-align: right;"
+                      i18n="Message|Please enter valid Start Time@@startDate.message1">From Time should be less than
+                      Till Time</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label i18n="Till Date|Till Date@@tillDate/Time*">Till Date/Time</label>
+              <div class="form-group">
+                <div [ngClass]="">
+                  <div class="input-group">
+                    <input (click)="d1.toggle()" class="form-control" placeholder="MM/DD/YYYY"
+                      formControlName="tillDate" placement="bottom-right" ngbDatepicker #d1="ngbDatepicker"
+                      [maxDate]="todayDate" [minDate]="minDate" (dateSelect)="validateFromStartFromEndDate()"
+                      (ngModelChange)="changeEndDate($event)">
+                    <div>
+                      <input type="time" id="tillTime" i18n-placeholder="" placeholder="HH:mm"
+                        formControlName="tillTime" (click)="validateStartAndEndTime($event.target.id)"
+                        (keyup)="validateStartAndEndTime($event.target.id)"
+                        (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                    </div>
+                  </div>
+                  <span class="help-block" *ngIf="validateEndTime">
+                    <span style="text-align: right;" i18n="Message|Please enter valid End Time@@endDate.message1"> Till
+                      Time should be greater than From Time
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="path finalLine"></div>
+          <div class="row">
+            <div class="col-md-12">
+              <span matTooltip="No Data available to reset" [matTooltipDisabled]="enableButton">
+                <button type="button" class="btn btn-secondary text-center resetActionButton" [disabled]="!enableButton"
+                  (click)="resetForm()">
+                  Reset
+                </button>
+              </span>&nbsp;
+              <span matTooltip="Enter service request number" [matTooltipDisabled]="enableButton">
+                <button class="btn btn-primary text-center float-right" type="submit" [disabled]="!enableButton"
+                  (click)="onClickViewTable()">
+                  View
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+      <div *ngIf="displayTable == true">
+        <div class="row margin_0px rowBox margin_top_5px">
+          <div class="col-md-12 padding_0px">
+            <!-- Response Table -->
+            <app-panel-user i18n-name="Panel header|Service Request@@Service Request" name="Service Request(s)"
+              #panelHeader style="text-align: left;">
+              <!-- Input field for search -->
+              <!-- Input field for search -->
+              <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+                (keyup)="panelHeader.applyFilter($event.target.value, dataSource)"
+                i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+              <!-- Search button -->
+              <a searchButton href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+                matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelHeader.searchButton(this.dataSource)">
+                <i class="fa fa-search"></i>
+              </a>
+              <div class="table_response">
+                <mat-table #table [dataSource]="dataSource" matSort>
+                  <ng-container matColumnDef="serialnumber">
+                    <mat-header-cell i18n="Table serialnumber|Sno@@sNo" *matHeaderCellDef>S.No.</mat-header-cell>
+                    <mat-cell *matCellDef="let field; let i = index;">{{ i+1 }}</mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="serviceRequest">
+                    <mat-header-cell i18n="Table serviceRequest|serviceRequestNumber@@serviceRequestNumber"
+                      *matHeaderCellDef>Service Request Number</mat-header-cell>
+                    <mat-cell *matCellDef="let field;">{{field.serviceRequestNumber | hyphen}}</mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="url">
+                    <mat-header-cell i18n="Table url|url@@url" *matHeaderCellDef>Url</mat-header-cell>
+                    <mat-cell *matCellDef="let field;">{{field.url| hyphen}}</mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="httpMethod">
+                    <mat-header-cell i18n="Table httpMethod|httpMethod@@httpMethod" *matHeaderCellDef>HTTP
+                      Method</mat-header-cell>
+                    <mat-cell *matCellDef="let field;">{{field.httpMethod| hyphen}}</mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                    <mat-header-cell i18n="Table status|status@@status" *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let field;">{{field.status| hyphen}}</mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="action">
+                    <mat-header-cell i18n="Table|Action@@action" mat-header-cell *matHeaderCellDef> Action
+                    </mat-header-cell>
+                    <mat-cell mat-cell *matCellDef="let field">
+                      <a class="" (click)="clickToView(field)">
+                        <i class="fas fa-md fa-fw m-r-10 fa-eye" alt="view"
+                          i18n-matTooltip="View button|Click to View tooltip@@clickToView"
+                          matTooltip="Click to View"></i>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+                <h3 class="text-center noRecordsFound" *ngIf="noRecordFound"> No records found! </h3>
+                <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+                  align="center">
+                  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+                </div>
+              </div>
+            </app-panel-user>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Start Read View -->
+    <div *ngIf="uploadedExcel == 'readView'">
+      <div class="formReadMode">
+        <div class="form-group-custom1" style="padding-left: 20px;">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label i18n="Service Request Number|Service Request Number@@Service Request Number" class="">Service
+                    Request Number</label>
+                  <p> {{viewGatewayObj.serviceRequestNumber | hyphen}}</p>
+                </td>
+                <td>
+                  <label i18n="Total Records|Total Records@@TotalRecords" class="">Total Records</label>
+                  <p>{{viewGatewayObj.totalRecords | hyphen}}</p>
+                </td>
+                <td>
+                  <label i18n="Valid Records|Valid Records@@Valid Records" class="">Valid Records</label>
+                  <p *ngIf="0==viewGatewayObj.validRecords || null==viewGatewayObj.validRecords">0</p>
+                  <p *ngIf="null!=viewGatewayObj.validRecords || viewGatewayObj.validRecords">
+                    {{viewGatewayObj.validRecords}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label i18n="Created Records|Created Records@@Created Records">Created Records </label>
+                  <p *ngIf="0==viewGatewayObj.recordsCreated || null==viewGatewayObj.recordsCreated">0</p>
+                  <p i18n="Records Created|Records Created@@Records Created"
+                    *ngIf="null!=viewGatewayObj.recordsCreated || viewGatewayObj.recordsCreated">
+                    <a href="javascript:;" style="color: rgb(95, 192, 95);" matTooltip="View Created Record(s)"
+                      (click)="getFieldData(viewGatewayObj.serviceRequestNumber,'Created')">{{viewGatewayObj.recordsCreated}}</a>
+                  </p>
+                </td>
+                <td>
+                  <label i18n="Failed Records|Failed Records@@Failed Records"> Failed Records</label>
+                  <p *ngIf="0==viewGatewayObj.errorRecords || null==viewGatewayObj.errorRecords">0</p>
+                  <p i18n="Failed Records|Failed Records@@Failed Records"
+                    *ngIf="null!=viewGatewayObj.errorRecords||viewGatewayObj.errorRecords">
+                    <a href="javascript:;" style="color: red;" matTooltip="View Failed Record(s)"
+                      (click)="getFieldData(viewGatewayObj.serviceRequestNumber,'Failed')">{{viewGatewayObj.errorRecords}}</a>
+                  </p>
+                </td>
+                <td>
+                  <label i18n="InValid Records|InValid Records@@InValid Records">InValid Records</label>
+                  <p *ngIf="0==viewGatewayObj.inValidRecords || null==viewGatewayObj.inValidRecords">0</p>
+                  <p i18n="InValid Records|InValid Records@@InValid Records"
+                    *ngIf="viewGatewayObj.inValidRecords && null!=viewGatewayObj.inValidRecords">
+                    <a href="javascript:;" style="color: red;" matTooltip="View InValid Record(s)"
+                      (click)="getFieldData(viewGatewayObj.serviceRequestNumber,'Invalid')">{{viewGatewayObj.inValidRecords}}</a>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label i18n="Organization Name|Organization Name@@Organization Name">Organization Name</label>
+                  <p>{{organizationName| hyphen}}</p>
+                </td>
+                <td>
+                  <label i18n="AssetTemplate Name|AssetTemplate Name@@AssetTemplate Name">AssetTemplate Name</label>
+                  <p *ngIf="assetTemplate.length > 0">{{assetTemplate}}</p>
+                  <p *ngIf="assetTemplate.length == 0">-</p>
+
+                </td>
+                <td>
+                  <label i18n="GatewayTemplate Name|GatewayTemplate Name@@GatewayTemplate Name">GatewayTemplate
+                    Name</label>
+                  <p *ngIf="gatewayTemplate.length > 0">{{gatewayTemplate}}</p>
+                  <p *ngIf="gatewayTemplate.length == 0">-</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="inline-size: 310px;">
+                  <label i18n="Url|Url@@Url" class="">Url</label>
+                  <p> {{viewGatewayObj.url | hyphen}} </p>
+                </td>
+                <td>
+                  <label i18n="Status|Status@@Status" class="">Status</label>
+                  <p> {{viewGatewayObj.status | hyphen}} </p>
+                </td>
+                <td>
+                  <label i18n="Date|Date@@Date" class="">Date</label>
+                  <p> {{viewGatewayObj.createdOn | date:'d/MM/yyyy' | hyphen}} </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="float: right; ">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton($event)"
+              i18n="Back button|Back@@back" style="margin-right: 15px;"> Back </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Read View -->
+
+    <!-- error records start -->
+    <div *ngIf="errorRecordTable">
+      <div class="row margin_0px rowBox margin_top_2px">
+        <div class="col-md-12 padding_0px">
+          <app-panel-user i18n-name="Panel header|Error Record(s)@@Error Record(s)"
+            name="{{errorRecordPanel}} Record(s)" #panelHeader style="text-align: left;">
+            <div class="errorRecordTable_style">
+              <mat-table #table [dataSource]="errorRecordsObject" matSort>
+                <ng-container matColumnDef="sno">
+                  <mat-header-cell *matHeaderCellDef>S.No.</mat-header-cell>
+                  <mat-cell *matCellDef="let field;let i=index">{{i+1 | hyphen}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef>Gateway Name</mat-header-cell>
+                  <mat-cell *matCellDef="let field;">{{field.gatewayName| hyphen}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="identifier">
+                  <mat-header-cell *matHeaderCellDef>Gateway Identifier</mat-header-cell>
+                  <mat-cell *matCellDef="let field;">{{field.gatewayIdenifier| hyphen}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="errorMessage">
+                  <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
+                  <mat-cell *matCellDef="let field;">{{field.statusDescription| hyphen}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayErrorRecordColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayErrorRecordColumns"></mat-row>
+              </mat-table>
+              <h3 class="text-center noRecordsFound" *ngIf="noRecordFound"> No records found! </h3>
+            </div>
+          </app-panel-user>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showErrorLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+      align="center">
+      <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="30%" alt="Loading........">
+    </div>
+    <!-- error records end -->
+  </div>
+</div>

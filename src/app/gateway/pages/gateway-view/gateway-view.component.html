@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Page header| View Gateway@@viewGateway" class="page-header">
+      View Gateway
+    </h1>
+  </div>
+</div>
+<div class="row margin_0px rowBox">
+    <div class="col-md-12 padding_0px">
+      <div class="padding_Form">
+        <div class="formReadMode">
+          <div class="form-group-custom1">
+            <legend i18n="Gateway Configuration header|Gateway Configuration@@gatewayConfiguration" class="m-b-15">Gateway Configuration</legend>
+            <!-- Injecting read view -->
+           <app-gateway-read-view (navigateTemplate)="backButton($event)"></app-gateway-read-view>
+          </div>
+          <div class="path finalLine"></div>
+          <div class="row" style="    text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton($event)" i18n="Back button|Back@@back"> Back
+              </button>
+              &nbsp;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,63 @@
+<div class="panel panel-inverse mb-0" style="position: relative">
+  <app-panel-user i18n-name="Panel header|Communication Standard Pin Port Mapping Details@@communicationStandardPinPortMappingDetails" name="Communication Standard Pin Port Mapping Details"
+    (refreshTableList)="refreshTableListFunction()">
+    <div class="row margin_0px">
+      <div class="col-lg-12 padding_0px rowBox">
+        <div class="padding_Form">
+          <div class="form-group-custom1">
+            <!-- <legend i18n="@@CommunicationStandardPinPortMappingDetails" class="m-b-15">Communication Standard Pin Port Mapping Details</legend> -->
+            <div id="gatewayModelCommStdMapping">
+              <div class="m-form__group row">
+                <div class="col-lg-6">
+                  <label i18n='Gateway Model Name|Gateway Model Name@@gatewayModelName' class="">Gateway Model Name </label>
+                  <div class="form-group">
+                      <input type="text" style="font-weight: bold" [readonly]="true" class="form-control m-input"
+                        value={{gatewayModelName}}>
+                    </div>
+                </div>
+              </div>
+              <div class="row margin_0px" style="display: block;">
+                <div *ngFor="let sourceData of source" style="margin-bottom:10px;">
+                  <div>
+                    <div class="col-lg-12" style="border: 1px solid rgb(197, 195, 195); height: 30px;line-height: 30px;">
+                      <span><b>{{sourceData.commStandardName}}</b></span>
+                      <span class="spacer">&nbsp;</span>
+                    </div>
+                    <div class="col-lg-12" style="border: 1px solid rgb(197, 195, 195);padding: 10px;">
+                      <dual-list class="dualBoxList" [sort]="keepSorted" [source]="sourceData.available" [key]="key"
+                        [display]="display" [filter]="filter"  [(destination)]="sourceData.assigned" height="175px"
+                        [format]="format" [disabled]="disabled"></dual-list>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="path finalLine"></div>
+              <div class="row" style="text-align: right;padding: 23px 0;">
+                <div class="col-md-12">
+                  <button type="button" id="backToGatewayModel" class="btn btn-default text-center cancelActionButton"
+                    (click)="backToGatewayModel()" i18n="Cancel button|Cancel@@cancel"> Cancel
+                  </button>
+                  &nbsp;
+                  <button type="button" id="resetGatewayModelCommStdMapping" class="btn btn-secondary text-center resetActionButton"
+                    (click)="resetGatewayModelCommStdMapping()" i18n="Reset button|Reset@@reset" > Reset
+                  </button>
+    <!--               [disabled]='sourceData.available && sourceData.assigned.length > 0 ? false : true'
+     -->              &nbsp;
+                  <button i18n="Review&Save button|Review&Save@@review&Save" id="saveGatewayModelCommMapping" class="btn btn-primary text-center reviewAndSaveActionButton"
+                    type="submit" (click)="saveAndReview()">
+                    Review & Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-panel-user>
+</div>
+
+    <!-- Loader image -->
+    <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+      <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+    </div>
+<app-modal-notification (modelNotificationInfo)="redirectTo()" (modelNotificationWarning)="alertRedirection()"></app-modal-notification>

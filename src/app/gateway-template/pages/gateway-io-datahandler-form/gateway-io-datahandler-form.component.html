@@ -1,0 +1,564 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Add Gateway IO Data Handler header|Add Gateway IO Data Handler@@addGatewayIODataHandler" class="page-header" *ngIf="gatewayIODHFormView">
+      Add Gateway IO Data Handler
+    </h1>
+    <h1 i18n="Add Gateway IO Data Handler Preview header|Add Gateway IO Data Handler Preview@@addGatewayIODataHandlerPreview" class="page-header" *ngIf="gatewayIODHReadModeView">
+      Add Gateway IO Data Handler - Preview
+    </h1>
+    <h1 i18n="View Gateway IO Data Handler header|View Gateway IO Data Handler@@viewGatewayIODataHandler" class="page-header" *ngIf="gatewayIODHViewMode">
+      View Gateway IO Data Handler
+    </h1>
+  </div>
+</div>
+
+<div class="row margin_0px">
+  <div class="col-md-12 padding_0px rowBox">
+    <div class="padding_Form">
+      <!-- Gateway IO DH form view starts here  -->
+      <form [formGroup]="gatewayIODHForm" novalidate (ngSubmit)="createGatewayIODataHandler()"
+        *ngIf="gatewayIODHFormView">
+        <div class="form-group-custom1">
+          <legend i18n="Gateway IO Data Handler Information header|Gateway IO Data Handler Information@@gatewayIODataHandlerInformation" class="m-b-15">Gateway IO Data Handler Information</legend>
+          <div class="formBodyCustom1" id="templateDetail">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+                <div class="form-group">
+                  <input type="text" id="name" class="form-control m-input" [readonly]="true" value={{templateName}}>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <label i18n="Communication|Communication@@communication" class="">Communication</label>
+                <div class="form-group">
+                  <input type="text" id="name" class="form-control m-input" [readonly]="true" value={{communication}}>
+                </div>
+              </div>
+            </div>
+            <div class="path"></div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Name|Name@@name*" class="">Name<span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayIODHForm.get('name').touched ||
+                  gatewayIODHForm.get('name').dirty) &&
+                  gatewayIODHForm.get('name').errors)}">
+                    <input (keyup)="onKey($event)" type="text" id="templateName" formControlName="name" class="form-control m-input"
+                      i18n-placeholder="Name placeholder|Enter Name@@dataHandlerName.placeholder" placeholder="Enter Name">
+                    <span class="help-block" *ngIf="((gatewayIODHForm.get('name').touched ||
+                    gatewayIODHForm.get('name').dirty) &&
+                    gatewayIODHForm.get('name').errors)">
+                      <span i18n="Message|Please enter Gateway IO DataHandler Name@@gatewayIODataHandlerName.message" *ngIf="gatewayIODHForm.get('name').errors.required">
+                        Please enter Gateway IO DataHandler Name
+                      </span>
+                      <span i18n="Message|Please enter valid characters@@gatewayIODataHandlerName.message3" *ngIf="gatewayIODHForm.get('name').errors.pattern">
+                        Please enter valid characters
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <label i18n="DH Identifier|Data Handler Identifier@@dHIdentifier*" class="">DH Identifier<span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayIODHForm.get('dhCode').touched ||
+                  gatewayIODHForm.get('dhCode').dirty) &&
+                  gatewayIODHForm.get('dhCode').errors)}">
+                    <input type="text" id="nodeIdentifier" formControlName="dhCode" class="form-control m-input"
+                      i18n-placeholder="DH Identifier placeholder|Enter Data Handler Identifier@@dHIdentifier.placeholder" placeholder="Enter DH Identifier">
+                    <span class="help-block" *ngIf="((gatewayIODHForm.get('dhCode').touched ||
+                    gatewayIODHForm.get('dhCode').dirty) &&
+                    gatewayIODHForm.get('dhCode').errors)">
+                      <span i18n="Message|Please enter DH Identifier@@dHIdentifier.message" *ngIf="gatewayIODHForm.get('dhCode').errors.required">
+                        Please enter DH Identifier
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <label i18n="Description|Description@@description" class="">Description</label>
+                <div class="form-group">
+                  <textarea type="text" id="description" formControlName="description" class="form-control m-input"
+                   i18n-placeholder="Description placeholder|Enter Description@@description.placeholder" placeholder="Enter Description" style="height: 125px!important"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Operation Mode|Operation Mode@@operationMode*" class="">Operation Mode<span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((gatewayIODHForm.get('operationMode').touched ||
+                  gatewayIODHForm.get('operationMode').dirty) &&
+                  gatewayIODHForm.get('operationMode').errors)}">
+                    <select id="operationMode" formControlName="operationMode" class="form-control m-input" required>
+                      <option i18n="Option|Select@@select" [value]="null">--Select--</option>
+                      <option i18n="Option|Read@@read" value="R">Read</option>
+                      <option i18n="Option|Write@@write" value="W">Write</option>
+                    </select>
+                    <span class="help-block" *ngIf="((gatewayIODHForm.get('operationMode').touched ||
+                    gatewayIODHForm.get('operationMode').dirty) &&
+                    gatewayIODHForm.get('operationMode').errors)">
+                      <span i18n="Message|Please select Operation Mode@@operationMode.message" *ngIf="gatewayIODHForm.get('operationMode').errors.required">
+                        Please select Operation Mode
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <label i18n="Publish Interval (ms)|Publish Interval (ms)@@publishIntervalMs" class="">Publish Interval (ms)</label>
+                <div class="form-group">
+                  <input type="text" id="publishInterval" formControlName="publishIntervalMs"
+                    class="form-control m-input" i18n-placeholder="Number placeholder|Enter Number@@publishIntervalms.placeholder" placeholder="Enter Number">
+                </div>
+              </div>
+            </div>
+
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Retry Count|Retry Count@@retryCount" class="">Retry Count</label>
+                <div class="form-group">
+                  <input type="text" id="retryCount" formControlName="retryCount" class="form-control m-input"
+                    i18n-placeholder="Number placeholder|Enter Number@@retryCount.placeholder" placeholder="Enter Number">
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <label i18n="Retry Timeout (ms)|Retry Timeout (ms)@@retryTimeoutMs" class="">Retry Timeout (ms)</label>
+                <div class="form-group">
+                  <input type="text" id="retryTimeout" formControlName="retryTimeoutMs" class="form-control m-input"
+                    i18n-placeholder="Number placeholder|Enter Number@@retryTimeoutMs.placeholder" placeholder="Enter Number">
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <div class="row">
+                  <div class="form-group" style="left: 12px;">
+                    <mat-checkbox formControlName="isStartValidatorCheckEnabled"
+                      class="example-margin commProtocolsClass" [value]="true">
+                      Enable Start Validator Check
+                    </mat-checkbox>
+                  </div>
+                  <div class="form-group" style="left: 90px;">
+                    <mat-checkbox formControlName="isEndValidatorCheckEnabled" class="example-margin commProtocolsClass"
+                      [value]="true">
+                      Enable End Validator Check
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="row">
+                  <div class="form-group" style="left: 12px;">
+                    <mat-checkbox formControlName="isErrorCheckEnabled" class="example-margin commProtocolsClass"
+                      [value]="true">
+                      Enable Error Check
+                    </mat-checkbox>
+                  </div>
+                  <div class="form-group" style="left: 90px;">
+                    <mat-checkbox formControlName="isLengthCheckEnabled" class="example-margin commProtocolsClass"
+                      [value]="true">
+                      Enable Length Check
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Response Required|Response Required@@responseRequired" class="">Response Required</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="form-group">
+                  <input type="checkbox" formControlName="sendResponse">
+                </span>
+              </div>
+            </div>
+
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Response Data Format|Response Data Format@@responseDataFormat" class="">Response Data Format</label>
+                <div class="form-group">
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='responseFormatId'
+                    name="responseFormatId" formControlName="responseFormatId" [dataSource]='dataProtocolFormats'
+                    [placeholder]='dataProtocolFormatsWaterMark' [fields]='dataProtocolFormatsFields' [popupHeight]='height'
+                    [sortOrder]="sortDropDown" (filtering)='onFilteringDataProtocolFormats($event)'
+                    [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                    (change)='dataProtocolFormatsOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                  <!-- <select id="responseDataFormat" formControlName="responseFormatId" class="form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]=null>--Select--</option>
+                    <option *ngFor="let responseDataFormat of dataProtocolFormats" [ngValue]="responseDataFormat.id">
+                      {{responseDataFormat.name}}
+                  </select> -->
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <label i18n="Response Tag Seperator|Response Tag Seperator@@responseTagSeperator" class="">Response Tag Seperator</label>
+                <div class="form-group">
+                  <input type="text" id="responseTagSeperator" formControlName="responseTagSeperator"
+                    class="form-control m-input" i18n-placeholder="Response Tag Seperator placeholder|Enter Response Tag Seperator@@responseTagSeperator.placeholder"
+                    placeholder="Enter Response Tag Seperator">
+                </div>
+              </div>
+            </div>
+
+            <div class="m-form__group row">
+              <div class="col-lg-6" style="padding-left: 10px; padding-right: 15px;">
+                <label i18n="Status|Status@@status">Status</label>
+                <div class="form-group">
+                  <mat-radio-group formControlName="status">
+                    <mat-radio-button value="Active" i18n="Radio button|Active@@active" style="margin-right: 20px;" id="templateStatusA">
+                      Active
+                    </mat-radio-button>
+                    <mat-radio-button id="templateStatusI" value="In_Active" i18n="Radio button|InActive@@inActive">In-Active
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <a (click)="cancelButton()">
+              <button type="button" id="cancelTemplate" class="btn btn-default text-center cancelActionButton"
+                (click)="cancelGatewayIODHForm($event)" i18n="Cancel button|Cancel@@cancel"> Cancel
+              </button>
+            </a>
+            &nbsp;
+            <button type="button" id="resetTemplate" class="btn btn-secondary text-center resetActionButton"
+              [disabled]="!gatewayIODHForm.dirty && gatewayIODHForm.pristine" (click)="resetGatewayTemplateForm()"
+              i18n="Reset button|Reset@@reset"> Reset
+            </button>
+            &nbsp;
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields" matTooltip="Please fill the mandatory fields" matTooltip="Please fill the mandatory fields" [matTooltipDisabled]='gatewayIODHForm.valid'>
+              <button i18n="Review&Save button|Review&Save@@review&Save" class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                [disabled]="!gatewayIODHForm.valid">
+                Review & Save</button>
+            </span>
+          </div>
+        </div>
+      </form>
+      <!-- Gateway IO DH form view ends here  -->
+
+      <!-- Gateway IO DH form read mode view starts here  -->
+      <div *ngIf="gatewayIODHReadModeView" class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="Header|Gateway IO Data Handler Information@@gatewayIODataHandlerInformation" class="m-b-15">Gateway IO Data Handler Information</legend>
+          <div class="form-row">
+            <a (click)="backButton('iodhDetail')" class="edit_section">
+              <img src="/assets/img/action/edit.png" alt="edit io dh detail"
+              i18n-matTooltip="Image Tooltip|Click to edit IO DH Detail@@clickToEditIODHDetail"  matTooltip="Click to edit IO DH Detail">
+            </a>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Name|Name@@name" class="">Name</label>
+              <p>
+                {{gatewayIODataHandler.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="DH Identifier|Data Handler Identifier@@dHIdentifier" class="">DH Identifier</label>
+              <p>
+                {{gatewayIODataHandler.dhCode}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Description|Description@@description" class="">Description</label>
+              <p>
+                {{gatewayIODataHandler.description | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Operation Mode|Operation Mode@@operationMode" class="">Operation Mode</label>
+              <p>
+                <span *ngIf='gatewayIODataHandler.operationMode==="R"' i18n="Option|Read@@read">Read</span>
+                <span *ngIf='gatewayIODataHandler.operationMode==="W"' i18n="Option|Write@@write">Write</span>
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Publish Interval (ms)|Publish Interval (ms)@@publishIntervalMs" class="">Publish Interval (Ms)</label>
+              <p>
+                {{gatewayIODataHandler.publishIntervalMs | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Retry Count|Retry Count@@retryCount" class="">Retry Count</label>
+              <p>
+                {{gatewayIODataHandler.retryCount | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Retry Timeout (ms)|Retry Timeout (ms)@@retryTimeoutMs" class="">Retry Timeout (Ms)</label>
+              <p>
+                {{gatewayIODataHandler.retryTimeoutMs | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable Start Validator Check|Enable Start Validator Check@@startValidatorCheck"
+                class="">Enable Start Validator Check</label>
+              <span *ngIf="gatewayIODataHandler.isStartValidatorCheckEnabled else startValidator">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #startValidator>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable End Validator Check|Enable End Validator Check@@endValidatorCheck" class="">Enable End
+                Validator Check</label>
+              <span *ngIf="gatewayIODataHandler.isEndValidatorCheckEnabled else endValidator">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #endValidator>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable Error Check|Enable Error Check@@errorCheck" class="">Enable Error
+                Check</label>
+              <span *ngIf="gatewayIODataHandler.isErrorCheckEnabled else errorCheck">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #errorCheck>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable Length Check|Enable Length Check@@lengthCheck" class="">Enable Length
+                Check</label>
+              <span *ngIf="gatewayIODataHandler.isLengthCheckEnabled else lengthCheck">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #lengthCheck>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Response Required|Response Required@@responseRequired" class="">Response Required</label>
+              <p *ngIf='gatewayIODataHandler.sendResponse===null else rRequired'>
+                {{gatewayIODataHandler.sendResponse | hyphen}}
+              </p>
+              <ng-template #rRequired>
+                <p>
+                  <span *ngIf='gatewayIODataHandler.sendResponse===true' i18n="Yes|Yes@@yes">Yes</span>
+                  <span *ngIf='gatewayIODataHandler.sendResponse===false'  i18n="No|No@@no">No</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Response Data Format|Response Data Format@@responseDataFormat" class="">Response Data Format</label>
+              <p *ngIf='gatewayIODataHandler.responseFormatId===null else rDFormat'>
+                {{gatewayIODataHandler.responseFormatId | hyphen}}
+              </p>
+              <ng-template #rDFormat>
+                <p *ngFor='let dataProtocolFormat of dataProtocolFormats'>
+                  <span *ngIf='dataProtocolFormat.id===parseInt(gatewayIODataHandler.responseFormatId)'>
+                    {{dataProtocolFormat.name}}
+                  </span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Response Tag Seperator|Response Tag Seperator@@responseTagSeperator" class="">Response Tag Seperator</label>
+              <p>
+                {{gatewayIODataHandler.responseTagSeperator | hyphen}}
+              </p>
+            </div>
+            <div class="path"></div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Status|Status@@status" class="">Status</label>
+              <p *ngIf="gatewayIODataHandler.status == 'I'">
+                In-Active
+              </p>
+              <p *ngIf="gatewayIODataHandler.status == 'A'">
+                Active
+              </p>
+              <p *ngIf="gatewayIODataHandler.status != 'A' && gatewayIODataHandler.status != 'I'">
+                {{gatewayIODataHandler.status}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="backButton($event)" i18n="Back button|Back@@back"> Back
+            </button>
+            &nbsp;
+            <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit"
+              (click)="createOrUpdateGatewayIODataHandler()">
+              Save</button>
+          </div>
+        </div>
+      </div>
+      <!-- Gateway IO DH form read mode view ends here  -->
+
+      <!-- View of IO Data Handler starts here... -->
+      <div *ngIf="gatewayIODHViewMode" class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="Header|Gateway IO Data Handler Information@@gatewayIODataHandlerInformation" class="m-b-15">Gateway IO Data Handler Information</legend>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Name|Name@@name" class="">Name</label>
+              <p>
+                {{gatewayIODataHandler.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="DH Identifier|Data Handler Identifier@@dHIdentifier" class="">DH Identifier</label>
+              <p>
+                {{gatewayIODataHandler.dhCode}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Description|Description@@description" class="">Description</label>
+              <p>
+                {{gatewayIODataHandler.description | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Operation Mode|Operation Mode@@operationMode" class="">Operation Mode</label>
+              <p>
+                <span *ngIf='gatewayIODataHandler.operationMode==="R"' i18n="Option|Read@@read">Read</span>
+                <span *ngIf='gatewayIODataHandler.operationMode==="W"' i18n="Option|Write@@write">Write</span>
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Publish Interval (ms)|Publish Interval (ms)@@publishIntervalMs" class="">Publish Interval (Ms)</label>
+              <p>
+                {{gatewayIODataHandler.publishIntervalMs | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Retry Count|Retry Count@@retryCount" class="">Retry Count</label>
+              <p>
+                {{gatewayIODataHandler.retryCount | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Retry Timeout (ms)|Retry Timeout (ms)@@retryTimeoutMs" class="">Retry Timeout (Ms)</label>
+              <p>
+                {{gatewayIODataHandler.retryTimeoutMs | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable Start Validator Check|Enable Start Validator Check@@startValidatorCheck"
+                class="">Enable Start Validator Check</label>
+              <span *ngIf="gatewayIODataHandler.isStartValidatorCheckEnabled else startValidator">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #startValidator>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable End Validator Check|Enable End Validator Check@@endValidatorCheck" class="">Enable End
+                Validator Check</label>
+              <span *ngIf="gatewayIODataHandler.isEndValidatorCheckEnabled else endValidator">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #endValidator>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable Error Check|Enable Error Check@@errorCheck" class="">Enable Error
+                Check</label>
+              <span *ngIf="gatewayIODataHandler.isErrorCheckEnabled else errorCheck">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #errorCheck>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Enable Length Check|Enable Length Check@@lengthCheck" class="">Enable Length
+                Check</label>
+              <span *ngIf="gatewayIODataHandler.isLengthCheckEnabled else lengthCheck">
+                <p>
+                  Yes
+                </p>
+              </span>
+              <ng-template #lengthCheck>
+                <p>No</p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Response Required|Response Required@@responseRequired" class="">Response Required</label>
+              <p>
+                <span *ngIf='gatewayIODataHandler.sendResponse===true' i18n="Yes|Yes@@yes">Yes</span>
+                <span *ngIf='gatewayIODataHandler.sendResponse===false' i18n="No|No@@no">No</span>
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Response Data Format|Response Data Format@@responseDataFormat" class="">Response Data Format</label>
+              <p *ngIf='gatewayIODataHandler.responseFormat ===null else responseDF'>
+                {{gatewayIODataHandler.responseFormat | hyphen}}
+              </p>
+              <ng-template #responseDF>
+                <p *ngIf="gatewayIODataHandler.responseFormat.name!=null">
+                  {{gatewayIODataHandler.responseFormat.name}}
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Response Tag Seperator|Response Tag Seperator@@responseTagSeperator" class="">Response Tag Seperator</label>
+              <p>
+                {{gatewayIODataHandler.responseTagSeperator | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Status|Status@@status" class="">Status</label>
+              <p *ngIf="gatewayIODataHandler.status == 'I'">
+                In-Active
+              </p>
+              <p *ngIf="gatewayIODataHandler.status == 'A'">
+                Active
+              </p>
+              <p *ngIf="gatewayIODataHandler.status != 'A' && gatewayIODataHandler.status != 'I'">
+                {{gatewayIODataHandler.status}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton" (click)="cancelGatewayIODHView()" i18n="Back button|Back@@back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- View of IO Data Handler ends here... -->
+    </div>
+  </div>
+</div>
+
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+<!-- Global modal notification component selector  for deletion and after deletetion success, success with failed-->
+<app-modal-notification (modelNotificationWarning)="formResetConfirm()" (modelNotificationSuccess)="redirectTo()"></app-modal-notification>

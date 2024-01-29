@@ -1,0 +1,133 @@
+<div class="row margin_0px">
+  <div class="col-lg-12 padding_0px rowBox">
+    <div class="padding_Form">
+      <div class="form-group-custom1">
+        <legend i18n="Pin(s) Information header|Pin(s) Information@@pinsInformation" class="m-b-15">Pin(s) Information</legend>
+        <div id="gatewayModelPins">
+          <div class="m-form__group row">
+            <div class="col-lg-6">
+              <label i18n="Gateway Model Name|Gateway Model Name@@gatewayModelName" class="">&nbsp; Gateway Model Name </label>
+              <div class="form-group">
+                <input type="text" style="font-weight: bold" [readonly]="true" class="form-control m-input"
+                  value={{gatewayModelName}}>
+              </div>
+            </div>
+          </div>
+          <div class="m-form__group row">
+            <div class="col-lg-4">
+              <label i18n="Number of Pin(s)|Number of Pin(s)@@numberOfPins*" class="">Number of Pin(s) <span class="text-danger"> *</span></label>
+              <div class="form-group">
+                <input [readonly]="!enterPinInputFieldEditable" (keyup)="numberOfPinsInputStatus()"
+                  [(ngModel)]="numberOfPins" id="numberOfPins" type="number" min="0" class="form-control m-input"
+                  value="{{numberOfPins}}" i18n-placeholder="Number of pins placeholder|Enter number of pin(s)@@numberOfPins.placeholder"
+                  placeholder="Enter number of pin(s)">
+                <span i18n="Message|Please provide at least 1 Pin Number@@pinNumber.message" class="text-danger" *ngIf="minerrorMessage">
+                  Please provide at least 1 Pin Number
+                </span>
+                <!-- <span class="text-danger" *ngIf="maxerrorMessage">
+                      Please provide a Valid Pin Number
+                  </span> -->
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="form-group generatePinFloat">
+                <button type="submit" id="createPinDivs" class="btn btn-primary text-center"
+                  (click)="createPinDivs(null)" i18n="Generate Pin(s) button|Generate Pin(s)@@generatePins"> Generate Pin(s)
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <form [formGroup]="pinForm" novalidate *ngIf="pinSectionShow">
+            <div class="form-group m-form__group row" id="dynamicContainer">
+              <ng-container formArrayName="pins">
+                <div class="col-lg-6" *ngFor="let numberOfPins of pinForm.get('pins')['controls']; let i = index;">
+                  <ng-container [formGroupName]="i">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label i18n="Name|Name@@name" class="">Name</label>
+                        <div class="form-group">
+                          <div [ngClass]="{'has-error': ((numberOfPins.get('name').touched ||
+                          numberOfPins.get('name').dirty) &&
+                          numberOfPins.get('name').errors)}">
+                            <input formControlName="name" i18n-placeholder="Name placeholder|Enter Name@@name.placeholder" placeholder="Enter Name" type="text"
+                              class="form-control m-input">
+                            <span id="numberOfPinsValMsg"></span>
+                            <span class="help-block" *ngIf="((numberOfPins.get('name').touched ||
+                            numberOfPins.get('name').dirty) &&
+                            numberOfPins.get('name').errors)">
+                              <span i18n="Message|Please enter Name@@name.message"
+                                *ngIf="(numberOfPins.get('name').errors.required || numberOfPins.get('name').errors.whitespace)">
+                                Please enter Name
+                              </span>
+                              <span i18n="Message|Please enter valid Name@@name.message1" *ngIf="numberOfPins.get('name').errors.pattern">
+                                Please enter valid Name
+                              </span>
+                              <span>
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label i18n="Internal Map|Internal Map@@internalMap" class="">Internal Map</label>
+                        <div class="form-group">
+                          <div [ngClass]="{'has-error': ((numberOfPins.get('internalMap').touched ||
+                          numberOfPins.get('internalMap').dirty) &&
+                          numberOfPins.get('internalMap').errors)}">
+                            <input formControlName="internalMap" i18n-placeholder="internal Map placeholder|Enter Internal Map@@internalMap.placeholder" placeholder="Enter Internal Map" type="text"
+                              class="form-control m-input">
+                            <span id="internalMapValMsg"></span>
+                            <span class="help-block" *ngIf="((numberOfPins.get('internalMap').touched ||
+                            numberOfPins.get('internalMap').dirty) &&
+                            numberOfPins.get('internalMap').errors)">
+                              <span i18n="Message|Please enter Internal Map@@internalMap.message"
+                                *ngIf="(numberOfPins.get('internalMap').errors.required || numberOfPins.get('internalMap').errors.whitespace)">
+                                Please enter Internal Map
+                              </span>
+                              <span i18n="Message|Please enter valid Internal Map@@internalMap.message1" *ngIf="numberOfPins.get('internalMap').errors.pattern">
+                                Please enter valid Internal Map
+                              </span>
+                              <span>
+                              </span>
+                            </span>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+          </form>
+
+
+
+          <div class="path finalLine"></div>
+          <div class="row" style="text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+              <!-- <a href="/gateway-template" [routerLink]="['/gateway-template']"> -->
+              <button type="button" id="backToGatewayModel" class="btn btn-default text-center cancelActionButton"
+                (click)="backToGatewayModel()" i18n="Cancel button|Cancel@@cancel"> Cancel
+              </button>
+              <!-- </a> -->
+              &nbsp;
+              <button type="button" id="resetGatewayModelPins" class="btn btn-secondary text-center resetActionButton"
+                (click)="resetGatewayModelPins()" i18n="Reset button|Reset@@reset" [disabled]="disableReset"> Reset
+              </button>
+              &nbsp;
+              <button i18n="Review&Save button|Review&Save@@review&Save" id="saveGatewayModelPins" class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                (click)="savePins()" [disabled]="disableReviewSave || !pinForm.valid">
+                Review & Save</button>
+              <!-- $event,element.id -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-notification (modelNotificationWarning)="alertRedirection()"></app-modal-notification>

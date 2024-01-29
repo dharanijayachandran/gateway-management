@@ -1,0 +1,64 @@
+<div class="form-row">
+  <a (click)="backButton()" class="edit_section">
+    <img src="/assets/img/action/edit.png" alt="Edit Gateway Details"
+      i18n-matTooltip="Image matTooltip|Click to Edit Gateway Details@@clickToEditGatewayDetails"
+      matTooltip="Click to Edit Gateway Details">
+  </a>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway From|Gateway From@@gatewayFrom" class="">Gateway From</label>
+    <p>
+      {{gatewayForm.nodeTemplateId != null ? "Template" : "No-Template"}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway Type|Gateway Type@@gatewayType">Gateway Type</label>
+    <p>
+      {{gatewayForm.gatewayTypeName}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway Model|Gateway Model@@gatewayModel">Gateway Model</label>
+    <p *ngIf="gatewayForm.gatewayModelName==='--Select--' else noBlock">
+      -
+    </p>
+    <ng-template #noBlock>
+      <p>
+        {{gatewayForm.gatewayModelName | hyphen}}
+      </p>
+    </ng-template>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Gateway Template|Gateway Template@@gatewayTemplate" class="">Gateway Template</label>
+    <p>
+      {{gatewayForm.nodeTemplateName}}
+      {{gatewayForm.gatewayTemplateName}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Name|Name@@name" class="">Name</label>
+    <p>
+      {{gatewayForm.name}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Description|Description@@description" class="">Description</label>
+    <p>
+      {{gatewayForm.description | hyphen}}
+    </p>
+  </div>
+  <div class="form-group col-sm-6 col-md-4">
+    <label i18n="Identifier|Identifier@@identifier" class="">Identifier</label>
+    <p>
+      {{gatewayForm.nodeIdentifier | hyphen}}
+    </p>
+  </div>
+
+  <ng-container *ngIf="gatewayForm.id!=null && gatewayForm.id!=undefined">
+    <div class="form-group col-sm-6 col-md-4">
+      <label i18n="Auth Token|Auth Token@@authToken" class="">Auth Token</label>
+      <p>
+        {{gatewayForm.authToken | hyphen}}
+      </p>
+    </div>
+  </ng-container>
+</div>

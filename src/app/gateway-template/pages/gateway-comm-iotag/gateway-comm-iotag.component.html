@@ -1,0 +1,884 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 i18n="Add Communication I/O Tag header|Add Communication I/O Tag@@addCommunicationIOTag" class="page-header"
+      *ngIf="gatewaycommIOTagAdd">
+      Add Communication I/O Tag
+    </h1>
+    <h1 i18n="Edit Communication I/O Tag header|Edit Communication I/O Tag@@editCommunicationIOTag" class="page-header"
+      *ngIf="gatewaycommIOTagEdit">
+      Edit Communication I/O Tag
+    </h1>
+    <h1 i18n="Communication I/O Tag Preview header|Communication I/O Tag Preview@@communicationIOTagPreview"
+      class="page-header" *ngIf="commIOTagFormPreview">
+      Communication I/O Tag - Preview
+    </h1>
+    <h1 i18n="Communication I/O Tag View header|Communication I/O Tag View@@communicationIOTagView" class="page-header"
+      *ngIf="commIOTagsView">
+      Communication I/O Tag - View
+    </h1>
+    <!-- <div class="header_Underline"></div> -->
+  </div>
+</div>
+
+
+<div class="row margin_0px">
+  <div class="col-md-12 padding_0px rowBox">
+    <div class="padding_Form">
+      <form [formGroup]="commIOTagForm" (ngSubmit)="createIOTag()" *ngIf="gatewaycommIOTagForm">
+        <div class="form-group-custom1">
+          <legend i18n="Communication I/O Tag Details header|Communication I/O Tag Details@@communicationIOTagDetails"
+            class="m-b-15">Communication I/O Tag Details</legend>
+          <div class="formBodyCustom1" id="tenatDetail">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" id="templateName" formControlName="templateName"
+                    class="form-control m-input"
+                    i18n-placeholder="Template Name placeholder|Template Name@@templateName.placeholder"
+                    placeholder="Template Name">
+                </div>
+                <label i18n="Data Handler Format|Data Handler Format@@dataHandlerFormat" class="">Data Handler
+                  Format</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" id="dataHandlerFormat" formControlName="dataHandlerFormat"
+                    class="form-control m-input"
+                    i18n-placeholder="Data Handler Format placeholder|Data Handler Format@@dataHandlerFormat.placeholder"
+                    placeholder="Data Handler Format">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Communication|Communication@@communication">Communication</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" formControlName="communication" class="form-control m-input"
+                    i18n-placeholder="Communication placeholder|Communication@@communication.placeholder"
+                    placeholder="Communication">
+                </div>
+                <label i18n="Tag Seperator|Tag Seperator@@tagSeperator">Tag Seperator</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" formControlName="seperator" class="form-control m-input"
+                    i18n-placeholder="Tag Seperator placeholder|Tag Seperator@@tagSeperator.placeholder"
+                    placeholder="Tag Seperator">
+                </div>
+              </div>
+            </div>
+
+            <div class="path"></div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="I/O Tag|I/O Tag@@iOTag*" class="">I/O Tag<span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((commIOTagForm.get('nodeIoTagId').touched ||
+                    commIOTagForm.get('nodeIoTagId').dirty) &&
+                    commIOTagForm.get('nodeIoTagId').errors)}">
+                    <!-- <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='nodeIoTagId'
+                  name="nodeIoTagId" formControlName="nodeIoTagId" [dataSource]='gatewayIOTagsFieldData'
+                  [placeholder]='nodeIoTagWaterMark' [fields]='nodeIoTagFields' [popupHeight]='height'
+                  [sortOrder]="sortDropDown" (filtering)='onFilteringNodeIoTag($event)'
+                  [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                  (change)='nodeIoTagOnChange($event)' [locale]='locale'></ejs-dropdownlist> -->
+                    <select id="nodeIoTagId" formControlName="nodeIoTagId" class="form-control m-input">
+                      <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                      <option *ngFor="let iOTag of gatewayIOTags | orderByAlphabetical:'name'" [ngValue]="iOTag.id">{{iOTag.name}}
+                      </option>
+                    </select>
+                    <span class="help-block" *ngIf="((commIOTagForm.get('nodeIoTagId').touched ||
+                            commIOTagForm.get('nodeIoTagId').dirty) &&
+                            commIOTagForm.get('nodeIoTagId').errors)">
+                      <span i18n="Message|Please select I/O Tag@@iOTag.message"
+                        *ngIf="commIOTagForm.get('nodeIoTagId').errors.required">
+                        Please select I/O Tag
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <label i18n="Index|Index@@index">Index</label>
+                <div class="form-group">
+                  <div
+                    [ngClass]="{'has-error': ((commIOTagForm.get('tagIndex').dirty) && commIOTagForm.get('tagIndex').errors)}">
+                    <input type="text" formControlName="tagIndex" class="form-control m-input"
+                      i18n-placeholder="Index placeholder|Index@@index.placeholder" placeholder="Index">
+                    <span class="help-block" *ngIf="((commIOTagForm.get('tagIndex').dirty) &&
+                      commIOTagForm.get('tagIndex').errors)">
+                      <span i18n="Message|Please enter only Numbers@@index.message"
+                        *ngIf="commIOTagForm.get('tagIndex').errors.pattern">
+                        Please enter only Numbers
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Parent I/O Tag|Parent I/O Tag@@parentIOTag">Parent I/O Tag</label>
+                <div class="form-group">
+                  <!-- <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='parentNodeCommProtocolIoTagId'
+                  name="parentNodeCommProtocolIoTagId" formControlName="parentNodeCommProtocolIoTagId" [dataSource]='gatewayCommIOTagFieldData'
+                  [placeholder]='parentNodeCommProtocolIoTagWaterMark' [fields]='parentNodeCommProtocolIoTagFields' [popupHeight]='height'
+                  [sortOrder]="sortDropDown" (filtering)='onFilteringParentNodeCommProtocolIoTag($event)'
+                  [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                  (change)='parentNodeCommProtocolIoTagOnChange($event)' [locale]='locale'></ejs-dropdownlist> -->
+                  <select formControlName="parentNodeCommProtocolIoTagId" class=" form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let gatewayCommIOTagParent of gatewayCommIOTags | orderByAlphabetical:'tagName'"
+                      [value]="gatewayCommIOTagParent.id">
+                      {{gatewayCommIOTagParent.tagName}}
+                    </option>
+                  </select>
+                </div>
+                <label i18n="Length|Length@@length">Length</label>
+                <div class="form-group">
+                  <div
+                    [ngClass]="{'has-error': ((commIOTagForm.get('tagLength').dirty) && commIOTagForm.get('tagLength').errors)}">
+                    <input type="text" formControlName="tagLength" class="form-control m-input"
+                      i18n-placeholder="Length placeholder|Enter Length@@length.placeholder" placeholder="Enter Length">
+                    <span class="help-block" *ngIf="((commIOTagForm.get('tagLength').dirty) &&
+                    commIOTagForm.get('tagLength').errors)">
+                      <span i18n="Message|Please enter only Numbers@@length.message"
+                        *ngIf="commIOTagForm.get('tagLength').errors.pattern">
+                        Please enter only Numbers
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Length Unit|Length Unit@@lengthUnit">Length Unit</label>
+                <div class="form-group">
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='tagLengthUnit'
+                  name="tagLengthUnit" formControlName="tagLengthUnit" [dataSource]='tagLengthUnits'
+                  [placeholder]='tagLengthUnitWaterMark' [fields]='tagLengthUnitFields' [popupHeight]='height'
+                  [sortOrder]="sortDropDown" (filtering)='onFilteringTagLengthUnits($event)'
+                  [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                  (change)='tagLengthUnitsOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                  <!-- <select formControlName="tagLengthUnit" class=" form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let tagLengthUnit of tagLengthUnits " [ngValue]="tagLengthUnit.id">
+                      {{tagLengthUnit.value}}</option>
+                  </select> -->
+                </div>
+                <label i18n="Data Format|Data Format@@dataFormat">Data Format</label>
+                <div class="form-group">
+                  <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='dataFormatId'
+                  name="dataFormatId" formControlName="dataFormatId" [dataSource]='dataFormats'
+                  [placeholder]='dataFormatsWaterMark' [fields]='dataFormatFields' [popupHeight]='height'
+                  [sortOrder]="sortDropDown" (filtering)='onFilteringDataFormat($event)'
+                  [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                  (change)='dataFormatsOnChange($event)' [locale]='locale'></ejs-dropdownlist>
+                  <!-- <select formControlName="dataFormatId" class=" form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let dataFormat of dataFormats" [ngValue]="dataFormat.id">{{dataFormat.name}}
+                    </option>
+                  </select> -->
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Tag Key Name|Tag Key Name@@tagKeyName">Tag Key Name</label>
+                <div class="form-group">
+                  <input type="text" formControlName="tagKeyName" class="form-control m-input"
+                    i18n-placeholder="Tag Key Name placeholder|Enter Tag Key Name@@TagKeyName.placeholder"
+                    placeholder="Enter Tag Key Name">
+                </div>
+                <label i18n="Tag Seperator|Tag Seperator@@tagSeperator">Tag Seperator</label>
+                <div class="form-group">
+                  <input type="text" formControlName="tagSeprator" class="form-control m-input"
+                    i18n-placeholder="Tag Seperator placeholder|Tag Seperator@@tagSeperator.placeholder"
+                    placeholder="Tag Seperator">
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Date Time Format|Date Time Format@@dateTimeFormat">Date Time Format</label>
+                <div class="form-group">
+                  <input type="text" formControlName="dateTimeFormat" class="form-control m-input"
+                    i18n-placeholder="Data Time Format placeholder|Enter Date Time Format@@dateTimeFormat.placeholder"
+                    placeholder="Enter Date Time Format">
+                </div>
+
+              </div>
+              <div class="col-lg-6"></div>
+            </div>
+
+
+          </div>
+          <div class="m-form__group row">
+            <!--  <div class="col-lg-6">
+              <label i18n="@@HasChildTags">Has Child Tags</label>
+              <div class="form-group">
+                <input type="checkbox" id="hasChildTags" formControlName="hasChildTags" class="form-control m-input"
+                  i18n-placeholder="@@HasChildTags.placeholder" placeholder="Has Child Tags">
+              </div>
+            </div> -->
+            <div class="col-lg-6">
+              <label i18n="Status|Status@@status">Status</label>
+              <div class="form-group">
+                <mat-radio-group formControlName="status">
+                  <mat-radio-button value="Active" i18n="Radio button|Active@@active" style="margin-right: 20px;"
+                    id="tenantStatusA">
+                    Active
+                  </mat-radio-button>
+                  <mat-radio-button id="tenantStatusI" value="In_Active" i18n="Radio button|InActive@@inActive">
+                    In-Active</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" id="cancelTemplate" class="btn btn-default text-center cancelActionButton"
+              (click)="cancelGatewayCommIOTagForm()" i18n="Cancel button|Cancel@@cancel"> Cancel
+            </button>
+
+            &nbsp;
+            <button type="button" class="btn btn-secondary text-center resetActionButton"
+              [disabled]="!commIOTagForm.dirty && commIOTagForm.pristine || !commIOTagForm.dirty && !commIOTagForm.pristine"
+              (click)="resetCommIOTagForm()" i18n="Reset button|Reset@@reset"> Reset </button>
+            &nbsp;
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+              matTooltip="Fill the mandatory fields" [matTooltipDisabled]="commIOTagForm.valid">
+              <button i18n="Review&Save button|Review&Save@@review&Save"
+                class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                [disabled]="!commIOTagForm.valid">
+                Review & Save</button>
+            </span>
+          </div>
+        </div>
+      </form>
+      <!-- End of Parent Form View -->
+
+      <form [formGroup]="commIOTagForm" (ngSubmit)="createIOTag()" *ngIf="gatewayCommIOTagChildEdit">
+        <div class="form-group-custom1">
+          <legend i18n="Communication I/O Tag Details header|Communication I/O Tag Details@@communicationIOTagDetails"
+            class="m-b-15">Communication I/O Tag Details</legend>
+          <div class="formBodyCustom1" id="tenatDetail">
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" id="templateName" formControlName="templateName"
+                    class="form-control m-input"
+                    i18n-placeholder="Template Name placeholder|Template Name@@templateName.placeholder"
+                    placeholder="Template Name">
+                </div>
+                <label i18n="Data Handler Format|Data Handler Format@@dataHandlerFormat" class="">Data Handler
+                  Format</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" id="dataHandlerFormat" formControlName="dataHandlerFormat"
+                    class="form-control m-input"
+                    i18n-placeholder="Data Handler Format placeholder|Data Handler Format@@dataHandlerFormat.placeholder"
+                    placeholder="Data Handler Format">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Communication|Communication@@communication">Communication</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" formControlName="communication" class="form-control m-input"
+                    i18n-placeholder="Communication placeholder|Communication@@communication.placeholder"
+                    placeholder="Communication">
+                </div>
+                <label i18n="Tag Seperator placeholder|Tag Seperator@@tagSeperator">Tag Seperator</label>
+                <div class="form-group">
+                  <input type="text" [readOnly]="true" formControlName="seperator" class="form-control m-input"
+                    i18n-placeholder="Tag Seperator placeholder|Tag Seperator@@tagSeperator.placeholder"
+                    placeholder="Tag Seperator">
+                </div>
+              </div>
+            </div>
+
+
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="I/O Tag|I/O Tag@@iOTag*" class="">I/O Tag<span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div [ngClass]="{'has-error': ((commIOTagForm.get('nodeIoTagId').touched ||
+                    commIOTagForm.get('nodeIoTagId').dirty) &&
+                    commIOTagForm.get('nodeIoTagId').errors)}">
+                    <select id="nodeIoTagId" formControlName="nodeIoTagId" class="form-control m-input">
+                      <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                      <option *ngFor="let iOTag of gatewayIOTags" [ngValue]="iOTag.id">{{iOTag.name}}
+                      </option>
+                    </select>
+                    <span class="help-block" *ngIf="((commIOTagForm.get('nodeIoTagId').touched ||
+                            commIOTagForm.get('nodeIoTagId').dirty) &&
+                            commIOTagForm.get('nodeIoTagId').errors)">
+                      <span i18n="Message|Please select I/O Tag@@iOTag.message"
+                        *ngIf="commIOTagForm.get('nodeIoTagId').errors.required">
+                        Please select I/O Tag
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <label i18n="Index|Index@@index">Index</label>
+                <div class="form-group">
+                  <div
+                    [ngClass]="{'has-error': ((commIOTagForm.get('tagIndex').dirty) && commIOTagForm.get('tagIndex').errors)}">
+                    <input type="text" formControlName="tagIndex" class="form-control m-input"
+                      i18n-placeholder="Index placeholder|Index@@index.placeholder" placeholder="Index">
+                    <span class="help-block" *ngIf="((commIOTagForm.get('tagIndex').dirty) &&
+                      commIOTagForm.get('tagIndex').errors)">
+                      <span i18n="Message|Please enter only Numbers@@index.message"
+                        *ngIf="commIOTagForm.get('tagIndex').errors.pattern">
+                        Please enter only Numbers
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Parent I/O Tag|Parent I/O Tag@@parentIOTag">Parent I/O Tag</label>
+                <div class="form-group">
+                  <select formControlName="parentNodeCommProtocolIoTagId" class=" form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let gatewayCommIOTagParent of gatewayCommIOTags"
+                      [ngValue]="gatewayCommIOTagParent.id">
+                      {{gatewayCommIOTagParent.gatewayIOTag.name}}
+                    </option>
+                  </select>
+                </div>
+                <label i18n="Length|Length@@length">Length</label>
+                <div class="form-group">
+                  <div
+                    [ngClass]="{'has-error': ((commIOTagForm.get('tagLength').dirty) && commIOTagForm.get('tagLength').errors)}">
+                    <input type="text" formControlName="tagLength" class="form-control m-input"
+                      i18n-placeholder="Length placeholder|Enter Length@@length.placeholder" placeholder="Enter Length">
+                    <span class="help-block" *ngIf="((commIOTagForm.get('tagLength').dirty) &&
+                    commIOTagForm.get('tagLength').errors)">
+                      <span i18n="Message|Please enter only Numbers@@length.message"
+                        *ngIf="commIOTagForm.get('tagLength').errors.pattern">
+                        Please enter only Numbers
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-form__group row">
+              <div class="col-lg-6">
+                <label i18n="Length Unit|Length Unit@@lengthUnit">Length Unit</label>
+                <div class="form-group">
+                  <select formControlName="tagLengthUnit" class=" form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let tagLengthUnit of tagLengthUnits " [ngValue]="tagLengthUnit.id">
+                      {{tagLengthUnit.value}}</option>
+                  </select>
+                </div>
+                <label i18n="Data Format|Data Format@@dataFormat">Data Format</label>
+                <div class="form-group">
+                  <select formControlName="dataFormatId" class=" form-control m-input">
+                    <option i18n="Option|Select@@select" [ngValue]="null">--Select--</option>
+                    <option *ngFor="let dataFormat of dataFormats" [ngValue]="dataFormat.id">{{dataFormat.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label i18n="Tag Key Name|Tag Key Name@@tagKeyName">Tag Key Name</label>
+                <div class="form-group">
+                  <input type="text" formControlName="tagKeyName" class="form-control m-input"
+                    i18n-placeholder="Tag Key Name placeholder|Enter Tag Key Name@@tagKeyName.placeholder"
+                    placeholder="Enter Tag Key Name">
+                </div>
+                <label i18n="Tag Seperator|Tag Seperator@@tagSeperator">Tag Seperator</label>
+                <div class="form-group">
+                  <input type="text" formControlName="tagSeprator" class="form-control m-input"
+                    i18n-placeholder="Tag Seperator placeholder|Tag Seperator@@tagSeperator.placeholder"
+                    placeholder="Tag Seperator">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="m-form__group row">
+            <!--  <div class="col-lg-6">
+              <label i18n="@@HasChildTags">Has Child Tags</label>
+              <div class="form-group">
+                <input type="checkbox" id="hasChildTags" formControlName="hasChildTags" class="form-control m-input"
+                  i18n-placeholder="@@HasChildTags.placeholder" placeholder="Has Child Tags">
+              </div>
+            </div> -->
+            <div class="col-lg-6">
+              <label i18n="Status|Status@@status">Status</label>
+              <div class="form-group">
+                <mat-radio-group formControlName="status">
+                  <mat-radio-button value="Active" i18n="Radio button|Active@@active" style="margin-right: 20px;"
+                    id="tenantStatusA">
+                    Active
+                  </mat-radio-button>
+                  <mat-radio-button id="tenantStatusI" value="In-Active" i18n="Radio button|InActive@@inActive">
+                    In-Active</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" id="cancelTemplate" class="btn btn-default text-center cancelActionButton"
+              (click)="cancelGatewayCommIOTagChildForm(gatewayCommIOTag.parentNodeCommProtocolIoTagId)"
+              i18n="Cancel button|Cancel@@cancel">
+              Cancel
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-secondary text-center resetActionButton"
+              [disabled]="!commIOTagForm.dirty && commIOTagForm.pristine || !commIOTagForm.dirty && !commIOTagForm.pristine"
+              (click)="resetCommIOTagForm()" i18n="Reset button|Reset@@reset"> Reset </button>
+            &nbsp;
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+              matTooltip="Fill the mandatory fields" [matTooltipDisabled]="commIOTagForm.valid">
+              <button i18n="Review&Save button|Review&Save@@review&Save"
+                class="btn btn-primary text-center reviewAndSaveActionButton" type="submit"
+                [disabled]="!commIOTagForm.valid">
+                Review & Save</button>
+            </span>
+          </div>
+        </div>
+      </form>
+
+      <!-- Form Preview starts here -->
+
+      <div *ngIf="commIOTagFormPreview" class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="Communication I/O Tag Details header|Communication I/O Tag Details@@communicationIOTagDetails"
+            class="m-b-15">Communication I/O Tag Details</legend>
+          <div class="form-row">
+            <a (click)="backButton(gatewayCommIOTag.parentNodeCommProtocolIoTagId)" class="edit_section">
+              <img src="/assets/img/action/edit.png" alt="edit communication i/o tag detail"
+                i18n-matTooltip="Image Tooltip|Click to edit Communication I/O Tag Detail@@clickToEditCommunicationIOTagDetail"
+                matTooltip="Click to edit Communication I/O Tag Detail">
+            </a>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Template Name|Template Name@@templateName" class="">Template Name</label>
+              <p>
+                {{commProtocol.gateway.name | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Communication|Communication@@communication" class="">Communication</label>
+              <p>
+                {{commProtocol.commProtocol.name | hyphen}}
+              </p>
+            </div>
+
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Data Handler Format|Data Handler Format@@dataHandlerFormat" class="">Data Handler
+                Format</label>
+              <p>
+                {{commProtocol.dataFormat.name | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Tag Seperator|Tag Seperator@@tagSeperator" class="">Tag Seperator</label>
+              <p>
+                {{commProtocol.tagSeparator | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="I/O Tag|I/O Tag@@iOTag" class="">I/O Tag</label>
+              <p *ngFor="let gatewayIOTag of allGatewayIOTags">
+                <span *ngIf='gatewayIOTag.id === parseInt(gatewayCommIOTag.nodeIoTagId)'>{{gatewayIOTag.name}}</span>
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Parent I/O Tag|Parent I/O Tag@@parentIOTag" class="">Parent I/O Tag</label>
+              <p *ngIf='gatewayCommIOTag.parentNodeCommProtocolIoTagId===null else noBlock'>
+                {{gatewayCommIOTag.parentNodeCommProtocolIoTagId | hyphen}}
+              </p>
+              <ng-template #noBlock>
+                <p *ngFor="let parentIOTag of allGatewayCommIOTags">
+                  <span
+                    *ngIf="parentIOTag.id === parseInt(gatewayCommIOTag.parentNodeCommProtocolIoTagId)">{{parentIOTag.gatewayIOTag.name}}</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Index|Index@@index" class="">Index</label>
+              <p>
+                {{gatewayCommIOTag.tagIndex=='0'?0:gatewayCommIOTag.tagIndex | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Length|Length@@length" class="">Length</label>
+              <p>
+                {{gatewayCommIOTag.tagLength | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Length Unit|Length Unit@@lengthUnit" class="">Length Unit</label>
+              <ng-container *ngIf='gatewayCommIOTag.tagLengthUnit==="null";else nullBlock'>
+                <p>
+                  {{gatewayCommIOTag.tagLengthUnit | hyphen}}
+                </p>
+              </ng-container>
+              <ng-template #nullBlock>
+                <ng-container *ngIf='gatewayCommIOTag.tagLengthUnit===null;else dataBlock'>
+                  <p>
+                    {{gatewayCommIOTag.tagLengthUnit | hyphen}}
+                  </p>
+                </ng-container>
+              </ng-template>
+              <ng-template #dataBlock>
+                <p *ngFor="let tagLengthUnit of tagLengthUnits">
+                  <span *ngIf="tagLengthUnit.id === gatewayCommIOTag.tagLengthUnit">{{tagLengthUnit.value}}</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Length Tag Key Name|Length Tag Key Name@@lengthTagKeyName" class="">Length Tag Key
+                Name</label>
+              <p>
+                {{gatewayCommIOTag.tagKeyName | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Data Format|Data Format@@dataFormat" class="">Data Format</label>
+              <ng-container *ngIf="gatewayCommIOTag.dataFormatId===null;else nullBlock1">
+                <p>
+                  {{gatewayCommIOTag.dataFormatId | hyphen}}
+                </p>
+              </ng-container>
+              <ng-template #nullBlock1>
+                <ng-container *ngIf='gatewayCommIOTag.dataFormatId==="null";else dataBlock1'>
+                  <p>
+                    {{gatewayCommIOTag.dataFormatId | hyphen}}
+                  </p>
+                </ng-container>
+              </ng-template>
+              <ng-template #dataBlock1>
+                <p *ngFor="let dataFormat of dataFormats">
+                  <span *ngIf='dataFormat.id === parseInt(gatewayCommIOTag.dataFormatId)'>{{dataFormat.name}}</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Date Time Format|Date Time Format@@dateTimeFormat" class="">Date Time Format</label>
+              <p>
+                {{gatewayCommIOTag.dateTimeFormat | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Status|Status@@status" class="">Status</label>
+              <p *ngIf="gatewayCommIOTag.status == 'I'; else activeBlock">
+                In-Active
+              </p>
+              <ng-template #activeBlock>
+                <p>
+                  {{gatewayCommIOTag.status}}
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="Seperator|Seperator@@seperator" class="">Seperator</label>
+              <p>
+                {{gatewayCommIOTag.tagSeprator | hyphen}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;float:right;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton"
+              (click)="backButton(gatewayCommIOTag.parentNodeCommProtocolIoTagId)" i18n="Back button|Back@@back"> Back
+            </button>
+            &nbsp;
+            <button i18n="Save button|Save@@save" class="btn btn-primary text-center saveActionButton" type="submit"
+              (click)="saveCommIOTagInfo()">
+              Save</button>
+          </div>
+        </div>
+        <div class="path"></div>
+      </div>
+
+      <!-- End Of Pre-View -->
+
+
+
+
+
+      <!-- Comm IOI Tag View for Parent Starts Here -->
+
+      <div *ngIf="gatewayCommIOTagView" class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="@@GatewayCommIOTagInfo" class="m-b-15">Gateway Comm I/O Tag Info</legend>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@IOTag" class="">I/O Tag</label>
+              <p *ngIf="commIOTagView.gatewayIOTag===null else noBlock">
+                {{commIOTagView.gatewayIOTag.name | hyphen}}
+              </p>
+              <ng-template #noBlock>
+                <p>
+                  {{commIOTagView.gatewayIOTag.name}}
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@Index" class="">Index</label>
+              <p>
+                {{commIOTagView.tagIndex =='0' ? 0:commIOTagView.tagIndex | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@Length" class="">Length</label>
+              <p>
+                {{commIOTagView.tagLength | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@LengthUnit" class="">Length Unit</label>
+              <P *ngIf='commIOTagView.tagLengthUnit===null else lUnit '>
+                {{commIOTagView.tagLengthUnit | hyphen}}
+              </P>
+              <ng-template #lUnit>
+                <p *ngFor="let tagLengthUnit of tagLengthUnits">
+                  <span *ngIf="tagLengthUnit.id === commIOTagView.tagLengthUnit">{{tagLengthUnit.value}}</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@TagkeyName" class="">Tag key Name</label>
+              <p>
+                {{commIOTagView.tagKeyName | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@DataFormat" class="">Data Format</label>
+              <ng-container *ngIf="commIOTagView.dataFormat==null;else dateFormate">
+                <p>
+                  -
+                </p>
+              </ng-container>
+              <ng-template #dateFormate>
+                <ng-container *ngIf="commIOTagView.dataFormat!=null;else trans">
+                  <p>
+                    {{commIOTagView.dataFormat.name}}
+                  </p>
+                </ng-container>
+              </ng-template>
+              <ng-template #trans>
+                <p></p>
+              </ng-template>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@DateTimeFormat" class="">Date Time Format</label>
+              <p>
+                {{commIOTagView.dateTimeFormat | hyphen}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@ParentTag" class="">Parent Tag</label>
+              <P *ngIf='commIOTagView.parentNodeCommProtocolIoTagId===null else pTag '>
+                {{commIOTagView.parentNodeCommProtocolIoTagId | hyphen}}
+              </P>
+              <ng-template #pTag>
+                <p *ngFor="let parentIOTag of gatewayCommIOTags">
+                  <span
+                    *ngIf="parentIOTag.id === parseInt(commIOTagView.parentNodeCommProtocolIoTagId)">{{parentIOTag.gatewayIOTag.name}}</span>
+                </p>
+              </ng-template>
+            </div>
+
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton"
+              (click)="cancelGatewayCommIOTagView()" i18n="@@Back"> Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comm IOI Tag View for Parent Ends Here -->
+
+
+      <!-- Comm IOI Tag View for Child Starts Here -->
+
+      <div *ngIf="gatewayCommIOTagChildView" class="formReadMode">
+        <div class="form-group-custom1">
+          <legend i18n="@@GatewayCommIOTagInfo" class="m-b-15">Gateway Comm I/O Tag Info</legend>
+          <div class="form-row">
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@IOTag" class="">I/O Tag</label>
+              <p>
+                {{commIOTagView.gatewayIOTag.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@Index" class="">Index</label>
+              <p>
+                {{commIOTagView.tagIndex}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@Length" class="">Length</label>
+              <p>
+                {{commIOTagView.tagLength}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@LengthUnit" class="">Length Unit</label>
+              <p *ngFor="let tagLengthUnit of tagLengthUnits">
+                <span *ngIf="tagLengthUnit.id === commIOTagView.tagLengthUnit">{{tagLengthUnit.value}}</span>
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@TagkeyName" class="">Tag key Name</label>
+              <p>
+                {{commIOTagView.tagKeyName}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@DataFormat" class="">Data Format</label>
+              <p>
+                {{commIOTagView.dataFormat.name}}
+              </p>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+              <label i18n="@@ParentTag" class="">Parent Tag</label>
+
+              <p *ngFor="let parentIOTag of gatewayCommIOTags">
+                <span
+                  *ngIf="parentIOTag.id === parseInt(commIOTagView.parentNodeCommProtocolIoTagId)">{{parentIOTag.gatewayIOTag.name}}</span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+        <div class="path finalLine"></div>
+        <div class="row" style="    text-align: right;padding: 23px 0;">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-default text-center backActionButton"
+              (click)="cancelGatewayCommIOTagForm()" i18n="@@Back"> Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- List View of Child Tags Starts Here -->
+
+      <div id="gatewayCommIOTagsList" style="clear: both;" *ngIf="childCommIOTagListView">
+        <div class="container mat-elevation-z8 panel panel-inverse" style="position: relative">
+          <app-panel-user i18n-name="@@ListofCommunicationIOTags"
+            name="List of Communication I/O Tags: {{commIOTagView.gatewayIOTag.name}}" #panelHeader
+            (refreshTableList)="refreshTableListFunction();panelHeader.setTableDasourceAsDefault(this.gatewayCommIOTagDataSource)"
+            (scrollBarDirective)="onPaginateViewScrollToTop()">
+
+            <!-- Input field for search -->
+            <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+              (keyup)="panelHeader.applyFilter($event.target.value, gatewayCommIOTagDataSource)" matInput
+              placeholder="Search.." />
+
+            <!-- Search button -->
+            <a searchButton href="javascript:;" matTooltip="Click to Search"
+              class="btn btn-xs btn-icon btn-circle btn-default"
+              (click)="panelHeader.searchButton(this.gatewayCommIOTagDataSource)">
+              <i class="fa fa-search"></i>
+            </a>
+            <div class="position-relative">
+              <div class="ps position-relative" appScrollbarDirective
+                *ngIf="gatewayCommIOTagDataSource && gatewayCommIOTagDataSource.data.length">
+                <ng-container *ngTemplateOutlet="matTable"></ng-container>
+              </div>
+
+              <div class="table-responsive"
+                *ngIf="!gatewayCommIOTagDataSource || !gatewayCommIOTagDataSource.data.length">
+                <ng-container *ngTemplateOutlet="matTable"></ng-container>
+              </div>
+
+              <h3 i18n="@@Norecordsfound" class="text-center noRecordsFound"
+                *ngIf="NoRecordsFound || gatewayCommIOTagDataSource.filteredData.length==0">
+                No records found!
+              </h3>
+              <!-- <app-mat-table-paginator [dataSource]="this.gatewayCommIOTagDataSource" #myPaginatorChildComponent
+                (paginator)="matTablePaginator($event)" (scrollBarDirective)="onPaginateViewScrollToTop()">
+              </app-mat-table-paginator> -->
+              <mat-paginator [hidden]="NoRecordsFound" #myPaginator
+                [length]="gatewayCommIOTagDataSource && gatewayCommIOTagDataSource.data.length" [pageSize]="5"
+                [pageSizeOptions]="[100, 500, 1000,5000]" showFirstLastButtons>
+              </mat-paginator>
+            </div>
+
+            <ng-template #matTable>
+              <table mat-table [dataSource]="gatewayCommIOTagDataSource" class="table table-striped table-bordered"
+                matSort>
+                <ng-container matColumnDef="id">
+                  <th i18n="@@SNo" mat-header-cell *matHeaderCellDef>S.No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index;">
+                    {{ (i+1) + (myPaginator.pageIndex * myPaginator.pageSize) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="ioTag">
+                  <th i18n="@@IOTag" mat-header-cell *matHeaderCellDef mat-sort-header>I/O Tag</th>
+                  <td mat-cell *matCellDef="let element"> {{element.gatewayIOTag.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="index">
+                  <th i18n="@@Index" mat-header-cell *matHeaderCellDef mat-sort-header>Index</th>
+                  <td mat-cell *matCellDef="let element"> {{element.tagIndex}} </td>
+                </ng-container>
+                <ng-container matColumnDef="length">
+                  <th i18n="@@Length" mat-header-cell *matHeaderCellDef mat-sort-header>Length</th>
+                  <td mat-cell *matCellDef="let element"> {{element.tagLength}} </td>
+                </ng-container>
+                <ng-container matColumnDef="lengthUnit">
+                  <th i18n="@@LengthUnit" mat-header-cell *matHeaderCellDef mat-sort-header>Length Unit</th>
+                  <td mat-cell *matCellDef="let element">
+                    <p *ngFor="let tagLengthUnit of tagLengthUnits">
+                      <span *ngIf="tagLengthUnit.id === element.tagLengthUnit">{{tagLengthUnit.value}}</span>
+                    </p>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="tagKeyName">
+                  <th i18n="@@TagkeyName" mat-header-cell *matHeaderCellDef mat-sort-header>Tagkey Name</th>
+                  <td mat-cell *matCellDef="let element"> {{element.tagKeyName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="dataFormat">
+                  <th i18n="@@DataFormat" mat-header-cell *matHeaderCellDef mat-sort-header>Data Format</th>
+                  <td mat-cell *matCellDef="let element"> <span *ngFor="let dataFormat of dataFormats">
+                      <p *ngIf="dataFormat.id === parseInt(element.dataFormatId)">{{dataFormat.name}}</p>
+                    </span> </td>
+                </ng-container>
+                <ng-container matColumnDef="parentTag">
+                  <th i18n="@@ParentTag" mat-header-cell *matHeaderCellDef mat-sort-header>Parent Tag</th>
+                  <td mat-cell *matCellDef="let element"> <span
+                      *ngFor="let gatewayCommProtocolIoTag of allGatewayCommIOTags">
+                      <p *ngIf="gatewayCommProtocolIoTag.id === parseInt(element.parentNodeCommProtocolIoTagId)">
+                        {{gatewayCommProtocolIoTag.gatewayIOTag.name}}</p>
+                    </span></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="gatewayCommIOTagDisplayedColumns;sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: gatewayCommIOTagDisplayedColumns;"></tr>
+              </table>
+            </ng-template>
+          </app-panel-user>
+
+
+
+        </div>
+      </div>
+      <!-- End Of Comm IO Tag Form -->
+    </div>
+  </div>
+</div>
+
+<!-- Loader image -->
+<div *ngIf="showLoaderImage" class="col-lg-12 loaderImageStyle" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+  align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()" (modelNotificationSuccess)="GatewayCommIOTag()"
+  (modelNotificationDanger)="confirmDelete();"></app-modal-notification>
